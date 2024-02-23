@@ -109,7 +109,7 @@ export const AddExpense = () => {
                   <div className="col">
                     <div className="form-group">
                       <label
-                        htmlFor="Date"
+                        htmlFor="payee"
                         className="label "
                         style={{ fontSize: '15px' }}
                       >
