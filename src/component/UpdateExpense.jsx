@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import './AddExpenseForm.css';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css";
+import { useNavigate, useParams } from 'react-router-dom';
+// import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-
-export const AddExpense = () => {
+export const UpdateExpense = () => {
   const [cat, setcat] = useState([]);
   const [subcat, setsubcat] = useState([]);
   const [payee, setpayee] = useState([]);
+  const id = useParams().id;
   const navigate = useNavigate();
 
   const {
@@ -18,7 +18,24 @@ export const AddExpense = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm();
+  } = useForm({
+    defaultValues: async () => {
+      const res = await axios.get(
+        'http://localhost:5000/transactions/transaction/' + id );
+      return {
+        amount: res.data.data.amount,
+        expDateTime: res.data.data.expDateTime,
+        payee: res.data.data.payee._id,
+        category: res.data.data.category._id,
+        subcategory: res.data.data.subcategory._id,
+        paymentMethod: res.data.data.paymentMethod,
+        status: res.data.data.status,
+        description: res.data.data.description,
+        transactionType: res.data.data.transactionType
+      };
+
+    },
+  });
 
   const loadCategories = async () => {
     try {
@@ -62,38 +79,16 @@ export const AddExpense = () => {
     console.log('data....', data);
 
     try {
-      const res = await axios.post(
-        'http://localhost:5000/transactions/transaction',
+      const res = await axios.put(
+        'http://localhost:5000/transactions/transaction/' + id,
         data
       );
       if (res.status === 201) {
-        // alert('Data posted');
-        toast.success('Expense Added', {
-          position: 'top-center',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-          // transition: Bounce,
-        });
+        alert('Data posted');
+        navigate('/user/expenses');
       } else {
-        // alert('Data not posted');
-        toast.error('Error in adding expense', {
-          position: 'top-center',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-          // transition: Bounce,
-        });
+        alert('Data not updated');
       }
-      navigate('/user/expenses');
     } catch (error) {
       // console.log(error)
       console.error('Error submitting form:', error);
@@ -106,18 +101,6 @@ export const AddExpense = () => {
   return (
     <>
       <div className="container-fluid mx-auto">
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
         <div className="row mx-auto">
           <div className="col-md-8">
             <div className="card">
@@ -127,20 +110,6 @@ export const AddExpense = () => {
               <div className="card-body">
                 <form onSubmit={handleSubmit(submitHandler)}>
                   <div className="row">
-                    {/* First column */}
-                    {/* <div className="col-md-5 pr-1">
-                    <div className="form-group">
-                      <label style={{ fontSize: '15px' }} className="label">
-                        Payee
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Enter Payee"
-                        {...register('payee')}
-                      />
-                    </div>
-                  </div> */}
                     <div className="col">
                       <div className="form-group">
                         <label
@@ -268,19 +237,6 @@ export const AddExpense = () => {
                         >
                           Payment Method{' '}
                         </label>
-                        {/* <div className="select w-50"> */}
-                        {/* <select
-                          name=""
-                          className="form-select form-select-sm"
-                          {...register('paymentMethod')}
-                        >
-                          <option selected style={{ color: '#656262' }}>
-                            payment method
-                          </option>
-                          <option value="credit card">credit card</option>
-                          <option value="upi">upi</option>
-                          <option value="cash">cash</option>
-                        </select> */}
                         <div class="form-check">
                           <input
                             class="form-check-input"
@@ -338,17 +294,6 @@ export const AddExpense = () => {
                           Status{' '}
                         </label>
                         <div className="select w-50">
-                          {/* <select
-                          name=""
-                          className="form-select form-select-sm"
-                          {...register('status')}
-                        >
-                          <option selected style={{ color: '#656262' }}>
-                            status
-                          </option>
-                          <option value="clear">Clear</option>
-                          <option value="unclear">Unclear</option>
-                        </select> */}
                           <div class="form-check">
                             <input
                               class="form-check-input"
@@ -390,17 +335,7 @@ export const AddExpense = () => {
                           Transaction Type{' '}
                         </label>
                         <div className="select w-50">
-                          {/* <select
-                          name=""
-                          className="form-select form-select-sm"
-                          {...register('transactionType')}
-                        >
-                          <option selected style={{ color: '#656262' }}>
-                            transaction
-                          </option>
-                          <option value="Income">Income</option>
-                          <option value="Expense">Expense</option>
-                        </select> */}
+                          
                           <div class="form-check">
                             <input
                               class="form-check-input"

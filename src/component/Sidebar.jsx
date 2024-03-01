@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 export const Sidebar = () => {
   const userLinks = [
@@ -23,11 +24,11 @@ export const Sidebar = () => {
     {
       name: 'Expense Form',
       link: '/expense/form'
-    }
+    },
   ];
 
   return (
-    <div className="sidebar" data-image="../assets/img/sidebar-5.jpg">
+    <div className="sidebar sidebar-background" data-image="../assets/img/sidebar-6.jpg" style={{ backgroundImage: 'url(../assets/img/sidebar-6.jpg)' }} data-color="black">
       {/*
   Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
@@ -47,18 +48,18 @@ export const Sidebar = () => {
           {userLinks.map(user => {
             return (
               <li className="nav-item active">
-                <Link className="nav-link" to={user.link}>
+                <NavLink className="nav-link" to={user.link} activeClassName="active-link">
                   <i className={user.icon} />
                   <p>{user.name}</p>
-                </Link>
+                </NavLink>
               </li>
             );
           })}
         </ul>
       </div>
       <div
-        className="sidebar-background"
-        style={{ backgroundImage: 'url(../assets/img/sidebar-5.jpg)' }}
+        // className="sidebar-background"
+        
       />
     </div>
   );
