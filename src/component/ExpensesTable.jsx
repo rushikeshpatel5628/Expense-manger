@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -15,17 +16,38 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 function Row({ row, onDelete }) {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
+  const handleEdit = () => {
+    // Navigate to the update page with the ID parameter
+    navigate(`/expense/update/${row._id}`);
+  };
 
   const handleDelete = async () => {
     try {
       // Send DELETE request to delete the transaction
-      await axios.delete(`http://localhost:5000/transactions/transaction/${row._id}`);
+      await axios.delete(
+        `http://localhost:5000/transactions/transaction/${row._id}`
+      );
       // Call the onDelete callback to remove the row from the table
       onDelete(row._id);
+      toast.info('Deleted successfully!', {
+        position: 'top-center',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
+        // transition: Slide,
+      });
     } catch (error) {
       console.error('Error deleting transaction:', error);
     }
@@ -46,10 +68,20 @@ function Row({ row, onDelete }) {
         <TableCell component="th" scope="row">
           {row.payee.payeeName}
         </TableCell>
-        <TableCell align="right">{row.amount}</TableCell>
+        {/* <TableCell align="right">{row.amount}{row.transactionType === 'income' ? ' + ' : ' - '}</TableCell> */}
+        <TableCell align="right">
+          {row.transactionType === 'income' ? (
+            <span style={{ color: 'green' }}>+{row.amount}</span>
+          ) : (
+            <span style={{ color: 'red' }}>-{row.amount}</span>
+          )}
+        </TableCell>
         <TableCell align="right">{row.expDateTime}</TableCell>
         <TableCell align="right">{row.paymentMethod}</TableCell>
         <TableCell align="right">
+          <IconButton aria-label="edit" onClick={handleEdit}>
+            <EditIcon />
+          </IconButton>
           <IconButton aria-label="delete" onClick={handleDelete}>
             <DeleteIcon />
           </IconButton>
@@ -101,8 +133,9 @@ export default function ExpensesTable() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const userId = localStorage.getItem('userId');
         const response = await axios.get(
-          'http://localhost:5000/transactions/transaction'
+          "http://localhost:5000/transactions/transaction"
         );
         if (response.data.flag === 1) {
           setRows(response.data.data);
@@ -113,17 +146,27 @@ export default function ExpensesTable() {
         console.error('Error fetching data:', error);
       }
     };
-
     fetchData();
   }, []);
 
-  const handleDelete = (deletedId) => {
+  const handleDelete = deletedId => {
     setRows(rows.filter(row => row._id !== deletedId));
   };
 
-
   return (
     <TableContainer component={Paper}>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>
@@ -136,7 +179,7 @@ export default function ExpensesTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-        {rows.map((row, index) => (
+          {rows.map((row, index) => (
             <Row key={index} row={row} onDelete={handleDelete} />
           ))}
         </TableBody>

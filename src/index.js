@@ -4,16 +4,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-import 'bootstrap/dist/js/bootstrap.bundle'
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
-// Include Bootstrap JavaScript CDN 
-const script = document.createElement('script');
-script.src =
-  'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js';
-script.async = true;
-document.body.appendChild(script);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

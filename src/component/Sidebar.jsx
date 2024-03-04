@@ -12,8 +12,6 @@ export const Sidebar = () => {
     {
       name: 'Expense',
       link: '/user/expenses',
-      // icon: "nc-money-coins"
-      // icon: "nc-money-coins"
       icon: 'nc-icon nc-money-coins',
     },
     {
@@ -37,7 +35,7 @@ export const Sidebar = () => {
       <div className="sidebar-wrapper">
         <div className="logo">
           <Link
-            to="/user/dashboard"
+            // to="/user/dashboard"
             className="simple-text"
             style={{ textDecoration: 'none' }}
           >

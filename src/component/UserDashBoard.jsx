@@ -1,8 +1,50 @@
-import React from "react";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
 export const UserDashBoard = () => {
+  const [income, setincome] = useState();
+  const  [expense, setExpense] = useState();
+  const getIncome = async () => {
+    const res = await axios.get(
+      'http://localhost:5000/transactions/income'
+    );
+    setincome(res.data.data);
+  };
+
+  const getExpense = async () => {
+    const res = await axios.get(
+      'http://localhost:5000/transactions/expense'
+    );
+    setExpense(res.data.data);
+  };
+
+  useEffect(() => {
+    getIncome();
+    getExpense();
+  }, []);
+
   return (
     <div className="container-fluid">
+      <div className="row">
+        <div className="col-sm-3">
+          <div className="card">
+            <div className="card-header">
+              <h4 className="card-title">Income</h4>
+            </div>
+            <div className="card-body">{income}</div>
+          </div>
+        </div>
+
+        <div className="col-sm-3">
+          <div className="card">
+            <div className="card-header">
+              <h4 className="card-title">Expense</h4>
+            </div>
+            <div className="card-body">{expense}</div>
+          </div>
+        </div>
+      </div>
+
       <div className="row">
         <div className="col-md-4">
           <div className="card ">
@@ -17,7 +59,7 @@ export const UserDashBoard = () => {
                   width="100%"
                   height="100%"
                   className="ct-chart-pie"
-                  style={{ width: "100%", height: "100%" }}
+                  style={{ width: '100%', height: '100%' }}
                 >
                   <g className="ct-series ct-series-c">
                     <path
@@ -93,7 +135,7 @@ export const UserDashBoard = () => {
                   width="100%"
                   height="245px"
                   className="ct-chart-line"
-                  style={{ width: "100%", height: 245 }}
+                  style={{ width: '100%', height: 245 }}
                 >
                   <g className="ct-grids">
                     <line
@@ -185,7 +227,7 @@ export const UserDashBoard = () => {
                   </g>
                   <g className="ct-labels">
                     <foreignObject
-                      style={{ overflow: "visible" }}
+                      style={{ overflow: 'visible' }}
                       x={50}
                       y={215}
                       width="86.625"
@@ -200,7 +242,7 @@ export const UserDashBoard = () => {
                       </span>
                     </foreignObject>
                     <foreignObject
-                      style={{ overflow: "visible" }}
+                      style={{ overflow: 'visible' }}
                       x="136.625"
                       y={215}
                       width="86.625"
@@ -215,7 +257,7 @@ export const UserDashBoard = () => {
                       </span>
                     </foreignObject>
                     <foreignObject
-                      style={{ overflow: "visible" }}
+                      style={{ overflow: 'visible' }}
                       x="223.25"
                       y={215}
                       width="86.625"
@@ -230,7 +272,7 @@ export const UserDashBoard = () => {
                       </span>
                     </foreignObject>
                     <foreignObject
-                      style={{ overflow: "visible" }}
+                      style={{ overflow: 'visible' }}
                       x="309.875"
                       y={215}
                       width="86.625"
@@ -245,7 +287,7 @@ export const UserDashBoard = () => {
                       </span>
                     </foreignObject>
                     <foreignObject
-                      style={{ overflow: "visible" }}
+                      style={{ overflow: 'visible' }}
                       x="396.5"
                       y={215}
                       width="86.625"
@@ -260,7 +302,7 @@ export const UserDashBoard = () => {
                       </span>
                     </foreignObject>
                     <foreignObject
-                      style={{ overflow: "visible" }}
+                      style={{ overflow: 'visible' }}
                       x="483.125"
                       y={215}
                       width="86.625"
@@ -275,7 +317,7 @@ export const UserDashBoard = () => {
                       </span>
                     </foreignObject>
                     <foreignObject
-                      style={{ overflow: "visible" }}
+                      style={{ overflow: 'visible' }}
                       x="569.75"
                       y={215}
                       width="86.625"
@@ -290,7 +332,7 @@ export const UserDashBoard = () => {
                       </span>
                     </foreignObject>
                     <foreignObject
-                      style={{ overflow: "visible" }}
+                      style={{ overflow: 'visible' }}
                       x="656.375"
                       y={215}
                       width="86.625"
@@ -305,7 +347,7 @@ export const UserDashBoard = () => {
                       </span>
                     </foreignObject>
                     <foreignObject
-                      style={{ overflow: "visible" }}
+                      style={{ overflow: 'visible' }}
                       y="185.625"
                       x={10}
                       height="24.375"
@@ -320,7 +362,7 @@ export const UserDashBoard = () => {
                       </span>
                     </foreignObject>
                     <foreignObject
-                      style={{ overflow: "visible" }}
+                      style={{ overflow: 'visible' }}
                       y="161.25"
                       x={10}
                       height="24.375"
@@ -335,7 +377,7 @@ export const UserDashBoard = () => {
                       </span>
                     </foreignObject>
                     <foreignObject
-                      style={{ overflow: "visible" }}
+                      style={{ overflow: 'visible' }}
                       y="136.875"
                       x={10}
                       height="24.375"
@@ -350,7 +392,7 @@ export const UserDashBoard = () => {
                       </span>
                     </foreignObject>
                     <foreignObject
-                      style={{ overflow: "visible" }}
+                      style={{ overflow: 'visible' }}
                       y="112.5"
                       x={10}
                       height="24.375"
@@ -365,7 +407,7 @@ export const UserDashBoard = () => {
                       </span>
                     </foreignObject>
                     <foreignObject
-                      style={{ overflow: "visible" }}
+                      style={{ overflow: 'visible' }}
                       y="88.125"
                       x={10}
                       height="24.375"
@@ -380,7 +422,7 @@ export const UserDashBoard = () => {
                       </span>
                     </foreignObject>
                     <foreignObject
-                      style={{ overflow: "visible" }}
+                      style={{ overflow: 'visible' }}
                       y="63.75"
                       x={10}
                       height="24.375"
@@ -395,7 +437,7 @@ export const UserDashBoard = () => {
                       </span>
                     </foreignObject>
                     <foreignObject
-                      style={{ overflow: "visible" }}
+                      style={{ overflow: 'visible' }}
                       y="39.375"
                       x={10}
                       height="24.375"
@@ -410,7 +452,7 @@ export const UserDashBoard = () => {
                       </span>
                     </foreignObject>
                     <foreignObject
-                      style={{ overflow: "visible" }}
+                      style={{ overflow: 'visible' }}
                       y={15}
                       x={10}
                       height="24.375"
@@ -425,7 +467,7 @@ export const UserDashBoard = () => {
                       </span>
                     </foreignObject>
                     <foreignObject
-                      style={{ overflow: "visible" }}
+                      style={{ overflow: 'visible' }}
                       y={-15}
                       x={10}
                       height={30}
@@ -454,6 +496,54 @@ export const UserDashBoard = () => {
                 <i className="fa fa-history" /> Updated 3 minutes ago
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-md-4">
+          <div
+            id="carouselExampleIndicators"
+            className="carousel slide"
+            data-ride="carousel"
+          >
+            <ol className="carousel-indicators">
+              <li
+                data-target="#carouselExampleIndicators"
+                data-slide-to={0}
+                className="active"
+              />
+              <li data-target="#carouselExampleIndicators" data-slide-to={1} />
+              <li data-target="#carouselExampleIndicators" data-slide-to={2} />
+            </ol>
+            <div className="carousel-inner">
+              <div className="carousel-item active">
+                <img className="d-block w-100" src="..." alt="First slide" />
+              </div>
+              <div className="carousel-item">
+                <img className="d-block w-100" src="..." alt="Second slide" />
+              </div>
+              <div className="carousel-item">
+                <img className="d-block w-100" src="..." alt="Third slide" />
+              </div>
+            </div>
+            <a
+              className="carousel-control-prev"
+              href="#carouselExampleIndicators"
+              role="button"
+              data-slide="prev"
+            >
+              <span className="carousel-control-prev-icon" aria-hidden="true" />
+              <span className="sr-only">Previous</span>
+            </a>
+            <a
+              className="carousel-control-next"
+              href="#carouselExampleIndicators"
+              role="button"
+              data-slide="next"
+            >
+              <span className="carousel-control-next-icon" aria-hidden="true" />
+              <span className="sr-only">Next</span>
+            </a>
           </div>
         </div>
       </div>

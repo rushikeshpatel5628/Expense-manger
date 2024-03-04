@@ -1,13 +1,14 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg " color-on-scroll={500}>
       <div className="container-fluid">
-        <a className="navbar-brand" href="#pablo">
+        <Link className="navbar-brand" to="/user/dashboard">
           {' '}
           Dashboard{' '}
-        </a>
+        </Link>
         <button
           href=""
           className="navbar-toggler navbar-toggler-right"
@@ -27,10 +28,10 @@ export const Navbar = () => {
         >
           <ul className="nav navbar-nav mr-auto">
             <li className="nav-item">
-              <a href="#" className="nav-link" data-toggle="dropdown">
+              <Link href="#" className="nav-link" data-toggle="dropdown">
                 {/* <i className="nc-icon nc-palette" /> */}
                 <span className="d-lg-none">Dashboard</span>
-              </a>
+              </Link>
             </li>
             <li className="dropdown nav-item">
               <a
