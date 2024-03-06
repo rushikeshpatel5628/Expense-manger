@@ -1,13 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export const Navbar = () => {
+export const Navbar = ({selectedLink}) => {
   return (
     <nav className="navbar navbar-expand-lg " color-on-scroll={500}>
       <div className="container-fluid">
         <Link className="navbar-brand" to="/user/dashboard">
-          {' '}
-          Dashboard{' '}
+          {selectedLink}
         </Link>
         <button
           href=""

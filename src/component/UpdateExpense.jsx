@@ -31,7 +31,8 @@ export const UpdateExpense = () => {
         paymentMethod: res.data.data.paymentMethod,
         status: res.data.data.status,
         description: res.data.data.description,
-        transactionType: res.data.data.transactionType
+        transactionType: res.data.data.transactionType,
+        // goal: res.data.data.goal._id
       };
 
     },

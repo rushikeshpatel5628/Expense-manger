@@ -4,13 +4,14 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css";
-
+import 'react-toastify/dist/ReactToastify.css';
 
 export const AddExpense = () => {
   const [cat, setcat] = useState([]);
   const [subcat, setsubcat] = useState([]);
   const [payee, setpayee] = useState([]);
+  const [goal, setgoal] = useState([]);
+
   const navigate = useNavigate();
 
   const {
@@ -52,14 +53,30 @@ export const AddExpense = () => {
     }
   };
 
+  const loadGoal = async () => {
+    try {
+      const res = await axios.get('http://localhost:5000/goals/goal');
+      setgoal(res.data.data);
+      console.log(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     loadCategories();
     loadSubCategories();
     loadPayee();
+    loadGoal();
   }, []);
 
   const submitHandler = async data => {
     console.log('data....', data);
+
+    // Retrieve userId from local storage
+    const userId = localStorage.getItem('userId');
+    // Include userId in the data object
+    data.user = userId;
 
     try {
       const res = await axios.post(
@@ -106,18 +123,18 @@ export const AddExpense = () => {
   return (
     <>
       <div className="container-fluid mx-auto">
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
         <div className="row mx-auto">
           <div className="col-md-8">
             <div className="card">
@@ -127,20 +144,53 @@ export const AddExpense = () => {
               <div className="card-body">
                 <form onSubmit={handleSubmit(submitHandler)}>
                   <div className="row">
-                    {/* First column */}
-                    {/* <div className="col-md-5 pr-1">
-                    <div className="form-group">
-                      <label style={{ fontSize: '15px' }} className="label">
-                        Payee
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Enter Payee"
-                        {...register('payee')}
-                      />
+                    <div className="col">
+                      <div className="form-group">
+                        <label
+                          htmlFor="title"
+                          className="label "
+                          style={{ fontSize: '15px' }}
+                        >
+                          Expense Title{' '}
+                        </label>
+                        <input
+                          type="text"
+                          className="ml-3 form-control w-25"
+                          {...register('title')}
+                        />
+                      </div>
                     </div>
-                  </div> */}
+                  </div>
+                  <div className="row">
+                    <div className="col">
+                      <div className="form-group">
+                        <label
+                          htmlFor="goal"
+                          className="label "
+                          style={{ fontSize: '15px' }}
+                        >
+                          Goal{' '}
+                        </label>
+                        <div className="select w-50">
+                          <select
+                            name=""
+                            className="form-control"
+                            {...register('goal')}
+                          >
+                            <option selected>Goal</option>
+                            {goal.map(item => {
+                              return (
+                                <option value={item._id}>
+                                  {item.goalName}
+                                </option>
+                              );
+                            })}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
                     <div className="col">
                       <div className="form-group">
                         <label
@@ -153,7 +203,7 @@ export const AddExpense = () => {
                         <div className="select w-50">
                           <select
                             name=""
-                            className="form-select form-select-sm"
+                            className="form-control"
                             {...register('payee')}
                           >
                             <option selected style={{ color: '#656262' }}>
@@ -205,7 +255,7 @@ export const AddExpense = () => {
                     <div className="col">
                       <div className="form-group">
                         <label
-                          htmlFor="Date"
+                          htmlFor="category"
                           className="label "
                           style={{ fontSize: '15px' }}
                         >
@@ -268,19 +318,6 @@ export const AddExpense = () => {
                         >
                           Payment Method{' '}
                         </label>
-                        {/* <div className="select w-50"> */}
-                        {/* <select
-                          name=""
-                          className="form-select form-select-sm"
-                          {...register('paymentMethod')}
-                        >
-                          <option selected style={{ color: '#656262' }}>
-                            payment method
-                          </option>
-                          <option value="credit card">credit card</option>
-                          <option value="upi">upi</option>
-                          <option value="cash">cash</option>
-                        </select> */}
                         <div class="form-check">
                           <input
                             class="form-check-input"

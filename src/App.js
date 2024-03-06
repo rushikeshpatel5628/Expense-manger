@@ -11,6 +11,12 @@ import '../node_modules/bootstrap/dist/js/bootstrap.min.js';
 import { UpdateExpense } from './component/UpdateExpense.jsx';
 import { LogIn } from './component/User/LogIn.jsx';
 import { ProtectedRoutes } from './hooks/ProtectedRoutes.js';
+import { useState } from 'react';
+import SignUp from './component/User/SignUp.jsx';
+import GoalList from './component/Goal/GoalList.jsx';
+import { AddGoal } from './component/Goal/AddGoal.jsx';
+import { Goals } from './component/Goal/Goals.jsx';
+import { GoalExpenses } from './component/Goal/GoalExpenses.jsx';
 
 function App() {
   // const path1 = window.location.pathname;
@@ -52,10 +58,16 @@ function App() {
   const location = useLocation();
   const { pathname } = location;
 
+  const [selectedLink, setSelectedLink] = useState('Dashboard');
+  const handleLinkSelect = name => {
+    setSelectedLink(name);
+  };
+
   return (
     <body>
       <Routes>
         <Route path="/" element={<LogIn />} />
+        <Route path="/user/signup" element={<SignUp />} />
         <Route
           path="/*"
           element={
@@ -63,9 +75,9 @@ function App() {
             pathname === '/login' ||
             pathname === '' ? null : (
               <div className="wrapper">
-                <Sidebar />
+                <Sidebar onLinkSelect={handleLinkSelect} />
                 <div className="main-panel">
-                  <Navbar />
+                  <Navbar selectedLink={selectedLink} />
                   <div className="content">
                     <Routes>
                       <Route element={<ProtectedRoutes />}>
@@ -79,6 +91,9 @@ function App() {
                           path="/expense/update/:id"
                           element={<UpdateExpense />}
                         />
+                        <Route path="/user/goal" element={<Goals />} />
+                        <Route path="/goal/add" element={<AddGoal />} />{' '}
+                        <Route path="/goal/expenses/:id" element={<GoalExpenses />} />{' '}
                       </Route>
                     </Routes>
                   </div>

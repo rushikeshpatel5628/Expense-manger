@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 
-export const Sidebar = () => {
+export const Sidebar = ({ onLinkSelect }) => {
+
+  const [selectedLink, setSelectedLink] = useState('');
+
   const userLinks = [
     {
       name: 'Dashboard',
@@ -23,7 +26,16 @@ export const Sidebar = () => {
       name: 'Expense Form',
       link: '/expense/form'
     },
+    {
+      name: 'Goal',
+      link: '/user/goal'
+    },
   ];
+
+  const handleLinkClick = (name) => {
+    setSelectedLink(name);
+    onLinkSelect(name);
+  };
 
   return (
     <div className="sidebar sidebar-background" data-image="../assets/img/sidebar-6.jpg" style={{ backgroundImage: 'url(../assets/img/sidebar-6.jpg)' }} data-color="black">
@@ -46,7 +58,7 @@ export const Sidebar = () => {
           {userLinks.map(user => {
             return (
               <li className="nav-item active">
-                <NavLink className="nav-link" to={user.link} activeClassName="active-link">
+                <NavLink className="nav-link" to={user.link} activeClassName="active-link" onClick={() => handleLinkClick(user.name)}>
                   <i className={user.icon} />
                   <p>{user.name}</p>
                 </NavLink>

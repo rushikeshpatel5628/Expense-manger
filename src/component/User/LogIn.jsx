@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 export const LogIn = () => {
@@ -64,7 +64,7 @@ const submitHandler = async(data) => {
                 </button>
               </div>  
               <p className="text-center">
-                Don't have an account? <a href="#">Sign up</a>
+                Don't have an account? <Link to="/user/signup">Sign up</Link>
               </p>
             </form>
           </div>

@@ -18,7 +18,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function Row({ row, onDelete }) {
   const [open, setOpen] = useState(false);
@@ -131,14 +131,15 @@ Row.propTypes = {
   onDelete: PropTypes.func.isRequired,
 };
 
-export default function ExpensesTable() {
+export const GoalExpenses = () => {
   const [rows, setRows] = useState([]);
+  const id = useParams().id
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:5000/transactions/transaction'
+          'http://localhost:5000/transactions/goalexpense/' + id
         );
         if (response.data.flag === 1) {
           setRows(response.data.data);
@@ -175,7 +176,7 @@ export default function ExpensesTable() {
           <TableRow>
             <TableCell />
             <TableCell>Title</TableCell>
-            <TableCell >Payee</TableCell>
+            <TableCell>Payee</TableCell>
             <TableCell align="right">Amount</TableCell>
             <TableCell align="right">Expense Date</TableCell>
             <TableCell align="right">Payment Method</TableCell>
@@ -190,4 +191,4 @@ export default function ExpensesTable() {
       </Table>
     </TableContainer>
   );
-}
+};
