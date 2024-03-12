@@ -32,7 +32,7 @@ export const Navbar = ({selectedLink}) => {
                 <span className="d-lg-none">Dashboard</span>
               </Link>
             </li>
-            <li className="dropdown nav-item">
+            {/* <li className="dropdown nav-item">
               <a
                 href="#"
                 className="dropdown-toggle nav-link"
@@ -65,7 +65,7 @@ export const Navbar = ({selectedLink}) => {
                 <i className="nc-icon nc-zoom-split" />
                 <span className="d-lg-block">&nbsp;Search</span>
               </a>
-            </li>
+            </li> */}
           </ul>
           <ul className="navbar-nav ml-auto">
             <li className="nav-item">

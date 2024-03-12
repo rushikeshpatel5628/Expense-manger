@@ -133,15 +133,20 @@ Row.propTypes = {
 
 export default function ExpensesTable() {
   const [rows, setRows] = useState([]);
-
+  const userId = localStorage.getItem("userId");
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:5000/transactions/transaction'
+          'http://localhost:5000/transactions/transactions/'+ userId
         );
         if (response.data.flag === 1) {
-          setRows(response.data.data);
+          // Format date before setting rows
+          const formattedRows = response.data.data.map(transaction => ({
+            ...transaction,
+            expDateTime: formatDate(transaction.expDateTime) // Format date
+          }));
+          setRows(formattedRows);
         } else {
           console.error('Error fetching data:', response.data.message);
         }
@@ -151,6 +156,13 @@ export default function ExpensesTable() {
     };
     fetchData();
   }, []);
+
+  // Custom date formatting function
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    return date.toLocaleDateString('en-US', options);
+  };
 
   const handleDelete = deletedId => {
     setRows(rows.filter(row => row._id !== deletedId));

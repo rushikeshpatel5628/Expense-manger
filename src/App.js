@@ -17,6 +17,7 @@ import GoalList from './component/Goal/GoalList.jsx';
 import { AddGoal } from './component/Goal/AddGoal.jsx';
 import { Goals } from './component/Goal/Goals.jsx';
 import { GoalExpenses } from './component/Goal/GoalExpenses.jsx';
+import { LogIn1 } from './component/User/LogIn1.jsx';
 
 function App() {
   // const path1 = window.location.pathname;
@@ -66,7 +67,7 @@ function App() {
   return (
     <body>
       <Routes>
-        <Route path="/" element={<LogIn />} />
+        <Route path="/" element={<LogIn1 />} />
         <Route path="/user/signup" element={<SignUp />} />
         <Route
           path="/*"
