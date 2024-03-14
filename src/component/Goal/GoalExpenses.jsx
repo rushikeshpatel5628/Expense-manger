@@ -100,7 +100,7 @@ function Row({ row, onDelete }) {
                 <TableHead>
                   <TableRow>
                     <TableCell>Category</TableCell>
-                    <TableCell>Subcategory</TableCell>
+                    {/* <TableCell>Subcategory</TableCell> */}
                     <TableCell align="right">Status</TableCell>
                     {/* <TableCell align="right">Goal</TableCell> */}
                     <TableCell align="right">Description</TableCell>
@@ -111,7 +111,7 @@ function Row({ row, onDelete }) {
                     <TableCell component="th" scope="row">
                       {row.category.categoryName}
                     </TableCell>
-                    <TableCell>{row.subcategory.SubCategoryName}</TableCell>
+                    {/* <TableCell>{row.subcategory.SubCategoryName}</TableCell> */}
                     <TableCell align="right">{row.status}</TableCell>
                     {/* <TableCell align="right">{row.goal.goalName}</TableCell> */}
                     <TableCell align="right">{row.description}</TableCell>

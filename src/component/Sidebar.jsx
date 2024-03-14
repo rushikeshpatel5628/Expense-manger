@@ -30,6 +30,10 @@ export const Sidebar = ({ onLinkSelect }) => {
       name: 'Goal',
       link: '/user/goal'
     },
+    {
+      name: 'Charts',
+      link: 'user/charts'
+    }
   ];
 
   const handleLinkClick = (name) => {

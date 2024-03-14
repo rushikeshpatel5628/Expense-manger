@@ -18,6 +18,7 @@ import { AddGoal } from './component/Goal/AddGoal.jsx';
 import { Goals } from './component/Goal/Goals.jsx';
 import { GoalExpenses } from './component/Goal/GoalExpenses.jsx';
 import { LogIn1 } from './component/User/LogIn1.jsx';
+import { Charts } from './component/Charts/Charts.jsx';
 
 function App() {
   // const path1 = window.location.pathname;
@@ -82,19 +83,14 @@ function App() {
                   <div className="content">
                     <Routes>
                       <Route element={<ProtectedRoutes />}>
-                        <Route
-                          path="/user/dashboard"
-                          element={<UserDashBoard />}
-                        />
+                        <Route path="/user/dashboard" element={<UserDashBoard />} />
                         <Route path="/user/expenses" element={<Expenses />} />
                         <Route path="/expense/form" element={<AddExpense />} />
-                        <Route
-                          path="/expense/update/:id"
-                          element={<UpdateExpense />}
-                        />
+                        <Route path="/expense/update/:id" element={<UpdateExpense />} />
                         <Route path="/user/goal" element={<Goals />} />
                         <Route path="/goal/add" element={<AddGoal />} />{' '}
                         <Route path="/goal/expenses/:id" element={<GoalExpenses />} />{' '}
+                        <Route path="/user/charts" element={<Charts />} />
                       </Route>
                     </Routes>
                   </div>

@@ -8,8 +8,9 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export const UpdateExpense = () => {
   const [cat, setcat] = useState([]);
-  const [subcat, setsubcat] = useState([]);
+  // const [subcat, setsubcat] = useState([]);
   const [payee, setpayee] = useState([]);
+  const [goal, setgoal] = useState([]);
   const id = useParams().id;
   const navigate = useNavigate();
 
@@ -23,11 +24,12 @@ export const UpdateExpense = () => {
       const res = await axios.get(
         'http://localhost:5000/transactions/transaction/' + id );
       return {
+        title: res.data.data.title,
         amount: res.data.data.amount,
         expDateTime: res.data.data.expDateTime,
         payee: res.data.data.payee._id,
         category: res.data.data.category._id,
-        subcategory: res.data.data.subcategory._id,
+        // subcategory: res.data.data.subcategory._id,
         paymentMethod: res.data.data.paymentMethod,
         status: res.data.data.status,
         description: res.data.data.description,
@@ -48,17 +50,27 @@ export const UpdateExpense = () => {
     }
   };
 
-  const loadSubCategories = async () => {
+  const loadGoal = async () => {
     try {
-      const res = await axios.get(
-        'http://localhost:5000/categories/subcategory'
-      );
-      setsubcat(res.data.data);
+      const res = await axios.get('http://localhost:5000/goals/goal');
+      setgoal(res.data.data);
       console.log(res.data.data);
     } catch (error) {
       console.log(error);
     }
   };
+
+  // const loadSubCategories = async () => {
+  //   try {
+  //     const res = await axios.get(
+  //       'http://localhost:5000/categories/subcategory'
+  //     );
+  //     setsubcat(res.data.data);
+  //     console.log(res.data.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const loadPayee = async () => {
     try {
@@ -72,8 +84,9 @@ export const UpdateExpense = () => {
 
   useEffect(() => {
     loadCategories();
-    loadSubCategories();
+    // loadSubCategories();
     loadPayee();
+    loadGoal()
   }, []);
 
   const submitHandler = async data => {
@@ -101,15 +114,62 @@ export const UpdateExpense = () => {
 
   return (
     <>
-      <div className="container-fluid mx-auto">
+       <div className="container-fluid mx-auto">
         <div className="row mx-auto">
           <div className="col-md-8">
             <div className="card">
               <div className="card-header">
-                <h4 className="card-title">Update Expense</h4>
+                <h4 className="card-title">Add Expense</h4>
               </div>
               <div className="card-body">
                 <form onSubmit={handleSubmit(submitHandler)}>
+                  <div className="row">
+                    <div className="col">
+                      <div className="form-group">
+                        <label
+                          htmlFor="title"
+                          className="label "
+                          style={{ fontSize: '15px' }}
+                        >
+                          Expense Title{' '}
+                        </label>
+                        <input
+                          type="text"
+                          className="ml-3 form-control w-25"
+                          {...register('title')}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col">
+                      <div className="form-group">
+                        <label
+                          htmlFor="goal"
+                          className="label "
+                          style={{ fontSize: '15px' }}
+                        >
+                          Goal{' '}
+                        </label>
+                        <div className="select w-50">
+                          <select
+                            name=""
+                            className="form-control"
+                            {...register('goal')}
+                          >
+                            <option value="" selected>Goal</option>
+                            {goal.map(item => {
+                              return (
+                                <option value={item._id}>
+                                  {item.goalName}
+                                </option>
+                              );
+                            })}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <div className="row">
                     <div className="col">
                       <div className="form-group">
@@ -123,7 +183,7 @@ export const UpdateExpense = () => {
                         <div className="select w-50">
                           <select
                             name=""
-                            className="form-select form-select-sm"
+                            className="form-control"
                             {...register('payee')}
                           >
                             <option selected style={{ color: '#656262' }}>
@@ -175,7 +235,7 @@ export const UpdateExpense = () => {
                     <div className="col">
                       <div className="form-group">
                         <label
-                          htmlFor="Date"
+                          htmlFor="category"
                           className="label "
                           style={{ fontSize: '15px' }}
                         >
@@ -199,7 +259,7 @@ export const UpdateExpense = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col">
+                    {/* <div className="col">
                       <div className="form-group">
                         <label
                           htmlFor="Date"
@@ -225,7 +285,7 @@ export const UpdateExpense = () => {
                           </select>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
 
                   <div className="row">

@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export const AddExpense = () => {
   const [cat, setcat] = useState([]);
-  const [subcat, setsubcat] = useState([]);
+  // const [subcat, setsubcat] = useState([]);
   const [payee, setpayee] = useState([]);
   const [goal, setgoal] = useState([]);
 
@@ -31,17 +31,17 @@ export const AddExpense = () => {
     }
   };
 
-  const loadSubCategories = async () => {
-    try {
-      const res = await axios.get(
-        'http://localhost:5000/categories/subcategory'
-      );
-      setsubcat(res.data.data);
-      console.log(res.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const loadSubCategories = async () => {
+  //   try {
+  //     const res = await axios.get(
+  //       'http://localhost:5000/categories/subcategory'
+  //     );
+  //     setsubcat(res.data.data);
+  //     console.log(res.data.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const loadPayee = async () => {
     try {
@@ -65,7 +65,7 @@ export const AddExpense = () => {
 
   useEffect(() => {
     loadCategories();
-    loadSubCategories();
+    // loadSubCategories();
     loadPayee();
     loadGoal();
   }, []);
@@ -84,36 +84,17 @@ export const AddExpense = () => {
         data
       );
       if (res.status === 201) {
-        // alert('Data posted');
-        toast.success('Expense Added', {
-          position: 'top-center',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-          // transition: Bounce,
-        });
+        alert('Data posted');
       } else {
-        // alert('Data not posted');
-        toast.error('Error in adding expense', {
-          position: 'top-center',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-          // transition: Bounce,
-        });
+        alert('Data not posted');
       }
       navigate('/user/expenses');
     } catch (error) {
       // console.log(error)
-      console.error('Error submitting form:', error);
+      // console.error('Error submitting form:', error);
+      console.log('Error submitting form:', error.message);
+
+
       if (error.response) {
         console.error('Response data:', error.response.data);
       }
@@ -123,18 +104,6 @@ export const AddExpense = () => {
   return (
     <>
       <div className="container-fluid mx-auto">
-        <ToastContainer
-          position="top-center"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
         <div className="row mx-auto">
           <div className="col-md-8">
             <div className="card">
@@ -177,7 +146,7 @@ export const AddExpense = () => {
                             className="form-control"
                             {...register('goal')}
                           >
-                            <option selected>Goal</option>
+                            <option value= "">Goal</option>
                             {goal.map(item => {
                               return (
                                 <option value={item._id}>
@@ -279,7 +248,7 @@ export const AddExpense = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col">
+                    {/* <div className="col">
                       <div className="form-group">
                         <label
                           htmlFor="Date"
@@ -305,7 +274,7 @@ export const AddExpense = () => {
                           </select>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
 
                   <div className="row">
@@ -375,17 +344,6 @@ export const AddExpense = () => {
                           Status{' '}
                         </label>
                         <div className="select w-50">
-                          {/* <select
-                          name=""
-                          className="form-select form-select-sm"
-                          {...register('status')}
-                        >
-                          <option selected style={{ color: '#656262' }}>
-                            status
-                          </option>
-                          <option value="clear">Clear</option>
-                          <option value="unclear">Unclear</option>
-                        </select> */}
                           <div class="form-check">
                             <input
                               class="form-check-input"
@@ -427,17 +385,7 @@ export const AddExpense = () => {
                           Transaction Type{' '}
                         </label>
                         <div className="select w-50">
-                          {/* <select
-                          name=""
-                          className="form-select form-select-sm"
-                          {...register('transactionType')}
-                        >
-                          <option selected style={{ color: '#656262' }}>
-                            transaction
-                          </option>
-                          <option value="Income">Income</option>
-                          <option value="Expense">Expense</option>
-                        </select> */}
+                          
                           <div class="form-check">
                             <input
                               class="form-check-input"

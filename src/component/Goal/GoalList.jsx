@@ -34,6 +34,16 @@ export default function GoalList() {
     }
   };
 
+  const deleteGoal = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/goals/goal/${id}`);
+      // If deletion is successful, update the state to reflect the changes
+      setRows(prevRows => prevRows.filter(row => row._id !== id));
+    } catch (error) {
+      console.error('Error deleting goal:', error);
+    }
+  }
+
   const handleTransactionClick = (id) => {
     navigate(`/goal/expenses/${id}`);
   }
@@ -71,7 +81,7 @@ export default function GoalList() {
                   <IconButton aria-label="transaction" onClick={()=>handleTransactionClick(row._id)} color="primary">
                     <TransactionIcon />
                   </IconButton>
-                  <IconButton aria-label="delete">
+                  <IconButton aria-label="delete" onClick={() => deleteGoal(row._id)}>
                     <DeleteIcon />
                   </IconButton>
                 </TableRow>
