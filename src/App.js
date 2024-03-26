@@ -24,6 +24,7 @@ import GroupListPage from './component/User Group/GroupListPage.jsx';
 import GroupDetailsPage from './component/User Group/GroupDetailsPage.jsx';
 import { Charts2 } from './component/Charts/Charts2.jsx';
 import { Chart3 } from './component/Charts/Chart3.jsx';
+import { UserProfile } from './component/User/UserProfile.jsx';
 
 function App() {
   // const path1 = window.location.pathname;
@@ -98,6 +99,7 @@ function App() {
                         <Route path="/user/charts" element={<Charts />} />
                         <Route path="/user/charts2" element={<Charts2 />} />
                         <Route path="/user/charts3" element={<Chart3 />} />
+                        <Route path="/user/profile" element={<UserProfile />} />
                         <Route path="/user/groups" element={<Groups />} />
                         <Route path="/user/groups2" element={<GroupListPage />} />
                         <Route path="/group-details/:id" element={<GroupDetailsPage />} />

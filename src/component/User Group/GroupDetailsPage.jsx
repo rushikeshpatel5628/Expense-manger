@@ -7,7 +7,7 @@ import { Container, Grid, Paper, List, ListItem, ListItemText, Button, Dialog, D
 import InviteGroupModal from './InviteGroupModal'; // Import the InviteGroupModal component
 
 const GroupDetailsPage = () => {
-  const id = useParams().id; // Get group ID from route params
+  const groupid = useParams().id; // Get group ID from route params
   const [group, setGroup] = useState({ members: [] });
   const [isDialogOpen, setIsDialogOpen] = useState(false); // State to manage dialog visibility
 
@@ -16,9 +16,9 @@ const GroupDetailsPage = () => {
     const fetchGroupDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/groups/group/${id}`
+          `http://localhost:5000/groups/group/${groupid}`
         );
-        console.log("id....", id)
+        console.log("id....", groupid)
         console.log('Group....', response.data.data);
         setGroup(response.data.data); // Set group data in state
       } catch (error) {
@@ -27,7 +27,7 @@ const GroupDetailsPage = () => {
     };
 
     fetchGroupDetails();
-  }, [id]); // Fetch data when groupId changes
+  }, [groupid]); // Fetch data when groupId changes
 
   const handleInviteClick = () => {
     setIsDialogOpen(true); // Open the dialog when invite button is clicked
@@ -86,8 +86,8 @@ const GroupDetailsPage = () => {
           <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
             <DialogTitle>Invite Members</DialogTitle>
             <DialogContent>
-                <p>{id}</p>
-              <InviteGroupModal handleClose={handleCloseDialog} groupId={id} />
+                <p>{groupid}</p>
+              <InviteGroupModal handleClose={handleCloseDialog} groupId={groupid} />
             </DialogContent>
             <DialogActions>
               {/* You can add additional actions or buttons here */}

@@ -117,7 +117,7 @@ const JoinGroupModal = ({ handleClose }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit(submitHandler)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <TextField
         label="Enter Group ID"
         variant="outlined"

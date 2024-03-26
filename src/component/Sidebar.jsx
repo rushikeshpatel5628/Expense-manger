@@ -31,6 +31,10 @@ export const Sidebar = ({ onLinkSelect }) => {
       link: '/user/goal',
     },
     {
+      name: 'Profile',
+      link: '/user/profile',
+    },
+    {
       name: 'Charts',
       link: 'user/charts',
     },
