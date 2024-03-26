@@ -1,4 +1,5 @@
-import * as React from 'react';
+// import * as React from 'react';
+import React from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -11,28 +12,27 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import TransactionIcon from '@mui/icons-material/LocalAtm';
 import { IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { useEffect, useState } from 'react';
 
-const columns = [
-  { id: 'goalName', label: 'Goal Name', minWidth: 100 },
-  { id: 'maxamount', label: 'Max Amount', minWidth: 100 },
-  { id: 'startdate', label: 'Start Date', minWidth: 50 },
-  { id: 'enddate', label: 'End Date', minWidth: 100 },
-];
+export const GroupList = () => {
+  const columns = [
+    { id: 'name', label: 'Name', minWidth: 100 },
+    { id: 'description', label: 'description', minWidth: 100 },
+    { id: 'createdAt', label: 'Created At', minWidth: 50 },
+    // { id: 'members', label: 'members', minWidth: 50 },
+  ];
 
-export default function GoalList() {
   const [rows, setRows] = React.useState([]);
   const navigate = useNavigate();
 
-  // Custom date formatting function
-  const formatDate = dateString => {
-    const date = new Date(dateString);
-    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-    return date.toLocaleDateString('en-US', options);
-  };
-
-  const getGoals = async () => {
+  const getGroups = async () => {
+    const userId = localStorage.getItem('userId');
+    console.log('user id....', userId);
     try {
-      const res = await axios.get('http://localhost:5000/goals/goal');
+      const res = await axios.get(
+        'http://localhost:5000/groups/groups/' + userId
+      );
       console.log(res.data.data);
       setRows(res.data.data);
     } catch (error) {
@@ -40,23 +40,19 @@ export default function GoalList() {
     }
   };
 
-  const deleteGoal = async id => {
-    try {
-      await axios.delete(`http://localhost:5000/goals/goal/${id}`);
-      // If deletion is successful, update the state to reflect the changes
-      setRows(prevRows => prevRows.filter(row => row._id !== id));
-    } catch (error) {
-      console.error('Error deleting goal:', error);
-    }
+  const groupDetails = (groupId) => {
+    // Add your logic for joining a group here
+    // For example, you can navigate to a join group page
+    navigate(`/group-details/${groupId}`);
   };
 
-  const handleTransactionClick = id => {
-    navigate(`/goal/expenses/${id}`);
-  };
-
-  React.useEffect(() => {
-    getGoals();
+  useEffect(() => {
+    getGroups();
   }, []);
+
+  const updateGroupList = () => {
+    getGroups(); // Call getGroups again to fetch the updated list
+  };
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -76,19 +72,27 @@ export default function GoalList() {
             </TableRow>
           </TableHead>
           <TableBody>
-          {rows.map(row => {
+            {rows.map(row => {
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
                   {columns.map(column => (
                     <TableCell key={column.id} align="left">
-                      {column.id === 'startdate' || column.id === 'enddate' ? formatDate(row[column.id]) : row[column.id]}
+                      {column.id === 'members'
+                        ? row.members
+                            .map(
+                              member => `${member.firstName} ${member.lastName}`
+                            )
+                            .join(', ')
+                        : row[column.id]}
                     </TableCell>
                   ))}
-                  <IconButton aria-label="transaction" onClick={() => handleTransactionClick(row._id)} color="primary">
-                    <TransactionIcon />
-                  </IconButton>
+                  {/* 
                   <IconButton aria-label="delete" onClick={() => deleteGoal(row._id)}>
                     <DeleteIcon />
+                  </IconButton> 
+                  */}
+                  <IconButton aria-label="open" color="primary" onClick={()=>groupDetails(row._id)}>
+                    <OpenInNewIcon />
                   </IconButton>
                 </TableRow>
               );
@@ -98,4 +102,4 @@ export default function GoalList() {
       </TableContainer>
     </Paper>
   );
-}
+};

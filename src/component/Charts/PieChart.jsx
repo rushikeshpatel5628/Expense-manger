@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Pie } from 'react-chartjs-2';
-import { Chart as ChartJS } from 'chart.js/auto';
 import axios from 'axios';
 
 export const PieChart = () => {
-  const [data, setdata] = useState([]);
+  const [data, setData] = useState([]);
   const [categories, setCategories] = useState({});
+
   const fetchData = async () => {
     const id = localStorage.getItem('userId');
     try {
-      const response = await axios.get(
-        'http://localhost:5000/transactions/transactions/' + id
-      );
-      // console.log(response.data.data)
+      const response = await axios.get(`http://localhost:5000/transactions/transactions/${id}`);
       if (response.data.flag === 1) {
-        setdata(response.data.data);
+        setData(response.data.data);
       } else {
         console.error('Error fetching data:', response.data.message);
       }
@@ -28,22 +25,16 @@ export const PieChart = () => {
   }, []);
 
   useEffect(() => {
-    console.log(data);
     const categoriesMap = {};
-    data.forEach(transaction => {
+    // Filter data to include only expenses
+    const expenseData = data.filter(transaction => transaction.transactionType === 'expense');
+    // Calculate total expenses by category
+    expenseData.forEach(transaction => {
       const categoryName = transaction.category.categoryName;
-      if (categoriesMap[categoryName]) {
-        categoriesMap[categoryName] += transaction.amount;
-      } else {
-        categoriesMap[categoryName] = transaction.amount;
-      }
+      categoriesMap[categoryName] = (categoriesMap[categoryName] || 0) + transaction.amount;
     });
     setCategories(categoriesMap);
   }, [data]);
-
-  useEffect(() => {
-    console.log('Categories:', categories);
-  }, [categories]);
 
   const chartLabels = Object.keys(categories);
   const chartData = {
@@ -74,9 +65,9 @@ export const PieChart = () => {
               display: true,
               position: 'bottom',
               textAlign: 'right',
-            labels: {
-                boxWidth: 20 // Adjust the size of the legend color boxes here
-              }
+              labels: {
+                boxWidth: 20, // Adjust the size of the legend color boxes here
+              },
             },
           },
         }}

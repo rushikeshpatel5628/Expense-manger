@@ -94,7 +94,6 @@ export const AddExpense = () => {
       // console.error('Error submitting form:', error);
       console.log('Error submitting form:', error.message);
 
-
       if (error.response) {
         console.error('Response data:', error.response.data);
       }
@@ -124,7 +123,7 @@ export const AddExpense = () => {
                         </label>
                         <input
                           type="text"
-                          className="ml-3 form-control w-25"
+                          className="form-control w-25"
                           {...register('title')}
                         />
                       </div>
@@ -146,7 +145,7 @@ export const AddExpense = () => {
                             className="form-control"
                             {...register('goal')}
                           >
-                            <option value= "">Goal</option>
+                            <option value="">Goal</option>
                             {goal.map(item => {
                               return (
                                 <option value={item._id}>
@@ -385,7 +384,6 @@ export const AddExpense = () => {
                           Transaction Type{' '}
                         </label>
                         <div className="select w-50">
-                          
                           <div class="form-check">
                             <input
                               class="form-check-input"

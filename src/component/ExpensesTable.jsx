@@ -19,6 +19,7 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+import { TablePagination } from '@mui/material';
 
 function Row({ row, onDelete }) {
   const [open, setOpen] = useState(false);
@@ -133,18 +134,18 @@ Row.propTypes = {
 
 export default function ExpensesTable() {
   const [rows, setRows] = useState([]);
-  const userId = localStorage.getItem("userId");
+  const userId = localStorage.getItem('userId');
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:5000/transactions/transactions/'+ userId
+          'http://localhost:5000/transactions/transactions/' + userId
         );
         if (response.data.flag === 1) {
           // Format date before setting rows
           const formattedRows = response.data.data.map(transaction => ({
             ...transaction,
-            expDateTime: formatDate(transaction.expDateTime) // Format date
+            expDateTime: formatDate(transaction.expDateTime), // Format date
           }));
           setRows(formattedRows);
         } else {
@@ -158,7 +159,7 @@ export default function ExpensesTable() {
   }, []);
 
   // Custom date formatting function
-  const formatDate = (dateString) => {
+  const formatDate = dateString => {
     const date = new Date(dateString);
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
     return date.toLocaleDateString('en-US', options);
@@ -166,6 +167,24 @@ export default function ExpensesTable() {
 
   const handleDelete = deletedId => {
     setRows(rows.filter(row => row._id !== deletedId));
+  };
+
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const currentRows = rows.filter((r, ind) => {
+    return ind >= rowsPerPage * page && ind < rowsPerPage * (page + 1);
+  });
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
   };
 
   return (
@@ -187,7 +206,7 @@ export default function ExpensesTable() {
           <TableRow>
             <TableCell />
             <TableCell>Title</TableCell>
-            <TableCell >Payee</TableCell>
+            <TableCell>Payee</TableCell>
             <TableCell align="right">Amount</TableCell>
             <TableCell align="right">Expense Date</TableCell>
             <TableCell align="right">Payment Method</TableCell>
@@ -195,11 +214,20 @@ export default function ExpensesTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row, index) => (
+          {currentRows.map((row, index) => (
             <Row key={index} row={row} onDelete={handleDelete} />
           ))}
         </TableBody>
       </Table>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={rows.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </TableContainer>
   );
 }

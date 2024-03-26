@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 
 export const Sidebar = ({ onLinkSelect }) => {
-
   const [selectedLink, setSelectedLink] = useState('');
 
   const userLinks = [
@@ -23,26 +22,48 @@ export const Sidebar = ({ onLinkSelect }) => {
       icon: 'nc-icon nc-layers-3',
     },
     {
-      name: 'Expense Form',
-      link: '/expense/form'
+      name: 'Add Expense',
+      link: '/expense/form',
+      icon: 'nc-icon nc-simple-add',
     },
     {
       name: 'Goal',
-      link: '/user/goal'
+      link: '/user/goal',
     },
     {
       name: 'Charts',
-      link: 'user/charts'
-    }
+      link: 'user/charts',
+    },
+    {
+      name: 'Charts 2',
+      link: 'user/charts2',
+    },
+    {
+      name: 'Charts 3',
+      link: 'user/charts3',
+    },
+    {
+      name: 'Groups',
+      link: 'user/groups',
+    },
+    {
+      name: 'Groups 2',
+      link: 'user/groups2',
+    },
   ];
 
-  const handleLinkClick = (name) => {
+  const handleLinkClick = name => {
     setSelectedLink(name);
     onLinkSelect(name);
   };
 
   return (
-    <div className="sidebar sidebar-background" data-image="../assets/img/sidebar-6.jpg" style={{ backgroundImage: 'url(../assets/img/sidebar-6.jpg)' }} data-color="black">
+    <div
+      className="sidebar sidebar-background"
+      data-image="../assets/img/sidebar-6.jpg"
+      style={{ backgroundImage: 'url(../assets/img/sidebar-6.jpg)' }}
+      data-color="black"
+    >
       {/*
   Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
@@ -62,7 +83,12 @@ export const Sidebar = ({ onLinkSelect }) => {
           {userLinks.map(user => {
             return (
               <li className="nav-item active">
-                <NavLink className="nav-link" to={user.link} activeClassName="active-link" onClick={() => handleLinkClick(user.name)}>
+                <NavLink
+                  className="nav-link"
+                  to={user.link}
+                  activeClassName="active-link"
+                  onClick={() => handleLinkClick(user.name)}
+                >
                   <i className={user.icon} />
                   <p>{user.name}</p>
                 </NavLink>
@@ -72,8 +98,7 @@ export const Sidebar = ({ onLinkSelect }) => {
         </ul>
       </div>
       <div
-        // className="sidebar-background"
-        
+      // className="sidebar-background"
       />
     </div>
   );

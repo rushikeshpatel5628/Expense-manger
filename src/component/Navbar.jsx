@@ -1,9 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export const Navbar = ({selectedLink}) => {
+export const Navbar = ({ selectedLink }) => {
   return (
-    <nav className="navbar navbar-expand-lg " color-on-scroll={500}>
+    <nav
+      className="navbar navbar-expand-lg"
+      // style={{
+      //   overflow: 'hidden',
+      //   position: 'sticky',
+      //   top: '0',
+      //   zIndex: '1000',
+      //   backgroundColor: '#fff',
+      // }}
+      color-on-scroll={500}
+    >
       <div className="container-fluid">
         <Link className="navbar-brand" to="/user/dashboard">
           {selectedLink}
@@ -68,17 +78,52 @@ export const Navbar = ({selectedLink}) => {
             </li> */}
           </ul>
           <ul className="navbar-nav ml-auto">
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <a className="nav-link" href="#pablo">
                 <span className="no-icon">Account</span>
               </a>
+            </li> */}
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link pr-0"
+                href="#"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <div className="media align-items-center">
+                  <span className="avatar avatar-sm">
+                    <img alt="Image placeholder" src="https://www.wikiwrimo.org/w/images/Example.jpg"  width={35} height={35} className='rounded-circle'/>
+                  </span>
+                  <div className="media-body  ml-2  d-none d-lg-block">
+                    <span className="mb-0 text-sm  font-weight-bold">
+                      John Snow
+                    </span>
+                  </div>
+                </div>
+              </a>
+              <div className="dropdown-menu dropdown-menu-right">
+                {/* <div className="dropdown-header noti-title">
+                  <h6 className="text-overflow m-0">Welcome!</h6>
+                </div> */}
+                <a href="#!" className="dropdown-item">
+                  <i className="ni ni-single-02" />
+                  <span>My profile</span>
+                </a>
+                <div className="dropdown-divider" />
+                <a href="#!" className="dropdown-item">
+                  <i className="ni ni-user-run" />
+                  <span>Logout</span>
+                </a>
+              </div>
             </li>
-            
-            <li className="nav-item">
+
+            {/* <li className="nav-item">
               <a className="nav-link" href="#pablo">
                 <span className="no-icon">Log out</span>
               </a>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

@@ -2,49 +2,293 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Charts } from './Charts/Charts';
 import { PieChart } from './Charts/PieChart';
+import { AttachMoney, MoneyOff } from '@mui/icons-material';
+import LineChart from './Charts/LineChart';
+import { GoalCharts } from './Charts/GoalCharts';
+import MonthlyBarChart from './Charts/MonthlyBarChart';
 
 export const UserDashBoard = () => {
-  const [income, setincome] = useState();
-  const [expense, setExpense] = useState();
+  const [income, setIncome] = useState(0);
+  const [expense, setExpense] = useState(0);
+  const [totalBalance, setTotalBalance] = useState(0);
+  const [goalExpenses, setGoalExpenses] = useState({});
+  const [goalExpenses2, setGoalExpenses2] = useState({});
+  const [goals, setGoals] = useState([]);
+  const [eachGoalTotal, setEachGoalTotal] = useState([]);
+  const [selectedGoal, setSelectedGoal] = useState('');
+
   const getIncome = async () => {
     const res = await axios.get('http://localhost:5000/transactions/income');
-    setincome(res.data.data);
+    // setincome(res.data.data);
   };
 
   const getExpense = async () => {
     const res = await axios.get('http://localhost:5000/transactions/expense');
-    setExpense(res.data.data);
+    // setExpense(res.data.data);
+  };
+
+  const getAllGoals = async (req, res) => {
+    try {
+      const res = await axios.get('http://localhost:5000/goals/goal');
+      setGoals(res.data.data);
+
+      // Extracting maxamount from each goal and storing them in an array
+      const maxAmounts = data.map(goal => goal.maxamount);
+      setEachGoalTotal(maxAmounts);
+    } catch (error) {
+      console.log('error....', error);
+    }
+  };
+
+  const filterTransactionsByGoal = selectedGoal => {
+    // Filter transactions based on the selected goal
+    // For now, let's assume transactions are already fetched and stored in `data` state
+    const filteredTransactions = data.filter(
+      transaction => transaction._id === selectedGoal
+    );
+    prepareChartData(filteredTransactions);
+  };
+
+  const prepareChartData = transactions => {
+    const goalExpensesMap = {};
+    transactions.forEach(transaction => {
+      const category = transaction.category.categoryName;
+      if (goalExpensesMap[category]) {
+        goalExpensesMap[category] += transaction.amount;
+      } else {
+        goalExpensesMap[category] = transaction.amount;
+      }
+    });
+    setGoalExpenses2(goalExpensesMap);
   };
 
   useEffect(() => {
-    getIncome();
-    getExpense();
+    getTransactionsData();
+    getAllGoals();
   }, []);
+
+  useEffect(() => {
+    if (selectedGoal) {
+      filterTransactionsByGoal(selectedGoal);
+    }
+  }, [selectedGoal]);
+
+  useEffect(() => {
+    console.log('goalExpenses....', goalExpenses);
+    console.log('goals....', goals);
+  }, [goalExpenses]);
+
+  const [data, setdata] = useState([]);
+
+  // const getTransactionsData = async () => {
+  //   const id = localStorage.getItem('userId');
+  //   try {
+  //     const res = await axios.get(
+  //       'http://localhost:5000/transactions/transactions/' + id
+  //     );
+  //     console.log(res.data.data);
+  //     setdata(res.data.data);
+
+  //     let totalIncome = 0;
+  //     let totalExpense = 0;
+  //     let goalExpensesMap = {};
+
+  //     res.data.data.forEach(transaction => {
+  //       if (transaction.transactionType === 'income') {
+  //         totalIncome += transaction.amount;
+  //       } else if (transaction.transactionType === 'Expense') {
+  //         totalExpense += Math.abs(transaction.amount); // Absolute value of amount for expense
+
+  //         if (transaction.goal) {
+  //           const goalId = transaction.goal._id;
+  //           if (goalExpensesMap[goalId]) {
+  //             goalExpensesMap[goalId] += transaction.amount;
+  //           } else {
+  //             goalExpensesMap[goalId] = transaction.amount;
+  //           }
+  //         }
+  //       }
+  //     });
+
+  //     setIncome(totalIncome);
+  //     setExpense(totalExpense);
+  //     setTotalBalance(totalIncome - totalExpense);
+  //     setGoalExpenses(goalExpensesMap);
+  //     console.log(goalExpenses)
+  //   } catch (error) {
+  //     console.log('Error in fetching transaction details....', error);
+  //   }
+  // };
+
+  const getTransactionsData = async () => {
+    const id = localStorage.getItem('userId');
+    try {
+      const res = await axios.get(
+        'http://localhost:5000/transactions/transactions/' + id
+      );
+      console.log(res.data.data);
+      setdata(res.data.data);
+
+      let totalIncome = 0;
+      let totalExpense = 0;
+      let goalExpensesMap = {};
+
+      res.data.data.forEach(transaction => {
+        const transactionType = transaction.transactionType.toLowerCase();
+
+        if (transactionType === 'income') {
+          totalIncome += transaction.amount;
+        } else if (transactionType === 'expense') {
+          totalExpense += Math.abs(transaction.amount); // Absolute value of amount for expense
+
+          if (transaction.goal) {
+            const goalName = transaction.goal.goalName;
+            const goalId = transaction.goal._id;
+            const maxAmount = transaction.goal.maxamount;
+            if (goalExpensesMap[goalId]) {
+              goalExpensesMap[goalId].amount += transaction.amount;
+            } else {
+              goalExpensesMap[goalId] = {
+                name: goalName,
+                amount: transaction.amount,
+                maxamount: maxAmount,
+              };
+            }
+          }
+        }
+      });
+
+      setIncome(totalIncome);
+      setExpense(totalExpense);
+      setTotalBalance(totalIncome - totalExpense);
+      setGoalExpenses(goalExpensesMap);
+      console.log(goalExpenses);
+    } catch (error) {
+      console.error(
+        'Error in fetching or processing transaction details:',
+        error
+      );
+      // Optionally, you can set some default values or display an error message to the user.
+    }
+  };
 
   return (
     <div className="container-fluid">
-      <div className="row">
+      <div className="row mx-2">
+        {/* <div className="col-lg-3 col-sm-6">
+          <div className="card-stats card">
+            <div className="card-body">
+              <div className="row">
+                <div className="col-5">
+                  <div className="icon-big text-center icon-warning">
+                    <i className="nc-icon nc-chart text-warning" />
+                  </div>
+                </div>
+                <div className="col-7">
+                  <div className="numbers">
+                    <p className="card-category">Income</p>
+                    <h4 className="card-title mt-1">{income}</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="card-footer">
+              <hr />
+              <div className="stats">
+                <i className="fas fa-redo mr-1" />
+                Update Now
+              </div>
+            </div>
+          </div>
+        </div> */}
+
         <div className="col-sm-3">
           <div className="card">
-            <div className="card-header">
-              <h4 className="card-title">Income</h4>
+            <div className="row">
+              <div className="col-md-8">
+                <div class="row card-header">
+                  <div class="col-md-12 card-title">
+                    <h4>Income</h4>
+                  </div>
+                  <div class="col-md-12 card-body">
+                    <p style={{ color: 'green' }}>{income}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-4">income</div>
             </div>
-            <div className="card-body">{income}</div>
           </div>
         </div>
 
         <div className="col-sm-3">
           <div className="card">
-            <div className="card-header">
-              <h4 className="card-title">Expense</h4>
+            <div className="row">
+              <div className="col-md-7">
+                <div class="row card-header">
+                  <div class="col-md-12 card-title">
+                    <h4>Expense</h4>
+                  </div>
+                  <div class="col-md-12 card-body">
+                    <p style={{ color: 'red' }}>{expense}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-5">Icon</div>
             </div>
-            <div className="card-body">{expense}</div>
+          </div>
+        </div>
+
+        <div className="col-sm-3">
+          <div className="card">
+            <div className="row">
+              <div className="col-md-8">
+                <div class="row card-header">
+                  <div class="col-md-12 card-title">
+                    <h4>Balance</h4>
+                  </div>
+                  <div class="col-md-12 card-body">
+                    <p style={{ color: 'blue' }}>{totalBalance}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-4">Icon</div>
+            </div>
           </div>
         </div>
       </div>
 
       <div className="row">
-        <div className="col-md-4">
+        <div className="col mx-2">
+          <h3 style={{ padding: '0' }}>Goal Summary</h3>
+        </div>
+      </div>
+
+      <div className="row mx-2">
+        {Object.keys(goalExpenses).map(goalId => (
+          <div className="col-md-4" key={goalId}>
+            <div className="card">
+              <div className="row">
+                <div className="col-md-8">
+                  <div className="row card-header">
+                    <div class="col-md-12 card-title">
+                      <h4>{goalExpenses[goalId].name}</h4>
+                    </div>
+                    <div class="col-md-12 card-body">
+                      <p style={{ color: 'blue' }}>
+                        {goalExpenses[goalId].amount}{' '}/{' '}
+                        {goalExpenses[goalId].maxamount}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="row mt-4 ">
+        <div className="col-md-5">
           <div className="card ">
             <div className="card-header ">
               <h4 className="card-title">Category Expenses</h4>
@@ -52,67 +296,39 @@ export const UserDashBoard = () => {
             </div>
             <div className="card-body ">
               <PieChart />
-              {/* <hr /> */}
             </div>
           </div>
         </div>
         <div className="col-md-7">
           <div className="card ">
             <div className="card-header ">
-              <h4 className="card-title">Category</h4>
+              <h4 className="card-title">Income and Expense Trends</h4>
               <p className="card-category">24 Hours performance</p>
             </div>
             <div className="card-body ">
-              <Charts />
+              {/* <Charts /> */}
+              <LineChart />
             </div>
           </div>
         </div>
       </div>
-      <div className="row">
-        <div className="col-md-4">
-          <div
-            id="carouselExampleIndicators"
-            className="carousel slide"
-            data-ride="carousel"
-          >
-            <ol className="carousel-indicators">
-              <li
-                data-target="#carouselExampleIndicators"
-                data-slide-to={0}
-                className="active"
-              />
-              <li data-target="#carouselExampleIndicators" data-slide-to={1} />
-              <li data-target="#carouselExampleIndicators" data-slide-to={2} />
-            </ol>
-            <div className="carousel-inner">
-              <div className="carousel-item active">
-                <img className="d-block w-100" src="..." alt="First slide" />
-              </div>
-              <div className="carousel-item">
-                <img className="d-block w-100" src="..." alt="Second slide" />
-              </div>
-              <div className="carousel-item">
-                <img className="d-block w-100" src="..." alt="Third slide" />
-              </div>
+
+      {/* Goal Chart */}
+      <div className="row mt-3">
+        <div className="col-md-5">
+          {/* <h3 className="m-0">Goal Expenses</h3> */}
+          <GoalCharts />
+        </div>
+
+        <div className="col-md-7">
+          <div className="card ">
+            <div className="card-header ">
+              <h4 className="card-title">Income and Expense Trends</h4>
+              <p className="card-category">24 Hours performance</p>
             </div>
-            <a
-              className="carousel-control-prev"
-              href="#carouselExampleIndicators"
-              role="button"
-              data-slide="prev"
-            >
-              <span className="carousel-control-prev-icon" aria-hidden="true" />
-              <span className="sr-only">Previous</span>
-            </a>
-            <a
-              className="carousel-control-next"
-              href="#carouselExampleIndicators"
-              role="button"
-              data-slide="next"
-            >
-              <span className="carousel-control-next-icon" aria-hidden="true" />
-              <span className="sr-only">Next</span>
-            </a>
+            <div className="card-body">
+              <MonthlyBarChart />
+            </div>
           </div>
         </div>
       </div>

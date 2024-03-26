@@ -19,6 +19,11 @@ import { Goals } from './component/Goal/Goals.jsx';
 import { GoalExpenses } from './component/Goal/GoalExpenses.jsx';
 import { LogIn1 } from './component/User/LogIn1.jsx';
 import { Charts } from './component/Charts/Charts.jsx';
+import { Groups } from './component/User Group/Groups.jsx';
+import GroupListPage from './component/User Group/GroupListPage.jsx';
+import GroupDetailsPage from './component/User Group/GroupDetailsPage.jsx';
+import { Charts2 } from './component/Charts/Charts2.jsx';
+import { Chart3 } from './component/Charts/Chart3.jsx';
 
 function App() {
   // const path1 = window.location.pathname;
@@ -91,6 +96,11 @@ function App() {
                         <Route path="/goal/add" element={<AddGoal />} />{' '}
                         <Route path="/goal/expenses/:id" element={<GoalExpenses />} />{' '}
                         <Route path="/user/charts" element={<Charts />} />
+                        <Route path="/user/charts2" element={<Charts2 />} />
+                        <Route path="/user/charts3" element={<Chart3 />} />
+                        <Route path="/user/groups" element={<Groups />} />
+                        <Route path="/user/groups2" element={<GroupListPage />} />
+                        <Route path="/group-details/:id" element={<GroupDetailsPage />} />
                       </Route>
                     </Routes>
                   </div>

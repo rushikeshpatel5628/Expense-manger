@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS } from 'chart.js/auto';
 import axios from 'axios';
-import { PieChart } from './PieChart';
+
 
 export const Charts = () => {
   const [data, setdata] = useState([]);
@@ -83,6 +83,9 @@ export const Charts = () => {
           },
         }}
       />
+      <div>
+        {/* <LineChart /> */}
+      </div>
     </div>
   );
 };
