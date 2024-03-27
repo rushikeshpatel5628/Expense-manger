@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -81,6 +81,11 @@ const GroupDetailsPage = () => {
             <Button variant="contained" color="primary" onClick={handleInviteClick}>
               Invite
             </Button>
+            <Link to={`/group/expenses/${groupid}/`} style={{ textDecoration: 'none', marginLeft: '10px' }}>
+              <Button variant="contained" color="primary">
+                View Expenses
+              </Button>
+            </Link>
           </Grid>
           {/* Render InviteGroupModal only when isDialogOpen is true */}
           <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
