@@ -26,6 +26,7 @@ import { Charts2 } from './component/Charts/Charts2.jsx';
 import { Chart3 } from './component/Charts/Chart3.jsx';
 import { UserProfile } from './component/User/UserProfile.jsx';
 import { GroupExpense } from './component/User Group/GroupExpense.jsx';
+import { AddGroupExpense } from './component/User Group/AddGroupExpense.jsx';
 
 function App() {
   // const path1 = window.location.pathname;
@@ -105,6 +106,7 @@ function App() {
                         <Route path="/user/groups2" element={<GroupListPage />} />
                         <Route path="/group-details/:id" element={<GroupDetailsPage />} />
                         <Route path="/group/expenses/:groupid/" element={<GroupExpense />} />
+                        <Route path="/addgroupexp/:groupid" element={<AddGroupExpense />} />
                       </Route>
                     </Routes>
                   </div>

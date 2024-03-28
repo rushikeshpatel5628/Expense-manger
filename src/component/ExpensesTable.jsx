@@ -215,7 +215,8 @@ export default function ExpensesTable() {
         </TableHead>
         <TableBody>
           {currentRows.map((row, index) => (
-            <Row key={index} row={row} onDelete={handleDelete} />
+            <Row key={index} row={row} onDelete={handleDelete}
+             />
           ))}
         </TableBody>
       </Table>

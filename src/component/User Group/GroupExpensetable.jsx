@@ -25,6 +25,18 @@ function Row({ row, onDelete }) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
+  const handleDelete = async () => {
+    try {
+      // Send DELETE request to delete the transaction
+      await axios.delete(`http://localhost:5000/groupexp/groupexp/${row._id}`);
+      // Call the onDelete callback to remove the row from the table
+      onDelete(row._id);
+      alert('Expense deleted....');
+    } catch (error) {
+      console.error('Error deleting transaction:', error);
+    }
+  };
+
   return (
     <React.Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -41,18 +53,16 @@ function Row({ row, onDelete }) {
           {row.title}
         </TableCell>
         <TableCell component="th" scope="row">
-          {row.paidBy.firstName} {' '} {row.paidBy.lastName}
+          {row.paidBy.firstName} {row.paidBy.lastName}
         </TableCell>
-        <TableCell align="right">
-          {row.amount}
-        </TableCell>
+        <TableCell align="right">{row.amount}</TableCell>
         <TableCell align="right">{row.expDate}</TableCell>
         <TableCell align="right">{row.paymentMethod}</TableCell>
         <TableCell align="right">
           <IconButton aria-label="edit">
             <EditIcon />
           </IconButton>
-          <IconButton aria-label="delete" >
+          <IconButton aria-label="delete" onClick={handleDelete}>
             <DeleteIcon />
           </IconButton>
         </TableCell>
@@ -90,7 +100,7 @@ function Row({ row, onDelete }) {
 
 Row.propTypes = {
   row: PropTypes.object.isRequired,
-  // onDelete: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 export const GroupExpensetable = ({ groupid }) => {
@@ -115,7 +125,7 @@ export const GroupExpensetable = ({ groupid }) => {
         }
       } catch (error) {
         console.error('Error fetching data:', error);
-      }finally {
+      } finally {
         setLoading(false);
       }
     };
@@ -123,10 +133,8 @@ export const GroupExpensetable = ({ groupid }) => {
   }, [groupid]);
 
   useEffect(() => {
-    console.log("rows....", rows);
-   
-  }, [rows])
-  
+    console.log('rows....', rows);
+  }, [rows]);
 
   // Custom date formatting function
   const formatDate = dateString => {
@@ -135,28 +143,39 @@ export const GroupExpensetable = ({ groupid }) => {
     return date.toLocaleDateString('en-US', options);
   };
 
+  const handleDelete = deletedId => {
+    setRows(rows.filter(row => row._id !== deletedId));
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
 
   return (
-   
     <TableContainer component={Paper}>
-        <Table aria-label="collapsible table">
+      <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell>Title</TableCell>
-            <TableCell>Paid By</TableCell>
-            <TableCell align="right">Amount</TableCell>
-            <TableCell align="right">Expense Date</TableCell>
-            <TableCell align="right">Payment Method</TableCell>
-            <TableCell align="right">Action</TableCell>
+            <TableCell sx={{ fontWeight: 'bolder' }}>Title</TableCell>
+            <TableCell sx={{ fontWeight: 'bolder' }}>Paid By</TableCell>
+            <TableCell align="right" sx={{ fontWeight: 'bolder' }}>
+              Amount
+            </TableCell>
+            <TableCell align="right" sx={{ fontWeight: 'bolder' }}>
+              Expense Date
+            </TableCell>
+            <TableCell align="right" sx={{ fontWeight: 'bolder' }}>
+              Payment Method
+            </TableCell>
+            <TableCell align="right" sx={{ fontWeight: 'bolder' }}>
+              Action
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row, index) => (
-            <Row key={index} row={row}  />
+            <Row key={index} row={row} onDelete={handleDelete} />
           ))}
         </TableBody>
       </Table>
