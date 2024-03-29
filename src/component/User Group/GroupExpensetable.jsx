@@ -24,13 +24,27 @@ import { TablePagination } from '@mui/material';
 function Row({ row, onDelete, groupId }) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const userId = localStorage.getItem('userId');
 
   const handleEdit = () => {
-    // Navigate to the update page with the ID parameter and group ID
-    navigate(`/groupexp/update/${groupId}/${row._id}`);
+    // Only allow the user who added the expense to edit it
+    if (userId === row.paidBy._id) {
+      // Navigate to the update page with the ID parameter and group ID
+      navigate(`/groupexp/update/${groupId}/${row._id}`);
+    } else {
+      // toast.error('You are not authorized to edit this expense.');
+      toast.info('You are not authorized to edit this expense.', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+    }
   };
-
-  
 
   const handleDelete = async () => {
     try {
@@ -38,7 +52,17 @@ function Row({ row, onDelete, groupId }) {
       await axios.delete(`http://localhost:5000/groupexp/groupexp/${row._id}`);
       // Call the onDelete callback to remove the row from the table
       onDelete(row._id);
-      alert('Expense deleted....');
+      // alert('Expense deleted....');
+      toast.success('Expense deleted', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
     } catch (error) {
       console.error('Error deleting transaction:', error);
     }
@@ -46,6 +70,18 @@ function Row({ row, onDelete, groupId }) {
 
   return (
     <React.Fragment>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
         <TableCell>
           <IconButton
@@ -123,7 +159,7 @@ export const GroupExpensetable = ({ groupid }) => {
         );
         if (response.data.flag === 1) {
           // Format date before setting rows
-         
+
           setRows(response.data.data);
         } else {
           console.error('Error fetching data:', response.data.message);
@@ -181,7 +217,12 @@ export const GroupExpensetable = ({ groupid }) => {
         </TableHead>
         <TableBody>
           {rows.map((row, index) => (
-            <Row key={index} row={row} onDelete={handleDelete} groupId={groupid}/>
+            <Row
+              key={index}
+              row={row}
+              onDelete={handleDelete}
+              groupId={groupid}
+            />
           ))}
         </TableBody>
       </Table>

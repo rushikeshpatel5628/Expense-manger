@@ -50,7 +50,7 @@ import Button from '@mui/material/Button';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 
-const JoinGroupModal = ({ handleClose }) => {
+const JoinGroupModal = ({ handleClose, updateGroupList }) => {
   const {
     register,
     handleSubmit,
@@ -82,12 +82,13 @@ const JoinGroupModal = ({ handleClose }) => {
       } else {
         // Send a POST request to join the group
         const joinRes = await axios.post(
-          `http://localhost:5000/groups/join/${groupId}`, data
+          `http://localhost:5000/groups/join/${userId}`, data
         );
         if (joinRes.status === 201) {
           alert('Added to the group successfully.');
-          // reset(); // Reset form fields
+          updateGroupList();
           handleClose(); // Close the modal after joining
+
         }
       }
     } catch (error) {

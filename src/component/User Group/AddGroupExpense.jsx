@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 export const AddGroupExpense = () => {
   const [category, setcategory] = useState([]);
@@ -36,11 +37,23 @@ export const AddGroupExpense = () => {
         data
       );
       if (res.status === 201) {
-        alert('Data posted');
+        // alert('Data posted');
+        toast.success('Expense added', {
+          position: 'top-center',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+        setTimeout(() => {
+          navigate('/group/expenses/' + groupid);
+        }, 2000);
       } else {
         alert('Data not posted');
       }
-      navigate('/group/expenses/'+groupid);
     } catch (error) {
       console.log('error....', error);
 
@@ -56,6 +69,18 @@ export const AddGroupExpense = () => {
 
   return (
     <div className="container-fluid mx-auto">
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className="row mx-auto">
         <div className="col-md-8">
           <div className="card">

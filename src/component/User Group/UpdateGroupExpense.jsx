@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 export const UpdateGroupExpense = () => {
   const [category, setcategory] = useState([]);
@@ -26,7 +27,6 @@ export const UpdateGroupExpense = () => {
         category: res.data.data.category._id,
         paymentMethod: res.data.data.paymentMethod,
         description: res.data.data.description,
-
       };
     },
   });
@@ -44,8 +44,8 @@ export const UpdateGroupExpense = () => {
 
   const submitHandler = async data => {
     const userId = localStorage.getItem('userId');
-    data.paidBy = userId;
-    data.group = groupId;
+    // data.paidBy = userId;
+    // data.group = groupId;
     console.log('data....', data);
     try {
       const res = await axios.put(
@@ -53,11 +53,23 @@ export const UpdateGroupExpense = () => {
         data
       );
       if (res.status === 201) {
-        alert('Data posted');
+        // alert('Data posted');
+        toast.success('Expense updated', {
+          position: 'top-center',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+        setTimeout(() => {
+          navigate('/group/expenses/' + groupId);
+        }, 2000);
       } else {
         alert('Data not posted');
       }
-      navigate('/group/expenses/' + groupId);
     } catch (error) {
       console.log('error....', error);
 
@@ -73,6 +85,18 @@ export const UpdateGroupExpense = () => {
 
   return (
     <div className="container-fluid mx-auto">
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className="row mx-auto">
         <div className="col-md-8">
           <div className="card">

@@ -10,7 +10,8 @@ const GroupDetailsPage = () => {
   const groupid = useParams().id; // Get group ID from route params
   const [group, setGroup] = useState({ members: [] });
   const [isDialogOpen, setIsDialogOpen] = useState(false); // State to manage dialog visibility
-
+  const [groupSummary, setGroupSummary] = useState(null); 
+  
   useEffect(() => {
     // Fetch group details when component mounts
     const fetchGroupDetails = async () => {
