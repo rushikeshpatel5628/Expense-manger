@@ -21,9 +21,16 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import { TablePagination } from '@mui/material';
 
-function Row({ row, onDelete }) {
+function Row({ row, onDelete, groupId }) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+
+  const handleEdit = () => {
+    // Navigate to the update page with the ID parameter and group ID
+    navigate(`/groupexp/update/${groupId}/${row._id}`);
+  };
+
+  
 
   const handleDelete = async () => {
     try {
@@ -59,7 +66,7 @@ function Row({ row, onDelete }) {
         <TableCell align="right">{row.expDate}</TableCell>
         <TableCell align="right">{row.paymentMethod}</TableCell>
         <TableCell align="right">
-          <IconButton aria-label="edit">
+          <IconButton aria-label="edit" onClick={handleEdit}>
             <EditIcon />
           </IconButton>
           <IconButton aria-label="delete" onClick={handleDelete}>
@@ -101,6 +108,7 @@ function Row({ row, onDelete }) {
 Row.propTypes = {
   row: PropTypes.object.isRequired,
   onDelete: PropTypes.func.isRequired,
+  groupId: PropTypes.string.isRequired,
 };
 
 export const GroupExpensetable = ({ groupid }) => {
@@ -111,15 +119,12 @@ export const GroupExpensetable = ({ groupid }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:5000/groupexp/groupexp/' + groupid
+          'http://localhost:5000/groupexp/group/' + groupid
         );
         if (response.data.flag === 1) {
           // Format date before setting rows
-          const formattedRows = response.data.data.map(transaction => ({
-            ...transaction,
-            expDate: formatDate(transaction.expDate), // Format date
-          }));
-          setRows(formattedRows);
+         
+          setRows(response.data.data);
         } else {
           console.error('Error fetching data:', response.data.message);
         }
@@ -130,6 +135,7 @@ export const GroupExpensetable = ({ groupid }) => {
       }
     };
     fetchData();
+    console.log(groupid);
   }, [groupid]);
 
   useEffect(() => {
@@ -175,7 +181,7 @@ export const GroupExpensetable = ({ groupid }) => {
         </TableHead>
         <TableBody>
           {rows.map((row, index) => (
-            <Row key={index} row={row} onDelete={handleDelete} />
+            <Row key={index} row={row} onDelete={handleDelete} groupId={groupid}/>
           ))}
         </TableBody>
       </Table>
