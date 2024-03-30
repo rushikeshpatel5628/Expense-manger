@@ -215,7 +215,9 @@ export const UserDashBoard = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-md-4">income</div>
+              <div className="col-md-4" >
+                <img src="expense/spending-1.png" alt="image" />
+              </div>
             </div>
           </div>
         </div>
