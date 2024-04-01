@@ -115,13 +115,14 @@ const MonthlyBarChart = () => {
     datasets: [
       {
         label: 'Income',
-        backgroundColor: 'green',
+        backgroundColor: '#ff7c43',
+        borderColor: 'rgba(0,0,0,1)',
         data: [],
         barThickness: 20,
       },
       {
         label: 'Expense',
-        backgroundColor: 'red',
+        backgroundColor: '#f95d6a',
         data: [],
         barThickness: 20,
       },

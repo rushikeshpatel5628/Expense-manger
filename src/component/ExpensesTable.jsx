@@ -19,7 +19,9 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
-import { TablePagination } from '@mui/material';
+import { Button, TablePagination } from '@mui/material';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 function Row({ row, onDelete }) {
   const [open, setOpen] = useState(false);
@@ -134,7 +136,9 @@ Row.propTypes = {
 
 export default function ExpensesTable() {
   const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(true);
   const userId = localStorage.getItem('userId');
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -153,9 +157,12 @@ export default function ExpensesTable() {
         }
       } catch (error) {
         console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false); // Set loading state to false when data fetching completes
       }
     };
     fetchData();
+    console.log('rows....', rows);
   }, []);
 
   // Custom date formatting function
@@ -168,6 +175,62 @@ export default function ExpensesTable() {
   const handleDelete = deletedId => {
     setRows(rows.filter(row => row._id !== deletedId));
   };
+
+  const generatePDF = () => {
+    const doc = new jsPDF({
+      format: [210, 297], 
+      orientation: 'portrait',
+    });
+
+    // const tableData = rows.map(row => ({
+    //   Title: row.title,
+    //   Payee: row.payee.payeeName,
+    //   Amount: row.amount,
+    //   ExpenseDate: row.expDateTime,
+    //   PaymentMethod: row.paymentMethod,
+    //   Category: row.category.categoryName,
+    //   Status: row.status,
+    //   Description: row.description,
+    // }));
+
+    const tableData = rows.map((row) =>{
+      const fontColor = row.transactionType === 'income' ? 'green' : 'red';
+      return [
+      row.title,
+      row.payee.payeeName,
+      // row.amount,
+      { content: row.amount, styles: { textColor: fontColor } },
+      row.expDateTime,
+      row.paymentMethod,
+      row.category.categoryName,
+      row.status,
+      row.description,
+  ]});
+
+    console.log('table data....', tableData);
+    doc.text('All Expenses', 13, 7);
+    doc.autoTable({
+      head: [
+        [
+          'Title',
+          'Payee',
+          'Amount',
+          'ExpenseDate',
+          'PaymentMethod',
+          'Category',
+          'Status',
+          'Description',
+        ],
+      ],
+      body: tableData,
+    });
+
+    doc.save('expenses.pdf');
+  };
+
+  // if (loading) {
+  //   return <div>Loading...</div>; // Render loading state
+  // }
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -215,11 +278,11 @@ export default function ExpensesTable() {
         </TableHead>
         <TableBody>
           {currentRows.map((row, index) => (
-            <Row key={index} row={row} onDelete={handleDelete}
-             />
+            <Row key={index} row={row} onDelete={handleDelete} />
           ))}
         </TableBody>
       </Table>
+      <Button onClick={generatePDF}>Generate PDF</Button>
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"

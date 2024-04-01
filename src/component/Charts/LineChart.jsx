@@ -25,30 +25,30 @@ const LineChart = () => {
   }, []);
   console.log(transactions);
 
+  // const prepareChartData = () => {
+  //   const incomeData = [];
+  //   const expenseData = [];
+  //   const labels = [];
+
+  //   transactions.forEach(transaction => {
+  //     labels.push(transaction.expDateTime);
+  //     if (transaction.transactionType === 'income') {
+  //       incomeData.push(transaction.amount);
+  //       expenseData.push(null); // Push null for expenses to align with the correct labels
+  //     } else {
+  //       incomeData.push(null); // Push null for income to align with the correct labels
+  //       expenseData.push(transaction.amount);
+  //     }
+  //   });
+
+  //   return {
+  //     labels,
+  //     incomeData,
+  //     expenseData,
+  //   };
+  // };
+
   const prepareChartData = () => {
-    const incomeData = [];
-    const expenseData = [];
-    const labels = [];
-
-    transactions.forEach(transaction => {
-      labels.push(transaction.expDateTime);
-      if (transaction.transactionType === 'income') {
-        incomeData.push(transaction.amount);
-        expenseData.push(null); // Push null for expenses to align with the correct labels
-      } else {
-        incomeData.push(null); // Push null for income to align with the correct labels
-        expenseData.push(transaction.amount);
-      }
-    });
-
-    return {
-      labels,
-      incomeData,
-      expenseData,
-    };
-  };
-
-  const prepareChartData1 = () => {
     // Sort transactions by date
     const sortedTransactions = transactions.sort((a, b) => new Date(a.expDateTime) - new Date(b.expDateTime));
   
@@ -56,7 +56,7 @@ const LineChart = () => {
     const expenseData = [];
     const labels = [];
   
-    sortedTransactions.forEach(transaction => {
+    sortedTransactions.forEach((transaction) => {
       labels.push(transaction.expDateTime);
       if (transaction.transactionType === 'income') {
         incomeData.push(transaction.amount);
@@ -75,22 +75,23 @@ const LineChart = () => {
   };
   
 
-  console.log('labels', prepareChartData1().labels);
-  console.log('income data', prepareChartData1().incomeData);
-  console.log('expense data', prepareChartData1().expenseData);
+  console.log('labels', prepareChartData().labels);
+  console.log('income data', prepareChartData().incomeData);
+  console.log('expense data', prepareChartData().expenseData);
 
   const chartData = {
-    labels: prepareChartData1().labels,
+    labels: prepareChartData().labels,
     datasets: [
       {
         label: 'Income',
-        data: prepareChartData1().incomeData,
+        data: prepareChartData().incomeData,
         borderColor: 'rgba(54, 162, 235, 1)',
         backgroundColor: 'rgba(0, 128, 0, 0.1)',
+        tension: 0.4,
       },
       {
         label: 'Expenses',
-        data: prepareChartData1().expenseData,
+        data: prepareChartData().expenseData,
         borderColor: 'rgba(255, 99, 132, 1)',
         backgroundColor: 'rgba(255, 0, 0, 0.1)',
       },
