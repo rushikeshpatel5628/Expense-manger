@@ -197,8 +197,8 @@ export const Groups = () => {
           <JoinGroupModal handleClose={handleCloseJoinGroup} updateGroupList={updateGroupList}/>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseJoinGroup}>Cancel</Button>
-          <Button onClick={handleCloseJoinGroup}>Join</Button>
+          {/* <Button onClick={handleCloseJoinGroup}>Cancel</Button>
+          <Button onClick={handleCloseJoinGroup}>Join</Button> */}
         </DialogActions>
       </Dialog>
     </div>

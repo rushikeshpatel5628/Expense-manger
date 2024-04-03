@@ -98,7 +98,7 @@ export const GroupList = () => {
               );
             })}
           </TableBody>
-        </Table>
+        </Table>  
       </TableContainer>
     </Paper>
   );

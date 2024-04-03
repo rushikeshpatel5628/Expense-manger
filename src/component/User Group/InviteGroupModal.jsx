@@ -3,6 +3,8 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 const InviteGroupModal = ({ handleClose, groupId}) => {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -15,6 +17,16 @@ const InviteGroupModal = ({ handleClose, groupId}) => {
       const res = await axios.post(`http://localhost:5000/groups/groups/${groupId}/invite`, data);
       if (res.status === 200) {
         alert("Invitation sent successfully");
+        // toast.success('Mail invitation sent', {
+        //   position: 'top-center',
+        //   autoClose: 5000,
+        //   hideProgressBar: false,
+        //   closeOnClick: true,
+        //   pauseOnHover: true,
+        //   draggable: true,
+        //   progress: undefined,
+        //   theme: 'light',
+        // });
       }
       // Close the modal after inviting
       handleClose();
@@ -26,6 +38,18 @@ const InviteGroupModal = ({ handleClose, groupId}) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+       <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <TextField
         label="Enter Email"
         variant="outlined"

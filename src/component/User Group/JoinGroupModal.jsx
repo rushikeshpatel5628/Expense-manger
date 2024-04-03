@@ -65,6 +65,45 @@ const JoinGroupModal = ({ handleClose, updateGroupList }) => {
       console.log('data...', data);
 
       // Fetch group details to check if the user is already a member
+      // const groupRes = await axios.get(
+      //   `http://localhost:5000/groups/group/${groupId}`
+      // );
+      // const groupMembers = groupRes.data.data.members;
+      // console.log('groupMembers:', groupMembers);
+      // console.log('group id:', groupId);
+
+      // Check if the current user's ID is already in the list of members
+      // const isUserAlreadyMember = groupMembers.some(
+      //   member => member._id === userId
+      // );
+
+      // if (isUserAlreadyMember) {
+      //   alert('You are already a member of this group.');
+      // } else {
+      //   // Send a POST request to join the group
+      //   const joinRes = await axios.post(
+      //     `http://localhost:5000/groups/join/${userId}`, data
+      //   );
+      //   if (joinRes.status === 201) {
+      //     alert('Added to the group successfully.');
+      //     updateGroupList();
+      //     handleClose(); // Close the modal after joining
+
+      //   }
+      // }
+    } catch (error) {
+      console.error('Error joining group:', error);
+    }
+  };
+
+  const submitHandler = async(data) => {
+    try {
+      const userId = localStorage.getItem('userId');
+      const groupId = data.groupId;
+      console.log('data...', data);
+
+
+      // Fetch group details to check if the user is already a member
       const groupRes = await axios.get(
         `http://localhost:5000/groups/group/${groupId}`
       );
@@ -78,47 +117,29 @@ const JoinGroupModal = ({ handleClose, updateGroupList }) => {
       );
 
       if (isUserAlreadyMember) {
-        alert('You are already a member of this group.');
-      } else {
+          alert('You are already a member of this group.');
+          handleClose();
+      } else{
+
         // Send a POST request to join the group
         const joinRes = await axios.post(
           `http://localhost:5000/groups/join/${userId}`, data
         );
-        if (joinRes.status === 201) {
+        if (joinRes.status === 200) {
           alert('Added to the group successfully.');
           updateGroupList();
           handleClose(); // Close the modal after joining
-
-        }
-      }
-    } catch (error) {
-      console.error('Error joining group:', error);
-    }
-  };
-
-  const submitHandler = async(data) => {
-    try {
-      const userId = localStorage.getItem('userId');
-      const groupId = data.groupId;
-      console.log('data...', data);
-
-        // Send a POST request to join the group
-        const joinRes = await axios.post(
-          `http://localhost:5000/groups/join/${userId}`, data
-        );
-        if (joinRes.status === 201) {
-          alert('Added to the group successfully.');
-          // reset(); // Reset form fields
-          handleClose(); // Close the modal after joining
         }
       
+      }
+
     } catch (error) {
       console.error('Error joining group:', error);
     }
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(submitHandler)}>
       <TextField
         label="Enter Group ID"
         variant="outlined"
