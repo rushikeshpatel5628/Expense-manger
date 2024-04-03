@@ -22,6 +22,8 @@ import { useNavigate } from 'react-router-dom';
 import { Button, TablePagination } from '@mui/material';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import IosShareIcon from '@mui/icons-material/IosShare';
+import { Margin } from '@mui/icons-material';
 
 function Row({ row, onDelete }) {
   const [open, setOpen] = useState(false);
@@ -134,7 +136,7 @@ Row.propTypes = {
   onDelete: PropTypes.func.isRequired,
 };
 
-export default function ExpensesTable() {
+export default function ExpensesTable({query}) {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
   const userId = localStorage.getItem('userId');
@@ -178,7 +180,7 @@ export default function ExpensesTable() {
 
   const generatePDF = () => {
     const doc = new jsPDF({
-      format: [210, 297], 
+      format: [210, 297],
       orientation: 'portrait',
     });
 
@@ -193,19 +195,20 @@ export default function ExpensesTable() {
     //   Description: row.description,
     // }));
 
-    const tableData = rows.map((row) =>{
+    const tableData = rows.map(row => {
       const fontColor = row.transactionType === 'income' ? 'green' : 'red';
       return [
-      row.title,
-      row.payee.payeeName,
-      // row.amount,
-      { content: row.amount, styles: { textColor: fontColor } },
-      row.expDateTime,
-      row.paymentMethod,
-      row.category.categoryName,
-      row.status,
-      row.description,
-  ]});
+        row.title,
+        row.payee.payeeName,
+        // row.amount,
+        { content: row.amount, styles: { textColor: fontColor } },
+        row.expDateTime,
+        row.paymentMethod,
+        row.category.categoryName,
+        row.status,
+        row.description,
+      ];
+    });
 
     console.log('table data....', tableData);
     doc.text('All Expenses', 13, 7);
@@ -277,12 +280,19 @@ export default function ExpensesTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {currentRows.map((row, index) => (
+          {/* {currentRows.map((row, index) => (
             <Row key={index} row={row} onDelete={handleDelete} />
-          ))}
+          ))} */}
+          {currentRows
+            .filter(row => (query ? row.title.toLowerCase().includes(query.toLowerCase()) : true))
+            .map((row, index) => (
+              <Row key={index} row={row} onDelete={handleDelete} />
+            ))}
         </TableBody>
       </Table>
-      <Button onClick={generatePDF}>Generate PDF</Button>
+      <Button onClick={generatePDF} sx={{ top: '15px' }}>
+        <IosShareIcon sx={{ fontSize: '30px' }} color="black" />
+      </Button>
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
@@ -291,6 +301,7 @@ export default function ExpensesTable() {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        
       />
     </TableContainer>
   );

@@ -68,6 +68,13 @@ function Row({ row, onDelete, groupId }) {
     }
   };
 
+  // Custom date formatting function
+  const formatDate = dateString => {
+    const date = new Date(dateString);
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+};
+
   return (
     <React.Fragment>
       <ToastContainer
@@ -99,7 +106,7 @@ function Row({ row, onDelete, groupId }) {
           {row.paidBy.firstName} {row.paidBy.lastName}
         </TableCell>
         <TableCell align="right">{row.amount}</TableCell>
-        <TableCell align="right">{row.expDate}</TableCell>
+        <TableCell align="right">{formatDate(row.expDate)}</TableCell>
         <TableCell align="right">{row.paymentMethod}</TableCell>
         <TableCell align="right">
           <IconButton aria-label="edit" onClick={handleEdit}>
@@ -178,12 +185,7 @@ export const GroupExpensetable = ({ groupid }) => {
     console.log('rows....', rows);
   }, [rows]);
 
-  // Custom date formatting function
-  const formatDate = dateString => {
-    const date = new Date(dateString);
-    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-    return date.toLocaleDateString('en-US', options);
-  };
+  
 
   const handleDelete = deletedId => {
     setRows(rows.filter(row => row._id !== deletedId));
