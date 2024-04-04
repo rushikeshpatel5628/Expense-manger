@@ -139,7 +139,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 
@@ -241,9 +241,9 @@ export const LogIn1 = () => {
                         </Button>
                         <Grid container>
                             <Grid item xs>
-                                <Link href="#" variant="body2">
-                                    Forgot password?
-                                </Link>
+                                <RouterLink to="/forgotpassword" variant="body2">
+                                    Forgot password?                                    
+                                </RouterLink>                  
                             </Grid>
                             <Grid item>
                                 <Link href="/user/signup" variant="body2">

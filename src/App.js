@@ -28,6 +28,8 @@ import { UserProfile } from './component/User/UserProfile.jsx';
 import { GroupExpense } from './component/User Group/GroupExpense.jsx';
 import { AddGroupExpense } from './component/User Group/AddGroupExpense.jsx';
 import { UpdateGroupExpense } from './component/User Group/UpdateGroupExpense.jsx';
+import { ForgotPassword } from './component/User/ForgotPassword.jsx';
+import { ResetPassword } from './component/User/ResetPassword.jsx';
 
 function App() {
   // const path1 = window.location.pathname;
@@ -79,6 +81,8 @@ function App() {
       <Routes>
         <Route path="/" element={<LogIn1 />} />
         <Route path="/user/signup" element={<SignUp />} />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route path="/resetpassword" element={<ResetPassword />} />
         <Route
           path="/*"
           element={
