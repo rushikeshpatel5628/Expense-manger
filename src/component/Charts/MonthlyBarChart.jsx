@@ -1,110 +1,3 @@
-// import React, { useEffect, useState } from 'react';
-// import { Bar } from 'react-chartjs-2';
-// import axios from 'axios';
-
-// const MonthlyBarChart = () => {
-//   const [chartData, setChartData] = useState({});
-
-//   useEffect(() => {
-//     const userId = localStorage.getItem('userId');
-//     console.log('User....', userId);
-//     const fetchData = async () => {
-//       try {
-//         const response = await axios.get(
-//           `http://localhost:5000/transactions/transactions/${userId}`
-//         );
-//         const data = response.data.data;
-//         console.log('data....', data);
-
-//         // Initialize variables for income and expense
-//         const incomeByMonth = {};
-//         const expenseByMonth = {};
-
-//         // Group transactions by month and type
-//         data.forEach(transaction => {
-//           const expDate = new Date(transaction.expDateTime);
-//           const monthYear = `${expDate.getFullYear()}-${
-//             expDate.getMonth() + 1
-//           }`;
-
-//           const transactionType = transaction.transactionType.toLowerCase();
-//           if (transactionType === 'income') {
-//             if (incomeByMonth[monthYear]) {
-//               incomeByMonth[monthYear] += transaction.amount;
-//             } else {
-//               incomeByMonth[monthYear] = transaction.amount;
-//             }
-//           } else if (transactionType === 'expense') {
-//             if (expenseByMonth[monthYear]) {
-//               expenseByMonth[monthYear] += transaction.amount;
-//             } else {
-//               expenseByMonth[monthYear] = transaction.amount;
-//             }
-//           }
-//         });
-
-//         // Extract month-year and income/expense data for plotting
-//         const months = Object.keys(incomeByMonth);
-//         const incomeData = Object.values(incomeByMonth);
-//         const expenseData = Object.values(expenseByMonth);
-//         console.log('months....', months);
-//         console.log('expenses....', expenseData);
-//         console.log('income....', incomeData);
-
-//         // Define chart data
-//         setChartData({
-//           labels: months,
-//           datasets: [
-//             {
-//               label: 'Income',
-//               backgroundColor: 'green',
-//               data: incomeData,
-//             },
-//             {
-//               label: 'Expense',
-//               backgroundColor: 'red',
-//               data: expenseData,
-//             },
-//           ],
-//         });
-//       } catch (error) {
-//         console.error('Error fetching data:', error);
-//       }
-//     };
-
-//     fetchData();
-//   }, []);
-
-//   return (
-//     <div>
-//       <h2>Monthly Expenses Comparison</h2>
-//       <Bar
-//         data={chartData}
-//         options={{
-//           scales: {
-//             yAxes: [{
-//               ticks: {
-//                 beginAtZero: true,
-//                 callback: function (value) {
-//                   return `$${value}`;
-//                 },
-//               },
-//             }],
-//           },
-//           tooltips: {
-//             callbacks: {
-//               label: function (tooltipItem, data) {
-//                 return `$${tooltipItem.yLabel}`;
-//               },
-//             },
-//           },
-//         }}
-//       />
-//     </div>
-//   );
-// };
-
-// export default MonthlyBarChart;
 import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import axios from 'axios';
@@ -171,7 +64,14 @@ const MonthlyBarChart = () => {
         });
 
         // Extract month-year and income/expense data for plotting
-        const months = Object.keys(incomeByMonth);
+        // const months = Object.keys(incomeByMonth).sort();
+        const months = Object.keys(incomeByMonth)
+        .sort((a, b) => {
+          const monthA = new Date(a.split('-')[1] + ' 1, 2000');
+          const monthB = new Date(b.split('-')[1] + ' 1, 2000');
+          return monthA - monthB;
+        })
+        .map(month => month.split('-')[1]);
         const incomeData = Object.values(incomeByMonth);
         const expenseData = Object.values(expenseByMonth);
 
