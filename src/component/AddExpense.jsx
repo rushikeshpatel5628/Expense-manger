@@ -8,10 +8,12 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export const AddExpense = () => {
   const [cat, setcat] = useState([]);
+  const [category, setcategory] = useState([]);
   // const [subcat, setsubcat] = useState([]);
   const [payee, setpayee] = useState([]);
   const [goal, setgoal] = useState([]);
 
+  const userId = localStorage.getItem('userId');
   const navigate = useNavigate();
 
   const {
@@ -31,6 +33,16 @@ export const AddExpense = () => {
     }
   };
 
+  const loadAllCategories = async()=>{
+    try{
+      const res = await axios.get('http://localhost:5000/shared-category/categories?userId='+userId);
+      setcategory(res.data.data);
+      console.log("categories....", res.data.data);
+    }catch(error){
+      console.log(error);
+    }
+  }
+
   // const loadSubCategories = async () => {
   //   try {
   //     const res = await axios.get(
@@ -45,9 +57,9 @@ export const AddExpense = () => {
 
   const loadPayee = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/payees/payee');
+      const res = await axios.get('http://localhost:5000/payees/payees/'+userId);
       setpayee(res.data.data);
-      console.log(res.data.data);
+      console.log("payees", res.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -68,6 +80,7 @@ export const AddExpense = () => {
     // loadSubCategories();
     loadPayee();
     loadGoal();
+    loadAllCategories();
   }, []);
 
   const submitHandler = async data => {

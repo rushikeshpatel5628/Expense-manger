@@ -30,6 +30,7 @@ import { AddGroupExpense } from './component/User Group/AddGroupExpense.jsx';
 import { UpdateGroupExpense } from './component/User Group/UpdateGroupExpense.jsx';
 import { ForgotPassword } from './component/User/ForgotPassword.jsx';
 import { ResetPassword } from './component/User/ResetPassword.jsx';
+import { PayeeManage } from './component/User/PayeeManage.jsx';
 
 function App() {
   // const path1 = window.location.pathname;
@@ -113,6 +114,7 @@ function App() {
                         <Route path="/group/expenses/:groupid/" element={<GroupExpense />} />
                         <Route path="/addgroupexp/:groupid" element={<AddGroupExpense />} />
                         <Route path="/groupexp/update/:groupid/:expenseid" element={<UpdateGroupExpense />} />
+                        <Route path="/user/payee" element={<PayeeManage />} />
                       </Route>
                     </Routes>
                   </div>

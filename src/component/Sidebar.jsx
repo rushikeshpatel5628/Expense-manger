@@ -54,6 +54,10 @@ export const Sidebar = ({ onLinkSelect }) => {
       name: 'Groups 2',
       link: 'user/groups2',
     },
+    {
+      name: 'Payees',
+      link: 'user/payee',
+    },
   ];
 
   const handleLinkClick = name => {

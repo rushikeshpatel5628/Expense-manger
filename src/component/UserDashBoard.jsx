@@ -6,6 +6,7 @@ import { AttachMoney, MoneyOff } from '@mui/icons-material';
 import LineChart from './Charts/LineChart';
 import { GoalCharts } from './Charts/GoalCharts';
 import MonthlyBarChart from './Charts/MonthlyBarChart';
+import { PayeeManage } from './User/PayeeManage';
 
 export const UserDashBoard = () => {
   const [income, setIncome] = useState(0);
@@ -334,6 +335,34 @@ export const UserDashBoard = () => {
           </div>
         </div>
       </div>
+
+      {/* payee management */}
+      <div className="row mt-4 ">
+        <div className="col-md-5">
+          <div className="card ">
+            <div className="card-header ">
+              <h4 className="card-title">Manage Payees</h4>
+              <p className="card-category">Last Campaign Performance</p>
+            </div>
+            <div className="card-body ">
+              <PayeeManage/>
+            </div>
+          </div>
+        </div>
+        <div className="col-md-7">
+          <div className="card ">
+            <div className="card-header ">
+              <h4 className="card-title">Income and Expense Trends</h4>
+              <p className="card-category">24 Hours performance</p>
+            </div>
+            <div className="card-body ">
+              {/* <Charts /> */}
+              <LineChart />
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 };
