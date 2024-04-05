@@ -10,11 +10,29 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { useForm } from 'react-hook-form';
+import Button from '@mui/material/Button';
+import { Modal, TextField } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
 
 export const PayeeManage = () => {
-//   const [payee, setpayee] = useState([]);
+  //   const [payee, setpayee] = useState([]);
   const [rows, setRows] = useState([]);
   const userId = localStorage.getItem('userId');
+
+  const [open, setOpen] = useState(false);
+  const {register, handleSubmit, reset} = useForm()
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const loadPayee = async () => {
     try {
@@ -28,6 +46,34 @@ export const PayeeManage = () => {
     }
   };
 
+  const submitHandler = async (data) => {
+    console.log("data....", data);
+    data.user = userId;
+    try {
+      const res = await axios.post("http://localhost:5000/payees/payee", data);
+      if(res.status === 201){
+        alert("Payee added");
+        handleClose();
+        reset();
+        loadPayee();
+      }
+    } catch (error) {
+      console.log("error....", error)
+    }
+  }
+
+  const deletePayee = async (payeeId) => {
+    try {
+      const res = await axios.delete(`http://localhost:5000/payees/payee/${payeeId}`);
+      if(res.status === 200){
+        alert("Payee deleted");
+        loadPayee(); // Update the payee list after deleting
+      }
+    } catch (error) {
+      console.log("error....", error)
+    }
+  };
+
   useEffect(() => {
     loadPayee();
   }, []);
@@ -37,50 +83,86 @@ export const PayeeManage = () => {
     { id: 'payeeName', label: 'Name', minWidth: 100 },
   ];
 
-  const rowsWithNumbers = rows.map((row, index) => ({ ...row, number: index + 1 }));
+  const rowsWithNumbers = rows.map((row, index) => ({
+    ...row,
+    number: index + 1,
+  }));
 
   return (
     <div>
-      <div style={{ height: 300, width: '100%' }}>
-        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-          <TableContainer sx={{ maxHeight: 440 }}>
-            <Table stickyHeader aria-label="sticky table">
-              <TableHead>
-                <TableRow>
-                  {columns.map(column => (
-                    <TableCell key={column.id} align="left">
-                      {column.label}
-                    </TableCell>
-                  ))}
-                  <TableCell align="left">Update</TableCell>
-                  <TableCell align="left">Delete</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rowsWithNumbers.map(row => (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
+      <div className="card-header d-flex justify-content-between align-items-center">
+        <h4 className="card-title">Manage Payees</h4>
+        <Button type="submit" variant="contained" onClick={handleOpen}>
+          Add Payee
+        </Button>
+      </div>
+      <div className="card-body ">
+        <div style={{ height: 300, width: '100%' }}>
+          <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+            <TableContainer style={{ maxHeight: 300 }}>
+              <Table stickyHeader aria-label="sticky table">
+                <TableHead>
+                  <TableRow>
                     {columns.map(column => (
                       <TableCell key={column.id} align="left">
-                        {row[column.id]}
+                        {column.label}
                       </TableCell>
                     ))}
-                    <TableCell align="left">
-                      <IconButton aria-label="update">
-                        <Update />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell align="left">
-                      <IconButton aria-label="delete">
-                        <Delete />
-                      </IconButton>
-                    </TableCell>
+                    <TableCell align="left">Update</TableCell>
+                    <TableCell align="left">Delete</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
+                </TableHead>
+                <TableBody>
+                  {rowsWithNumbers.map(row => (
+                    <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
+                      {columns.map(column => (
+                        <TableCell key={column.id} align="left">
+                          {row[column.id]}
+                        </TableCell>
+                      ))}
+                      <TableCell align="left">
+                        <IconButton aria-label="update">
+                          <Update />
+                        </IconButton>
+                      </TableCell>
+                      <TableCell align="left">
+                        <IconButton aria-label="delete" onClick={() => deletePayee(row._id)}>
+                          <Delete />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Paper>
+        </div>
       </div>
+      <Dialog open={open} onClose={handleClose}>
+      <DialogTitle>Add Payee</DialogTitle>
+        <DialogContent>
+          {/* Text field for entering payee name */}
+          <form onSubmit={handleSubmit(submitHandler)}>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="payeeName"
+            label="Payee Name"
+            type="text"
+            fullWidth
+            {...register('payeeName')}
+          />
+          <Button type='submit' color="primary" variant='contained' sx={{my:2}}>
+            Submit
+          </Button>
+          </form>
+        </DialogContent>
+        <DialogActions>
+        <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

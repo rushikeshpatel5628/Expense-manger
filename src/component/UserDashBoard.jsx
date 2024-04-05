@@ -7,6 +7,14 @@ import LineChart from './Charts/LineChart';
 import { GoalCharts } from './Charts/GoalCharts';
 import MonthlyBarChart from './Charts/MonthlyBarChart';
 import { PayeeManage } from './User/PayeeManage';
+import Button from '@mui/material/Button';
+import { Modal, TextField } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import { useForm } from 'react-hook-form';
+
 
 export const UserDashBoard = () => {
   const [income, setIncome] = useState(0);
@@ -17,6 +25,9 @@ export const UserDashBoard = () => {
   const [goals, setGoals] = useState([]);
   const [eachGoalTotal, setEachGoalTotal] = useState([]);
   const [selectedGoal, setSelectedGoal] = useState('');
+  const [payees, setPayees] = useState([]);
+  const userId = localStorage.getItem('userId');
+
 
   const getIncome = async () => {
     const res = await axios.get('http://localhost:5000/transactions/income');
@@ -172,6 +183,41 @@ export const UserDashBoard = () => {
       // Optionally, you can set some default values or display an error message to the user.
     }
   };
+
+
+  // For payee
+  const [open, setOpen] = useState(false);
+  const {register, handleSubmit, reset} = useForm()
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const loadPayee = async () => {
+    try {
+      const res = await axios.get(
+        'http://localhost:5000/payees/payees/' + userId
+      );
+      setPayees(res.data.data);
+      console.log('payees....', res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    loadPayee();
+  }, []);
+
+  const updatePayees = (newPayees) => {
+    setPayees(newPayees);
+  };
+
+  
 
   return (
     <div className="container-fluid">
@@ -338,18 +384,12 @@ export const UserDashBoard = () => {
 
       {/* payee management */}
       <div className="row mt-4 ">
-        <div className="col-md-5">
+        <div className="col-md-6">
           <div className="card ">
-            <div className="card-header ">
-              <h4 className="card-title">Manage Payees</h4>
-              <p className="card-category">Last Campaign Performance</p>
-            </div>
-            <div className="card-body ">
-              <PayeeManage/>
-            </div>
+            <PayeeManage/>
           </div>
         </div>
-        <div className="col-md-7">
+        <div className="col-md-6">
           <div className="card ">
             <div className="card-header ">
               <h4 className="card-title">Income and Expense Trends</h4>
@@ -361,8 +401,10 @@ export const UserDashBoard = () => {
             </div>
           </div>
         </div>
+         {/* Modal */}
+     
       </div>
-
+    
     </div>
   );
 };
