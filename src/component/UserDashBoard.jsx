@@ -14,6 +14,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { useForm } from 'react-hook-form';
+import { DonutChartPaymentType } from './Charts/DonutChartPaymentType';
 
 
 export const UserDashBoard = () => {
@@ -392,17 +393,14 @@ export const UserDashBoard = () => {
         <div className="col-md-6">
           <div className="card ">
             <div className="card-header ">
-              <h4 className="card-title">Income and Expense Trends</h4>
+              <h4 className="card-title">Payment Type Distribution</h4>
               <p className="card-category">24 Hours performance</p>
             </div>
-            <div className="card-body ">
-              {/* <Charts /> */}
-              <LineChart />
+            <div className="card-body" style={{margin: '0px auto'}}>
+              <DonutChartPaymentType/>
             </div>
           </div>
         </div>
-         {/* Modal */}
-     
       </div>
     
     </div>

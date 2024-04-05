@@ -17,6 +17,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
+import { UpdatePayeeModal } from './UpdatePayeeModal';
 
 export const PayeeManage = () => {
   //   const [payee, setpayee] = useState([]);
@@ -24,6 +25,9 @@ export const PayeeManage = () => {
   const userId = localStorage.getItem('userId');
 
   const [open, setOpen] = useState(false);
+  const [updateOpen, setUpdateOpen] = useState(false);
+  const [selectedPayee, setSelectedPayee] = useState(null);
+
   const {register, handleSubmit, reset} = useForm()
 
   const handleOpen = () => {
@@ -32,6 +36,16 @@ export const PayeeManage = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleUpdateOpen = (payee) => {
+    setSelectedPayee(payee);
+    setUpdateOpen(true);
+  };
+
+  const handleUpdateClose = () => {
+    setSelectedPayee(null);
+    setUpdateOpen(false);
   };
 
   const loadPayee = async () => {
@@ -114,14 +128,14 @@ export const PayeeManage = () => {
                 </TableHead>
                 <TableBody>
                   {rowsWithNumbers.map(row => (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
+                    <TableRow hover role="checkbox" tabIndex={-1} key={row._id} size='small'>
                       {columns.map(column => (
-                        <TableCell key={column.id} align="left">
+                        <TableCell key={column.id} align="left"  size='small'>
                           {row[column.id]}
                         </TableCell>
                       ))}
                       <TableCell align="left">
-                        <IconButton aria-label="update">
+                        <IconButton aria-label="update" onClick={() => handleUpdateOpen(row)}>
                           <Update />
                         </IconButton>
                       </TableCell>
@@ -163,6 +177,24 @@ export const PayeeManage = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
+
+      <Dialog open={updateOpen} onClose={handleUpdateClose}>
+      <DialogTitle>Update Payee</DialogTitle>
+        <DialogContent>
+        <UpdatePayeeModal
+            selectedPayee={selectedPayee}
+            handleUpdateClose={handleUpdateClose}
+            loadPayee={loadPayee}
+          />
+        </DialogContent>
+        <DialogActions>
+        <Button onClick={handleUpdateClose} color="primary">
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
+
     </div>
   );
 };
