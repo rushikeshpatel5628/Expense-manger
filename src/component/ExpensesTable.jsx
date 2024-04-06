@@ -74,7 +74,8 @@ function Row({ row, onDelete }) {
           {row.title}
         </TableCell>
         <TableCell component="th" scope="row">
-          {row.payee.payeeName}
+          {/* {row.payee?.payeeName} */}
+          {row.payee == null ? "[DELETED]" : row.payee.payeeName}
         </TableCell>
         <TableCell align="right">
           {row.transactionType === 'income' ? (
@@ -114,7 +115,8 @@ function Row({ row, onDelete }) {
                 <TableBody>
                   <TableRow>
                     <TableCell component="th" scope="row">
-                      {row.category.categoryName}
+                      {/* {row.category.categoryName} */}
+                      {row.category == null ? "[DELETED]" : row.category.categoryName}
                     </TableCell>
                     {/* <TableCell>{row.subcategory.SubCategoryName}</TableCell> */}
                     <TableCell align="right">{row.status}</TableCell>
@@ -197,10 +199,10 @@ export default function ExpensesTable({query}) {
 
     const tableData = rows.map(row => {
       const fontColor = row.transactionType === 'income' ? 'green' : 'red';
+        const payee = row.payee == null ? "[DELETED]" : row.payee.payeeName;
       return [
         row.title,
-        row.payee.payeeName,
-        // row.amount,
+        payee,
         { content: row.amount, styles: { textColor: fontColor } },
         row.expDateTime,
         row.paymentMethod,

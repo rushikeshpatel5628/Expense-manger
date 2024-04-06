@@ -23,9 +23,19 @@ export const AddExpense = () => {
     reset,
   } = useForm();
 
+  // const loadCategories = async () => {
+  //   try {
+  //     const res = await axios.get('http://localhost:5000/categories/category');
+  //     setcat(res.data.data);
+  //     console.log(res.data.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   const loadCategories = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/categories/category');
+      const res = await axios.get('http://localhost:5000/usercategory/category/user/'+userId);
       setcat(res.data.data);
       console.log(res.data.data);
     } catch (error) {
@@ -33,15 +43,15 @@ export const AddExpense = () => {
     }
   };
 
-  const loadAllCategories = async()=>{
-    try{
-      const res = await axios.get('http://localhost:5000/shared-category/categories?userId='+userId);
-      setcategory(res.data.data);
-      console.log("categories....", res.data.data);
-    }catch(error){
-      console.log(error);
-    }
-  }
+  // const loadAllCategories = async()=>{
+  //   try{
+  //     const res = await axios.get('http://localhost:5000/shared-category/categories?userId='+userId);
+  //     setcategory(res.data.data);
+  //     console.log("categories....", res.data.data);
+  //   }catch(error){
+  //     console.log(error);
+  //   }
+  // }
 
   // const loadSubCategories = async () => {
   //   try {
@@ -80,7 +90,7 @@ export const AddExpense = () => {
     // loadSubCategories();
     loadPayee();
     loadGoal();
-    loadAllCategories();
+    // loadAllCategories();
   }, []);
 
   const submitHandler = async data => {

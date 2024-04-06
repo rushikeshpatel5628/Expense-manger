@@ -13,6 +13,7 @@ export const UpdateExpense = () => {
   const [goal, setgoal] = useState([]);
   const id = useParams().id;
   const navigate = useNavigate();
+  const userId = localStorage.getItem('userId');
 
   const {
     register,
@@ -27,7 +28,7 @@ export const UpdateExpense = () => {
         title: res.data.data.title,
         amount: res.data.data.amount,
         expDateTime: res.data.data.expDateTime,
-        payee: res.data.data.payee._id,
+        payee: res.data.data.payee?._id,
         category: res.data.data.category._id,
         // subcategory: res.data.data.subcategory._id,
         paymentMethod: res.data.data.paymentMethod,
@@ -40,9 +41,19 @@ export const UpdateExpense = () => {
     },
   });
 
+  // const loadCategories = async () => {
+  //   try {
+  //     const res = await axios.get('http://localhost:5000/categories/category');
+  //     setcat(res.data.data);
+  //     console.log(res.data.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   const loadCategories = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/categories/category');
+      const res = await axios.get('http://localhost:5000/usercategory/category/user/'+userId);
       setcat(res.data.data);
       console.log(res.data.data);
     } catch (error) {
@@ -74,7 +85,7 @@ export const UpdateExpense = () => {
 
   const loadPayee = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/payees/payee');
+      const res = await axios.get('http://localhost:5000/payees/payees/'+userId);
       setpayee(res.data.data);
       console.log(res.data.data);
     } catch (error) {

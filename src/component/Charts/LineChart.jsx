@@ -25,7 +25,6 @@ const LineChart = () => {
   }, []);
   console.log(transactions);
 
-  // const prepareChartData = () => {
   //   const incomeData = [];
   //   const expenseData = [];
   //   const labels = [];
@@ -73,6 +72,39 @@ const LineChart = () => {
       expenseData,
     };
   };
+
+  // const prepareChartData = () => {
+  //   // Sort transactions by date
+  //   const sortedTransactions = transactions.sort((a, b) => new Date(a.expDateTime) - new Date(b.expDateTime));
+    
+  //   const incomeData = [];
+  //   const expenseData = [];
+  //   const labels = [];
+    
+  //   sortedTransactions.forEach((transaction) => {
+  //     // Parse the date string into a JavaScript Date object
+  //     const date = new Date(transaction.expDateTime);
+  //     // Format the date as a string to display on the chart
+  //     const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+      
+  //     labels.push(formattedDate);
+      
+  //     if (transaction.transactionType === 'income') {
+  //       incomeData.push(transaction.amount);
+  //       expenseData.push(null);
+  //     } else {
+  //       incomeData.push(null);
+  //       expenseData.push(transaction.amount);
+  //     }
+  //   });
+    
+  //   return {
+  //     labels,
+  //     incomeData,
+  //     expenseData,
+  //   };
+  // };
+  
   
 
   console.log('labels', prepareChartData().labels);

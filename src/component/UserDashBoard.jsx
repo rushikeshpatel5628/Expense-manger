@@ -15,6 +15,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { useForm } from 'react-hook-form';
 import { DonutChartPaymentType } from './Charts/DonutChartPaymentType';
+import { CategoryManage } from './User/CategoryManage';
 
 
 export const UserDashBoard = () => {
@@ -385,12 +386,17 @@ export const UserDashBoard = () => {
 
       {/* payee management */}
       <div className="row mt-4 ">
-        <div className="col-md-6">
+        <div className="col-md-4">
           <div className="card ">
             <PayeeManage/>
           </div>
         </div>
-        <div className="col-md-6">
+        <div className="col-md-4">
+          <div className="card ">
+            <CategoryManage/>
+          </div>
+        </div>
+        <div className="col-md-4">
           <div className="card ">
             <div className="card-header ">
               <h4 className="card-title">Payment Type Distribution</h4>
