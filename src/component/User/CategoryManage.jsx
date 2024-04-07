@@ -18,6 +18,10 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { UpdatePayeeModal } from './UpdatePayeeModal';
+import { UpdateCategoryModal } from './UpdateCategoryModal';
+import AddIcon from '@mui/icons-material/Add';
+import '../User/PayeeManageCSS.css'
+
 
 export const CategoryManage = () => {
   //   const [payee, setpayee] = useState([]);
@@ -26,7 +30,7 @@ export const CategoryManage = () => {
 
   const [open, setOpen] = useState(false);
   const [updateOpen, setUpdateOpen] = useState(false);
-  const [selectedPayee, setSelectedPayee] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const {register, handleSubmit, reset} = useForm()
 
@@ -38,13 +42,13 @@ export const CategoryManage = () => {
     setOpen(false);
   };
 
-  const handleUpdateOpen = (payee) => {
-    setSelectedPayee(payee);
+  const handleUpdateOpen = (category) => {
+    setSelectedCategory(category);
     setUpdateOpen(true);
   };
 
   const handleUpdateClose = () => {
-    setSelectedPayee(null);
+    setSelectedCategory(null);
     setUpdateOpen(false);
   };
 
@@ -118,14 +122,14 @@ export const CategoryManage = () => {
     <div>
       <div className="card-header d-flex justify-content-between align-items-center">
         <h4 className="card-title">Manage Categories</h4>
-        <Button type="submit" variant="contained" onClick={handleOpen}>
-          Add Category
+        <Button type="submit" variant="contained" onClick={handleOpen}  startIcon={<AddIcon />} sx={{width:'110px'}}>
+          Category
         </Button>
       </div>
       <div className="card-body ">
         <div style={{ height: 300, width: '100%' }}>
           <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-            <TableContainer style={{ maxHeight: 300 }}>
+            <TableContainer style={{ maxHeight: 300, overflowY: 'auto'  }} className="custom-scrollbar">
               <Table stickyHeader aria-label="sticky table">
                 <TableHead>
                   <TableRow>
@@ -192,11 +196,12 @@ export const CategoryManage = () => {
 
 
       <Dialog open={updateOpen} onClose={handleUpdateClose}>
-      <DialogTitle>Update Payee</DialogTitle>
+      <DialogTitle>Update Category</DialogTitle>
         <DialogContent>
-        <UpdatePayeeModal
-            selectedPayee={selectedPayee}
+        <UpdateCategoryModal
+            selectedCategory={selectedCategory}
             handleUpdateClose={handleUpdateClose}
+            loadCategory={loadCategory}
             
           />
         </DialogContent>

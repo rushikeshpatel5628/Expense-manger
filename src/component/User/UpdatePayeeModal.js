@@ -16,7 +16,7 @@ export const UpdatePayeeModal = ({ selectedPayee, handleUpdateClose, loadPayee }
       const onSubmit = async data => {
         try {
           const userId = localStorage.getItem('userId');
-          data.creator = userId;
+          // data.creator = userId;
           console.log('data...', data);
     
           const res = await axios.put(`http://localhost:5000/payees/payee/${selectedPayee._id}`, data);

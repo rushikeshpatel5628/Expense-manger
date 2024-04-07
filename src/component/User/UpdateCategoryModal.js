@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { TextField, Button } from '@mui/material';
 
-export const UpdateCategoryModal = ({ selectedPayee, handleUpdateClose, loadPayee }) => {
+export const UpdateCategoryModal = ({ selectedCategory, handleUpdateClose, loadCategory }) => {
 
     const {
         register,
@@ -16,14 +16,13 @@ export const UpdateCategoryModal = ({ selectedPayee, handleUpdateClose, loadPaye
       const onSubmit = async data => {
         try {
           const userId = localStorage.getItem('userId');
-          data.creator = userId;
           console.log('data...', data);
     
-          const res = await axios.put(`http://localhost:5000/payees/payee/${selectedPayee._id}`, data);
+          const res = await axios.put(`http://localhost:5000/usercategory/category/${selectedCategory._id}`, data);
           if (res.status === 201) {
-            alert('Payee updated');
+            alert('Category updated');
             handleUpdateClose();
-            loadPayee(); // Update the payee list after updating
+            loadCategory(); // Update the payee list after updating
           }
     
         } catch (error) {
@@ -36,14 +35,14 @@ export const UpdateCategoryModal = ({ selectedPayee, handleUpdateClose, loadPaye
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <TextField
-        label="Payee Name"
+        label="Category Name"
         variant="outlined"
         fullWidth
         margin="normal"
-        defaultValue={selectedPayee ? selectedPayee.payeeName : ""}
-        {...register('payeeName')} // Include validation rules
+        defaultValue={selectedCategory ? selectedCategory.categoryName : ""}
+        {...register('categoryName')} // Include validation rules
         error={!!errors.groupId} // Show error if there are errors for 'groupId'
-        helperText={errors.groupId ? 'Group ID is required' : ''}
+        helperText={errors.categoryName ? 'Category name is required' : ''}
       />
       <Button type="submit" variant="contained">
         Update

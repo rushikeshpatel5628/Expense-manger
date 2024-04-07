@@ -18,6 +18,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { UpdatePayeeModal } from './UpdatePayeeModal';
+import AddIcon from '@mui/icons-material/Add';
+import '../User/PayeeManageCSS.css'
 
 export const PayeeManage = () => {
   //   const [payee, setpayee] = useState([]);
@@ -106,14 +108,14 @@ export const PayeeManage = () => {
     <div>
       <div className="card-header d-flex justify-content-between align-items-center">
         <h4 className="card-title">Manage Payees</h4>
-        <Button type="submit" variant="contained" onClick={handleOpen}>
-          Add Payee
+        <Button type="submit" variant="contained" onClick={handleOpen}  startIcon={<AddIcon />}>
+          Payee
         </Button>
       </div>
       <div className="card-body ">
         <div style={{ height: 300, width: '100%' }}>
           <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-            <TableContainer style={{ maxHeight: 300 }}>
+            <TableContainer style={{ maxHeight: 300, overflowY: 'auto' }}  className="custom-scrollbar">
               <Table stickyHeader aria-label="sticky table">
                 <TableHead>
                   <TableRow>

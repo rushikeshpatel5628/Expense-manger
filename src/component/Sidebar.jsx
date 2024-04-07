@@ -70,7 +70,7 @@ export const Sidebar = ({ onLinkSelect }) => {
       className="sidebar sidebar-background"
       data-image="../assets/img/sidebar-6.jpg"
       style={{ backgroundImage: 'url(../assets/img/sidebar-6.jpg)' }}
-      data-color="black"
+      data-color="purple"
     >
       {/*
   Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
