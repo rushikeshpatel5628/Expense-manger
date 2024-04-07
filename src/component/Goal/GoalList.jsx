@@ -19,9 +19,10 @@ const columns = [
   { id: 'enddate', label: 'End Date', minWidth: 100 },
 ];
 
-export default function GoalList() {
+export default function GoalList({ reloadGoals }) {
   const [rows, setRows] = React.useState([]);
   const navigate = useNavigate();
+  const userId = localStorage.getItem('userId');
 
   // Custom date formatting function
   const formatDate = dateString => {
@@ -32,7 +33,7 @@ export default function GoalList() {
 
   const getGoals = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/goals/goal');
+      const res = await axios.get('http://localhost:5000/goals/goals/'+userId);
       console.log(res.data.data);
       setRows(res.data.data);
     } catch (error) {
@@ -53,6 +54,10 @@ export default function GoalList() {
   const handleTransactionClick = id => {
     navigate(`/goal/expenses/${id}`);
   };
+
+  React.useEffect(() => {
+    getGoals();
+  }, [reloadGoals]);
 
   React.useEffect(() => {
     getGoals();

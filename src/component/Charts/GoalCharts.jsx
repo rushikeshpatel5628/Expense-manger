@@ -7,6 +7,7 @@ export const GoalCharts = () => {
   const [selectedGoal, setSelectedGoal] = useState('');
   const [goals, setGoals] = useState([]);
   const [goalTransactions, setGoalTransactions] = useState([]);
+  const [error, setError] = useState('');
 
   const getAllGoals = async (req, res) => {
     try {
@@ -19,7 +20,7 @@ export const GoalCharts = () => {
         setSelectedGoal(res.data.data[0]._id);
       }
     } catch (error) {
-      console.log('error....', error);
+      console.log('Error fetching transactions:', error);
     }
   };
 
@@ -30,8 +31,13 @@ export const GoalCharts = () => {
         `http://localhost:5000/transactions/goalexpense/${goalId}`
       );
       setGoalTransactions(response.data.data);
+      console.log('goal transaction: ', response.data.data);
     } catch (error) {
-      console.log('Error fetching transactions:', error);
+      if (error.response.status === 404) {
+        setError('Expenses not found for this goal');
+      } else {
+        console.log('Error fetching transactions:', error);
+      }
     }
   };
 
@@ -60,11 +66,13 @@ export const GoalCharts = () => {
   const calculateCategoryExpenses = () => {
     const categoryExpensesMap = {};
 
-     // Filter data to include only expenses
-     const expenseData = goalTransactions.filter(transaction => transaction.transactionType == 'expense');
+    // Filter data to include only expenses
+    const expenseData = goalTransactions.filter(
+      transaction => transaction.transactionType === 'expense'
+    );
 
     expenseData.forEach(transaction => {
-      const categoryName = transaction.category.categoryName;
+      const categoryName = transaction.category.categoryName; // Ensure category name is correctly accessed
       const amount = transaction.amount;
       if (categoryExpensesMap[categoryName]) {
         categoryExpensesMap[categoryName] += amount;
@@ -81,6 +89,8 @@ export const GoalCharts = () => {
     const categoryExpensesMap = calculateCategoryExpenses();
     const labels = Object.keys(categoryExpensesMap);
     const data = Object.values(categoryExpensesMap);
+    console.log('labels: ', labels);
+    console.log('data: ', data);
 
     const pieChartData = {
       labels: labels,
@@ -144,23 +154,15 @@ export const GoalCharts = () => {
       <div className="card">
         <div className="card-header ">
           <h4 className="card-title">Goal Category Expenses</h4>
-          <p className="card-category mb-n2" >Select goal</p>
+          <p className="card-category mb-n2">Select goal</p>
         </div>
         <div className="card-body">
-          {/* <select value={selectedGoal} onChange={handleGoalChange}>
-            <option value="">Select a Goal</option>
-            {goals.map(goal => (
-              <option key={goal._id} value={goal._id}>
-                {goal.goalName}
-              </option>
-            ))}
-          </select> */}
           <Select
             value={selectedGoal}
             onChange={handleGoalChange}
             displayEmpty
             fullWidth
-            sx={{ width: '150px', fontSize:'16px', height: '30px'}}
+            sx={{ width: '150px', fontSize: '16px', height: '30px' }}
           >
             <MenuItem value="">Select a Goal</MenuItem>
             {goals.map(goal => (
@@ -170,7 +172,17 @@ export const GoalCharts = () => {
             ))}
           </Select>
           <div style={{ width: 300, margin: '0px auto' }}>
-            {goalTransactions.length > 0 && renderPieChart()}
+            {/* {goalTransactions.length > 0 && renderPieChart()} */}
+            {/* {error ? (
+              <p>{error}</p>
+            ) : (
+              goalTransactions.length > 0 && renderPieChart()
+            )} */}
+            {goalTransactions.length > 0 ? (
+              renderPieChart()
+            ) : (
+              <p>No expenses found for this goal.</p>
+            )}
           </div>
         </div>
       </div>

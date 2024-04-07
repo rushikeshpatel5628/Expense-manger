@@ -18,12 +18,15 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from 'react-router-dom';
-import { Button, TablePagination } from '@mui/material';
+import { useFetcher, useNavigate } from 'react-router-dom';
+import { Button, TablePagination, Select, MenuItem } from '@mui/material';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import IosShareIcon from '@mui/icons-material/IosShare';
 import { Margin } from '@mui/icons-material';
+
+
+
 
 function Row({ row, onDelete }) {
   const [open, setOpen] = useState(false);
@@ -141,7 +144,19 @@ Row.propTypes = {
 export default function ExpensesTable({query}) {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [categories, setcategories] = useState([])
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
   const userId = localStorage.getItem('userId');
+
+  const loadAllCategories = async()=> {
+    try {
+      const res = await axios.get("http://localhost:5000/usercategory/category/user/"+userId);
+      setcategories(res.data.data)
+    } catch (error) {
+      
+    }
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -166,6 +181,7 @@ export default function ExpensesTable({query}) {
       }
     };
     fetchData();
+    loadAllCategories()
     console.log('rows....', rows);
   }, []);
 
@@ -180,22 +196,38 @@ export default function ExpensesTable({query}) {
     setRows(rows.filter(row => row._id !== deletedId));
   };
 
+  const handlePaymentMethodChange = event => {
+    setSelectedPaymentMethod(event.target.value);
+  };
+
+  const handleCategoryChange = event => {
+    setSelectedCategory(event.target.value);
+  };
+
+
+  const filteredRows = rows.filter(row => {
+    if (selectedPaymentMethod && selectedCategory) {
+      return row.paymentMethod === selectedPaymentMethod && row.category.categoryName === selectedCategory;
+    } else if (selectedPaymentMethod) {
+      return row.paymentMethod === selectedPaymentMethod;
+    } else if (selectedCategory) {
+      return row.category.categoryName === selectedCategory;
+    } else {
+      return true;
+    }
+  });
+
+  useEffect(() => {
+    console.log("filtered rows....", filteredRows);
+  }, [selectedPaymentMethod, selectedCategory]);
+  
+
+
   const generatePDF = () => {
     const doc = new jsPDF({
       format: [210, 297],
       orientation: 'portrait',
     });
-
-    // const tableData = rows.map(row => ({
-    //   Title: row.title,
-    //   Payee: row.payee.payeeName,
-    //   Amount: row.amount,
-    //   ExpenseDate: row.expDateTime,
-    //   PaymentMethod: row.paymentMethod,
-    //   Category: row.category.categoryName,
-    //   Status: row.status,
-    //   Description: row.description,
-    // }));
 
     const tableData = rows.map(row => {
       const fontColor = row.transactionType === 'income' ? 'green' : 'red';
@@ -240,7 +272,7 @@ export default function ExpensesTable({query}) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const currentRows = rows.filter((r, ind) => {
+  const currentRows = filteredRows.filter((r, ind) => {
     return ind >= rowsPerPage * page && ind < rowsPerPage * (page + 1);
   });
 
@@ -269,6 +301,43 @@ export default function ExpensesTable({query}) {
         pauseOnHover
         theme="colored"
       />
+
+
+<Box sx={{ marginBottom: 2 }}>
+        <Select
+          value={selectedPaymentMethod}
+          onChange={handlePaymentMethodChange}
+          displayEmpty
+          variant="outlined"
+          size='small'
+          style={{ marginRight: '20px' }}
+        >
+          <MenuItem value="">All Payment Methods</MenuItem>
+          <MenuItem value="upi">UPI</MenuItem>
+          <MenuItem value="credit card">Credit Card</MenuItem>
+          {/* <MenuItem value="Debit Card">Debit Card</MenuItem> */}
+          <MenuItem value="cash">Cash</MenuItem>
+        </Select>
+        <Select
+          value={selectedCategory}
+          onChange={handleCategoryChange}
+          displayEmpty
+          size='small'
+          variant="outlined"
+        >
+          <MenuItem value="">All Categories</MenuItem>
+          {/* Populate categories dynamically */}
+          {categories.map(category => (
+            <MenuItem key={category._id} value={category.categoryName}>{category.categoryName}</MenuItem>
+          ))}
+        </Select>
+      </Box>
+
+
+
+
+
+
       <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>
@@ -285,7 +354,12 @@ export default function ExpensesTable({query}) {
           {/* {currentRows.map((row, index) => (
             <Row key={index} row={row} onDelete={handleDelete} />
           ))} */}
-          {currentRows
+          {/* {currentRows
+            .filter(row => (query ? row.title.toLowerCase().includes(query.toLowerCase()) : true))
+            .map((row, index) => (
+              <Row key={index} row={row} onDelete={handleDelete} />
+            ))} */}
+             {currentRows
             .filter(row => (query ? row.title.toLowerCase().includes(query.toLowerCase()) : true))
             .map((row, index) => (
               <Row key={index} row={row} onDelete={handleDelete} />

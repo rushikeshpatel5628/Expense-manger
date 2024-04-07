@@ -77,7 +77,7 @@ export const AddExpense = () => {
 
   const loadGoal = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/goals/goal');
+      const res = await axios.get('http://localhost:5000/goals/goals/'+userId);
       setgoal(res.data.data);
       console.log(res.data.data);
     } catch (error) {
