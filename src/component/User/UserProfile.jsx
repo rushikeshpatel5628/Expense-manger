@@ -1,88 +1,148 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Avatar, Button, Container, IconButton, TextField, Typography } from '@mui/material';
+import {
+  Avatar,
+  Button,
+  Container,
+  IconButton,
+  TextField,
+  Typography,
+} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
 
-export const UserProfile =()=> {
-  const userId = localStorage.getItem('userId')
+export const UserProfile = () => {
+  const userId = localStorage.getItem('userId');
   const { register, handleSubmit, setValue } = useForm({
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: ""
-    }
+      firstName: '',
+      lastName: '',
+      email: '',
+      profilePicture: '',
+    },
   });
-  const [password, setpassword] = useState("");
-  const [role, setrole] = useState("")
+  // const [password, setpassword] = useState("");
+  // const [role, setrole] = useState("")
+  const [loading, setLoading] = useState(false);
+  const [pic, setPic] = useState('');
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/users/user/${userId}`);
+        const res = await axios.get(
+          `http://localhost:5000/users/user/${userId}`
+        );
+        console.log(res.data.data);
         const userData = res.data.data;
-        setValue("firstName", userData.firstName);
-        setValue("lastName", userData.lastName);
-        setValue("email", userData.email);
-        setpassword(res.data.data.password)
-        setrole(res.data.data.role._id)
+        setValue('firstName', userData.firstName);
+        setValue('lastName', userData.lastName);
+        setValue('email', userData.email);
+        setValue('profilePicture', userData.profilePicture);
+        setPic(userData.profilePicture);
+        // setpassword(res.data.data.password)
+        // setrole(res.data.data.role._id)
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error('Error fetching user data:', error);
       }
     };
-  
+
     fetchUserData();
   }, [setValue, userId]);
 
-  const [selectedFile, setSelectedFile] = useState(null);
+  // const [selectedFile, setSelectedFile] = useState(null);
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    console.log("Selected file:", file);
-    setSelectedFile(file);
-  };
+  // const handleFileChange = (event) => {
+  //   const file = event.target.files[0];
+  //   console.log("Selected file:", file);
+  //   setSelectedFile(file);
+  // };
 
-  const onSubmit = async (data) => {
+  const onSubmit = async data => {
     try {
-      console.log("Form data before appending:", data);
+      console.log('Form data before appending:', data);
+      setLoading(true);
       // Prepare form data
       const formData = new FormData();
       formData.append('firstName', data.firstName);
       formData.append('lastName', data.lastName);
       formData.append('email', data.email);
-      formData.append('myImage', selectedFile);
-      formData.append('password', password);
-      formData.append('role', role);
+      // formData.append("profilePicture", data.profilePicture[0]); // Assuming you're only allowing one profile picture
 
-      console.log("form data: ", formData)
-      // Make a POST request to your backend API to handle file upload and form data
-      const response = await axios.post('http://localhost:5000/users/fileUpload', formData);
+      // Check if profile picture is empty and set it to current value if unchanged
+      if (!data.profilePicture[0]) {
+        formData.append('profilePicture', pic);
+      } else {
+        formData.append('profilePicture', data.profilePicture[0]);
+      }
+      console.log("form data", formData)
+      // formData.append('myImage', selectedFile);
+      // formData.append('password', password);
+      // formData.append('role', role);
+
+      await axios.put('http://localhost:5000/users/user/' + userId, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      // Optionally, you can refresh the data after update
+      const res = await axios.get('http://localhost:5000/users/user/' + userId);
+      const updatedUserData = res.data.data;
+      setValue('firstName', updatedUserData.firstName);
+      setValue('lastName', updatedUserData.lastName);
+      setValue('email', updatedUserData.email);
+      setValue('profilePicture', updatedUserData.profilePicture);
+      setPic(updatedUserData.profilePicture);
+
+      alert('User updated successfully!');
 
       // Optional: Handle response if needed
-      console.log('File uploaded successfully:', response.data);
+      // console.log('File uploaded successfully:', response.data);
     } catch (error) {
-      console.error('Error uploading file:', error);
+      console.error('Error updating user:', error);
+      alert('Failed to update user. Please try again.');
+    } finally {
+      setLoading(false); // Reset loading state to false after submission
     }
   };
-  
 
   return (
-    <Container component="main" maxWidth="xs" style={{ marginTop: '4rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <Container
+      component="main"
+      maxWidth="xs"
+      style={{
+        marginTop: '4rem',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
       <label htmlFor="contained-button-file" style={{ position: 'relative' }}>
         <Avatar
-          style={{ width: '8rem', height: '8rem', marginBottom: '2rem', cursor: 'pointer' }}
-          src={selectedFile ? URL.createObjectURL(selectedFile) : ''}
+          style={{
+            width: '8rem',
+            height: '8rem',
+            marginBottom: '2rem',
+            cursor: 'pointer',
+          }}
+          src={pic}
         />
         <input
           accept="image/*"
           style={{ display: 'none' }}
           id="contained-button-file"
           type="file"
-          onChange={handleFileChange}
+          // onChange={handleFileChange}
           {...register('profilePicture')}
         />
         <IconButton
-          style={{ position: 'absolute', bottom: '0', right: '0', backgroundColor: 'white', padding: '4px' }}
+          style={{
+            position: 'absolute',
+            bottom: '0',
+            right: '0',
+            backgroundColor: 'white',
+            padding: '4px',
+          }}
           component="span"
         >
           <EditIcon />
@@ -91,7 +151,10 @@ export const UserProfile =()=> {
       <Typography component="h1" variant="h5">
         Upload Profile Picture
       </Typography>
-      <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%', marginTop: '1rem' }}>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        style={{ width: '100%', marginTop: '1rem' }}
+      >
         <TextField
           variant="outlined"
           InputLabelProps={{
@@ -135,10 +198,17 @@ export const UserProfile =()=> {
           type="password"
           {...register('password')}
         /> */}
-        <Button type="submit" fullWidth variant="contained" color="primary" style={{ marginTop: '1rem' }}>
-          Submit
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          disabled={loading}
+          style={{ marginTop: '1rem' }}
+        >
+          {loading ? 'Submitting...' : 'Submit'}
         </Button>
       </form>
     </Container>
   );
-}
+};

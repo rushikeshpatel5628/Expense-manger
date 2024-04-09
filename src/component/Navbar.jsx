@@ -107,10 +107,10 @@ export const Navbar = ({ selectedLink }) => {
                 {/* <div className="dropdown-header noti-title">
                   <h6 className="text-overflow m-0">Welcome!</h6>
                 </div> */}
-                <a href="#!" className="dropdown-item">
+                <Link to={"/user/profile"} className="dropdown-item">
                   <i className="ni ni-single-02" />
                   <span>My profile</span>
-                </a>
+                </Link>
                 <div className="dropdown-divider" />
                 <a href="#!" className="dropdown-item">
                   <i className="ni ni-user-run" />
