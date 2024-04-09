@@ -32,6 +32,7 @@ import { ForgotPassword } from './component/User/ForgotPassword.jsx';
 import { ResetPassword } from './component/User/ResetPassword.jsx';
 import { PayeeManage } from './component/User/PayeeManage.jsx';
 import { CategoryManage } from './component/User/CategoryManage.jsx';
+import UserContextProvider from './context/UserContextProvider.jsx';
 
 function App() {
   // const path1 = window.location.pathname;
@@ -80,6 +81,7 @@ function App() {
 
   return (
     <body>
+      <UserContextProvider>
       <Routes>
         <Route path="/" element={<LogIn1 />} />
         <Route path="/user/signup" element={<SignUp />} />
@@ -125,6 +127,7 @@ function App() {
           }
         />
       </Routes>
+      </UserContextProvider>
     </body>
   );
 }

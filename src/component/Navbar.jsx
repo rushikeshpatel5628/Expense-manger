@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import UserContext from '../context/UserContext';
 
 export const Navbar = ({ selectedLink }) => {
+  const { setUser } = useContext(UserContext);
+
+  const { user } = useContext(UserContext);
+  console.log(user);
   return (
     <nav
       className="navbar navbar-expand-lg"
@@ -94,11 +99,18 @@ export const Navbar = ({ selectedLink }) => {
               >
                 <div className="media align-items-center">
                   <span className="avatar avatar-sm">
-                    <img alt="Image placeholder" src="https://www.wikiwrimo.org/w/images/Example.jpg"  width={35} height={35} className='rounded-circle'/>
+                    <img
+                      alt="Image placeholder"
+                      // src={user.profile}
+                      src=""
+                      width={35}
+                      height={35}
+                      className="rounded-circle"
+                    />
                   </span>
                   <div className="media-body  ml-2  d-none d-lg-block">
                     <span className="mb-0 text-sm  font-weight-bold">
-                      John Snow
+                      {/* {user.firstName} {user.lastName} */}
                     </span>
                   </div>
                 </div>
@@ -107,7 +119,7 @@ export const Navbar = ({ selectedLink }) => {
                 {/* <div className="dropdown-header noti-title">
                   <h6 className="text-overflow m-0">Welcome!</h6>
                 </div> */}
-                <Link to={"/user/profile"} className="dropdown-item">
+                <Link to={'/user/profile'} className="dropdown-item">
                   <i className="ni ni-single-02" />
                   <span>My profile</span>
                 </Link>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   Avatar,
@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
+import UserContext from '../../context/UserContext';
 
 export const UserProfile = () => {
   const userId = localStorage.getItem('userId');
@@ -21,10 +22,16 @@ export const UserProfile = () => {
       profilePicture: '',
     },
   });
+
+  const { setUser } = useContext(UserContext);
+
   // const [password, setpassword] = useState("");
   // const [role, setrole] = useState("")
   const [loading, setLoading] = useState(false);
   const [pic, setPic] = useState('');
+  // const [firstName, setfirstName] = useState(null);
+  // const [lastName, setlastName] = useState(null);
+  // const [profile, setprofile] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -39,6 +46,17 @@ export const UserProfile = () => {
         setValue('email', userData.email);
         setValue('profilePicture', userData.profilePicture);
         setPic(userData.profilePicture);
+        // setfirstName(userData.firstName)
+        // setlastName(userData.lastName)
+        // setprofile(userData.profilePicture)
+        // console.log(firstName, lastName, profile)
+        // setUser({firstName, lastName, profile})
+        localStorage.setItem('userData', JSON.stringify(userData));
+        setUser({
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          profile: userData.profilePicture,
+        });
         // setpassword(res.data.data.password)
         // setrole(res.data.data.role._id)
       } catch (error) {
@@ -49,13 +67,17 @@ export const UserProfile = () => {
     fetchUserData();
   }, [setValue, userId]);
 
-  // const [selectedFile, setSelectedFile] = useState(null);
-
-  // const handleFileChange = (event) => {
-  //   const file = event.target.files[0];
-  //   console.log("Selected file:", file);
-  //   setSelectedFile(file);
-  // };
+  useEffect(() => {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      const userData = JSON.parse(storedUserData);
+      setUser({
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        profile: userData.profilePicture,
+      });
+    }
+  }, [setUser]);
 
   const onSubmit = async data => {
     try {
@@ -74,7 +96,7 @@ export const UserProfile = () => {
       } else {
         formData.append('profilePicture', data.profilePicture[0]);
       }
-      console.log("form data", formData)
+      console.log('form data', formData);
       // formData.append('myImage', selectedFile);
       // formData.append('password', password);
       // formData.append('role', role);
@@ -93,6 +115,12 @@ export const UserProfile = () => {
       setValue('email', updatedUserData.email);
       setValue('profilePicture', updatedUserData.profilePicture);
       setPic(updatedUserData.profilePicture);
+
+      setUser({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        profile: data.profilePicture[0] || pic, // Use the new profile picture if available, otherwise keep the existing one
+      });
 
       alert('User updated successfully!');
 
