@@ -89,9 +89,9 @@ function App() {
         <Route
           path="/*"
           element={
-            pathname === '/' ||
-            pathname === '/login' ||
-            pathname === '' ? null : (
+            pathname === '/' || pathname === '/login' || pathname === '' ? (
+              <LogIn1 />
+            ) : (
               <div className="wrapper">
                 <Sidebar onLinkSelect={handleLinkSelect} />
                 <div className="main-panel">
