@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
-
+import './Sidebar.css';
 export const Sidebar = ({ onLinkSelect }) => {
   const [selectedLink, setSelectedLink] = useState('');
 
@@ -77,7 +77,7 @@ export const Sidebar = ({ onLinkSelect }) => {
 
   Tip 2: you can also add an image using data-image tag
     */}
-      <div className="sidebar-wrapper">
+      <div className="sidebar-wrapper" style={{ overflowY: 'auto' }}>
         <div className="logo">
           <Link
             // to="/user/dashboard"
@@ -90,7 +90,7 @@ export const Sidebar = ({ onLinkSelect }) => {
         <ul className="nav">
           {userLinks.map(user => {
             return (
-              <li className="nav-item active">
+              <li className="nav-item active" key={user.name}>
                 <NavLink
                   className="nav-link"
                   to={user.link}
