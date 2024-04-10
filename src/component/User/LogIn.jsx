@@ -3,33 +3,29 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 
-
 export const LogIn = () => {
+  const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
 
-const {register, handleSubmit} = useForm();
-const navigate = useNavigate();
+  const submitHandler = async data => {
+    console.log('data...', data);
 
-
-const submitHandler = async(data) => {
-  console.log("data...", data);
-
-  try{
-
-        const res = await axios.post("http://localhost:5000/users/user/login", data)
-        console.log("data", res.data.data)
-        if(res.status === 200){
-          alert("login successfull")
-        }
-        localStorage.setItem("userId", res.data.data._id);
-        navigate('/user/dashboard')
-
-  } catch(error){
-    console.log("error", error)
-    alert('Invalid Email or password')
-    
-  }
-
-}
+    try {
+      const res = await axios.post(
+        'http://localhost:5000/users/user/login',
+        data
+      );
+      console.log('data', res.data.data);
+      if (res.status === 200) {
+        alert('login successfull');
+      }
+      localStorage.setItem('userId', res.data.data._id);
+      navigate('/user/dashboard');
+    } catch (error) {
+      console.log('error', error);
+      alert('Invalid Email or password');
+    }
+  };
 
   return (
     <>
@@ -45,7 +41,7 @@ const submitHandler = async(data) => {
                   className="form-control"
                   id="username"
                   name="username"
-                  {...register("email")}
+                  {...register('email')}
                 />
               </div>
               <div className="form-group">
@@ -55,14 +51,14 @@ const submitHandler = async(data) => {
                   className="form-control"
                   id="password"
                   name="password"
-                  {...register("password")}
+                  {...register('password')}
                 />
               </div>
               <div className="form-group">
                 <button type="submit" className="btn btn-primary btn-block">
                   Sign in
                 </button>
-              </div>  
+              </div>
               <p className="text-center">
                 Don't have an account? <Link to="/user/signup">Sign up</Link>
               </p>

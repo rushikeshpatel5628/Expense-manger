@@ -23,61 +23,29 @@ export const UserProfile = () => {
     },
   });
 
-  const { setUser } = useContext(UserContext);
-
-  // const [password, setpassword] = useState("");
-  // const [role, setrole] = useState("")
   const [loading, setLoading] = useState(false);
   const [pic, setPic] = useState('');
-  // const [firstName, setfirstName] = useState(null);
-  // const [lastName, setlastName] = useState(null);
-  // const [profile, setprofile] = useState(null);
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:5000/users/user/${userId}`
-        );
-        console.log(res.data.data);
-        const userData = res.data.data;
-        setValue('firstName', userData.firstName);
-        setValue('lastName', userData.lastName);
-        setValue('email', userData.email);
-        setValue('profilePicture', userData.profilePicture);
-        setPic(userData.profilePicture);
-        // setfirstName(userData.firstName)
-        // setlastName(userData.lastName)
-        // setprofile(userData.profilePicture)
-        // console.log(firstName, lastName, profile)
-        // setUser({firstName, lastName, profile})
-        localStorage.setItem('userData', JSON.stringify(userData));
-        setUser({
-          firstName: userData.firstName,
-          lastName: userData.lastName,
-          profile: userData.profilePicture,
-        });
-        // setpassword(res.data.data.password)
-        // setrole(res.data.data.role._id)
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
+  const { user, setUser } = useContext(UserContext);
 
-    fetchUserData();
-  }, [setValue, userId]);
-
-  useEffect(() => {
-    const storedUserData = localStorage.getItem('userData');
-    if (storedUserData) {
-      const userData = JSON.parse(storedUserData);
-      setUser({
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        profile: userData.profilePicture,
-      });
+  const fetchUserData = async () => {
+    try {
+      const res = await axios.get(`http://localhost:5000/users/user/${userId}`);
+      console.log(res.data.data);
+      const userData = res.data.data;
+      setValue('firstName', userData.firstName);
+      setValue('lastName', userData.lastName);
+      setValue('email', userData.email);
+      setValue('profilePicture', userData.profilePicture);
+      setPic(userData.profilePicture);
+      setUser(userData); // Set user data in the context
+    } catch (error) {
+      console.error('Error fetching user data:', error);
     }
-  }, [setUser]);
+  };
+  useEffect(() => {
+    fetchUserData();
+  }, [setValue, userId, setUser]);
 
   const onSubmit = async data => {
     try {
@@ -90,23 +58,22 @@ export const UserProfile = () => {
       formData.append('email', data.email);
       // formData.append("profilePicture", data.profilePicture[0]); // Assuming you're only allowing one profile picture
 
-      // Check if profile picture is empty and set it to current value if unchanged
-      if (!data.profilePicture[0]) {
-        formData.append('profilePicture', pic);
-      } else {
+      // Check if a new profile picture is provided
+      if (data.profilePicture[0]) {
         formData.append('profilePicture', data.profilePicture[0]);
+      } else {
+        // If no new profile picture provided, append the current profile picture
+        formData.append('profilePicture', user.profilePicture);
       }
-      console.log('form data', formData);
-      // formData.append('myImage', selectedFile);
-      // formData.append('password', password);
-      // formData.append('role', role);
 
       await axios.put('http://localhost:5000/users/user/' + userId, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
+      console.log('form data', formData);
 
+      fetchUserData();
       // Optionally, you can refresh the data after update
       const res = await axios.get('http://localhost:5000/users/user/' + userId);
       const updatedUserData = res.data.data;
@@ -115,12 +82,6 @@ export const UserProfile = () => {
       setValue('email', updatedUserData.email);
       setValue('profilePicture', updatedUserData.profilePicture);
       setPic(updatedUserData.profilePicture);
-
-      setUser({
-        firstName: data.firstName,
-        lastName: data.lastName,
-        profile: data.profilePicture[0] || pic, // Use the new profile picture if available, otherwise keep the existing one
-      });
 
       alert('User updated successfully!');
 
@@ -217,15 +178,6 @@ export const UserProfile = () => {
           label="Email Address"
           {...register('email')}
         />
-        {/* <TextField
-          variant="outlined"
-          margin="normal"
-          fullWidth
-          name="password"
-          label="Password"
-          type="password"
-          {...register('password')}
-        /> */}
         <Button
           type="submit"
           fullWidth

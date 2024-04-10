@@ -1,8 +1,10 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 
 export const Navbar = ({ selectedLink }) => {
+  const { setUser } = useContext(UserContext);
+
   const { user } = useContext(UserContext);
   console.log(user);
   return (
@@ -99,8 +101,8 @@ export const Navbar = ({ selectedLink }) => {
                   <span className="avatar avatar-sm">
                     <img
                       alt="Image placeholder"
-                      src={user.profilePicture}
-                      // src=""
+                      // src={user.profile}
+                      src=""
                       width={35}
                       height={35}
                       className="rounded-circle"
@@ -108,15 +110,15 @@ export const Navbar = ({ selectedLink }) => {
                   </span>
                   <div className="media-body  ml-2  d-none d-lg-block">
                     <span className="mb-0 text-sm  font-weight-bold">
-                      {user.firstName} {user.lastName}
+                      {/* {user.firstName} {user.lastName} */}
                     </span>
                   </div>
                 </div>
               </a>
               <div className="dropdown-menu dropdown-menu-right">
                 {/* <div className="dropdown-header noti-title">
-                  <h6 className="text-overflow m-0">Welcome!</h6>
-                </div> */}
+              <h6 className="text-overflow m-0">Welcome!</h6>
+            </div> */}
                 <Link to={'/user/profile'} className="dropdown-item">
                   <i className="ni ni-single-02" />
                   <span>My profile</span>

@@ -81,7 +81,6 @@ function App() {
 
   return (
     <body>
-      <UserContextProvider>
       <Routes>
         <Route path="/" element={<LogIn1 />} />
         <Route path="/user/signup" element={<SignUp />} />
@@ -100,24 +99,51 @@ function App() {
                   <div className="content">
                     <Routes>
                       <Route element={<ProtectedRoutes />}>
-                        <Route path="/user/dashboard" element={<UserDashBoard />} />
+                        <Route
+                          path="/user/dashboard"
+                          element={<UserDashBoard />}
+                        />
                         <Route path="/user/expenses" element={<Expenses />} />
                         <Route path="/expense/form" element={<AddExpense />} />
-                        <Route path="/expense/update/:id" element={<UpdateExpense />} />
+                        <Route
+                          path="/expense/update/:id"
+                          element={<UpdateExpense />}
+                        />
                         <Route path="/user/goal" element={<Goals />} />
                         <Route path="/goal/add" element={<AddGoal />} />{' '}
-                        <Route path="/goal/expenses/:id" element={<GoalExpenses />} />{' '}
+                        <Route
+                          path="/goal/expenses/:id"
+                          element={<GoalExpenses />}
+                        />{' '}
                         <Route path="/user/charts" element={<Charts />} />
                         <Route path="/user/charts2" element={<Charts2 />} />
                         <Route path="/user/charts3" element={<Chart3 />} />
                         <Route path="/user/profile" element={<UserProfile />} />
                         <Route path="/user/groups" element={<Groups />} />
-                        <Route path="/user/groups2" element={<GroupListPage />} />
-                        <Route path="/group-details/:id" element={<GroupDetailsPage />} />
-                        <Route path="/group/expenses/:groupid/" element={<GroupExpense />} />
-                        <Route path="/addgroupexp/:groupid" element={<AddGroupExpense />} />
-                        <Route path="/groupexp/update/:groupid/:expenseid" element={<UpdateGroupExpense />} />
-                        <Route path="/user/payee" element={<CategoryManage />} />
+                        <Route
+                          path="/user/groups2"
+                          element={<GroupListPage />}
+                        />
+                        <Route
+                          path="/group-details/:id"
+                          element={<GroupDetailsPage />}
+                        />
+                        <Route
+                          path="/group/expenses/:groupid/"
+                          element={<GroupExpense />}
+                        />
+                        <Route
+                          path="/addgroupexp/:groupid"
+                          element={<AddGroupExpense />}
+                        />
+                        <Route
+                          path="/groupexp/update/:groupid/:expenseid"
+                          element={<UpdateGroupExpense />}
+                        />
+                        <Route
+                          path="/user/payee"
+                          element={<CategoryManage />}
+                        />
                       </Route>
                     </Routes>
                   </div>
@@ -127,7 +153,6 @@ function App() {
           }
         />
       </Routes>
-      </UserContextProvider>
     </body>
   );
 }
