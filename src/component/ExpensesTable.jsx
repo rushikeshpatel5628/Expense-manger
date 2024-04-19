@@ -25,9 +25,6 @@ import autoTable from 'jspdf-autotable';
 import IosShareIcon from '@mui/icons-material/IosShare';
 import { Margin } from '@mui/icons-material';
 
-
-
-
 function Row({ row, onDelete }) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -78,7 +75,7 @@ function Row({ row, onDelete }) {
         </TableCell>
         <TableCell component="th" scope="row">
           {/* {row.payee?.payeeName} */}
-          {row.payee == null ? "[DELETED]" : row.payee.payeeName}
+          {row.payee == null ? '[DELETED]' : row.payee.payeeName}
         </TableCell>
         <TableCell align="right">
           {row.transactionType === 'income' ? (
@@ -119,7 +116,9 @@ function Row({ row, onDelete }) {
                   <TableRow>
                     <TableCell component="th" scope="row">
                       {/* {row.category.categoryName} */}
-                      {row.category == null ? "[DELETED]" : row.category.categoryName}
+                      {row.category == null
+                        ? '[DELETED]'
+                        : row.category.categoryName}
                     </TableCell>
                     {/* <TableCell>{row.subcategory.SubCategoryName}</TableCell> */}
                     <TableCell align="right">{row.status}</TableCell>
@@ -141,22 +140,22 @@ Row.propTypes = {
   onDelete: PropTypes.func.isRequired,
 };
 
-export default function ExpensesTable({query}) {
+export default function ExpensesTable({ query }) {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [categories, setcategories] = useState([])
+  const [categories, setcategories] = useState([]);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const userId = localStorage.getItem('userId');
 
-  const loadAllCategories = async()=> {
+  const loadAllCategories = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/usercategory/category/user/"+userId);
-      setcategories(res.data.data)
-    } catch (error) {
-      
-    }
-  }
+      const res = await axios.get(
+        'http://localhost:5000/usercategory/category/user/' + userId
+      );
+      setcategories(res.data.data);
+    } catch (error) {}
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -181,7 +180,7 @@ export default function ExpensesTable({query}) {
       }
     };
     fetchData();
-    loadAllCategories()
+    loadAllCategories();
     console.log('rows....', rows);
   }, []);
 
@@ -204,10 +203,12 @@ export default function ExpensesTable({query}) {
     setSelectedCategory(event.target.value);
   };
 
-
   const filteredRows = rows.filter(row => {
     if (selectedPaymentMethod && selectedCategory) {
-      return row.paymentMethod === selectedPaymentMethod && row.category.categoryName === selectedCategory;
+      return (
+        row.paymentMethod === selectedPaymentMethod &&
+        row.category.categoryName === selectedCategory
+      );
     } else if (selectedPaymentMethod) {
       return row.paymentMethod === selectedPaymentMethod;
     } else if (selectedCategory) {
@@ -218,10 +219,8 @@ export default function ExpensesTable({query}) {
   });
 
   useEffect(() => {
-    console.log("filtered rows....", filteredRows);
+    console.log('filtered rows....', filteredRows);
   }, [selectedPaymentMethod, selectedCategory]);
-  
-
 
   const generatePDF = () => {
     const doc = new jsPDF({
@@ -231,7 +230,7 @@ export default function ExpensesTable({query}) {
 
     const tableData = rows.map(row => {
       const fontColor = row.transactionType === 'income' ? 'green' : 'red';
-        const payee = row.payee == null ? "[DELETED]" : row.payee.payeeName;
+      const payee = row.payee == null ? '[DELETED]' : row.payee.payeeName;
       return [
         row.title,
         payee,
@@ -302,14 +301,13 @@ export default function ExpensesTable({query}) {
         theme="colored"
       />
 
-
-<Box sx={{ marginBottom: 2 }}>
+      <Box sx={{ marginBottom: 2, display: 'flex', alignItems: 'center' }}>
         <Select
           value={selectedPaymentMethod}
           onChange={handlePaymentMethodChange}
           displayEmpty
           variant="outlined"
-          size='small'
+          size="small"
           style={{ marginRight: '20px' }}
         >
           <MenuItem value="">All Payment Methods</MenuItem>
@@ -322,21 +320,21 @@ export default function ExpensesTable({query}) {
           value={selectedCategory}
           onChange={handleCategoryChange}
           displayEmpty
-          size='small'
+          size="small"
           variant="outlined"
         >
           <MenuItem value="">All Categories</MenuItem>
           {/* Populate categories dynamically */}
           {categories.map(category => (
-            <MenuItem key={category._id} value={category.categoryName}>{category.categoryName}</MenuItem>
+            <MenuItem key={category._id} value={category.categoryName}>
+              {category.categoryName}
+            </MenuItem>
           ))}
         </Select>
+        <Button onClick={generatePDF} sx={{ marginRight: '20px' }}>
+          <IosShareIcon sx={{ fontSize: '30px' }} color="black" />
+        </Button>
       </Box>
-
-
-
-
-
 
       <Table aria-label="collapsible table">
         <TableHead>
@@ -359,16 +357,20 @@ export default function ExpensesTable({query}) {
             .map((row, index) => (
               <Row key={index} row={row} onDelete={handleDelete} />
             ))} */}
-             {currentRows
-            .filter(row => (query ? row.title.toLowerCase().includes(query.toLowerCase()) : true))
+          {currentRows
+            .filter(row =>
+              query
+                ? row.title.toLowerCase().includes(query.toLowerCase())
+                : true
+            )
             .map((row, index) => (
               <Row key={index} row={row} onDelete={handleDelete} />
             ))}
         </TableBody>
       </Table>
-      <Button onClick={generatePDF} sx={{ top: '15px' }}>
+      {/* <Button onClick={generatePDF} sx={{ top: '15px' }}>
         <IosShareIcon sx={{ fontSize: '30px' }} color="black" />
-      </Button>
+      </Button> */}
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
@@ -377,7 +379,6 @@ export default function ExpensesTable({query}) {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-        
       />
     </TableContainer>
   );

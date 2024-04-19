@@ -16,10 +16,14 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 
-
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
         Your Website
@@ -35,27 +39,24 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+  const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
 
-   const {register, handleSubmit} = useForm();
-   const navigate = useNavigate();
-
-  const submitHandler = async(data) => {
-
-
-    console.log("data....", data);
+  const submitHandler = async data => {
+    console.log('data....', data);
 
     // Role
-    const role = "65c8720cbc413796422aefcd";
+    const role = '65c8720cbc413796422aefcd';
     data.role = role;
 
-    try{
-        const res = await axios.post("http://localhost:5000/users/user", data);
-        if(res.status === 200){
-            alert("Profile created");
-        }
-        navigate("/");
-    }catch(error){
-        alert("error in creating user");
+    try {
+      const res = await axios.post('http://localhost:5000/users/user', data);
+      if (res.status === 200) {
+        alert('Profile created');
+      }
+      navigate('/');
+    } catch (error) {
+      alert('error in creating user');
     }
   };
 
@@ -77,7 +78,12 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit(submitHandler)} sx={{ mt: 3 }}>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit(submitHandler)}
+            sx={{ mt: 3 }}
+          >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -125,7 +131,6 @@ export default function SignUp() {
                   {...register('password')}
                 />
               </Grid>
-              
             </Grid>
             <Button
               type="submit"
@@ -137,7 +142,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/" variant="body2">
+                <Link href="/user/login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>

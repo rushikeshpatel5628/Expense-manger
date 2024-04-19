@@ -5,6 +5,9 @@ import UserContext from '../context/UserContext';
 export const Navbar = ({ selectedLink }) => {
   const { user } = useContext(UserContext);
   console.log(user);
+  const handleLogout = () => {
+    localStorage.removeItem('userId');
+  };
   return (
     <nav
       className="navbar navbar-expand-lg"
@@ -124,7 +127,7 @@ export const Navbar = ({ selectedLink }) => {
                 <div className="dropdown-divider" />
                 <a href="#!" className="dropdown-item">
                   <i className="ni ni-user-run" />
-                  <span>Logout</span>
+                  <span onClick={handleLogout}>Logout</span>
                 </a>
               </div>
             </li>

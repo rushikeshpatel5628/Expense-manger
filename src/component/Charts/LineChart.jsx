@@ -50,11 +50,11 @@
 //   const prepareChartData = () => {
 //     // Sort transactions by date
 //     const sortedTransactions = transactions.sort((a, b) => new Date(a.expDateTime) - new Date(b.expDateTime));
-  
+
 //     const incomeData = [];
 //     const expenseData = [];
 //     const labels = [];
-  
+
 //     sortedTransactions.forEach((transaction) => {
 //       labels.push(transaction.expDateTime);
 //       if (transaction.transactionType === 'income') {
@@ -65,7 +65,7 @@
 //         expenseData.push(transaction.amount);
 //       }
 //     });
-  
+
 //     return {
 //       labels,
 //       incomeData,
@@ -76,19 +76,19 @@
 //   // const prepareChartData = () => {
 //   //   // Sort transactions by date
 //   //   const sortedTransactions = transactions.sort((a, b) => new Date(a.expDateTime) - new Date(b.expDateTime));
-    
+
 //   //   const incomeData = [];
 //   //   const expenseData = [];
 //   //   const labels = [];
-    
+
 //   //   sortedTransactions.forEach((transaction) => {
 //   //     // Parse the date string into a JavaScript Date object
 //   //     const date = new Date(transaction.expDateTime);
 //   //     // Format the date as a string to display on the chart
 //   //     const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-      
+
 //   //     labels.push(formattedDate);
-      
+
 //   //     if (transaction.transactionType === 'income') {
 //   //       incomeData.push(transaction.amount);
 //   //       expenseData.push(null);
@@ -97,15 +97,13 @@
 //   //       expenseData.push(transaction.amount);
 //   //     }
 //   //   });
-    
+
 //   //   return {
 //   //     labels,
 //   //     incomeData,
 //   //     expenseData,
 //   //   };
 //   // };
-  
-  
 
 //   console.log('labels', prepareChartData().labels);
 //   console.log('income data', prepareChartData().incomeData);
@@ -173,7 +171,6 @@
 
 // export default LineChart;
 
-
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import axios from 'axios';
@@ -182,7 +179,7 @@ import 'chartjs-adapter-moment';
 
 const LineChart = () => {
   const [transactions, setTransactions] = useState([]);
-  const [chartType, setChartType] = useState('income'); // Default chart type is income
+  const [chartType, setChartType] = useState('expense'); // Default chart type is income
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -203,12 +200,14 @@ const LineChart = () => {
   }, []);
 
   const prepareChartData = () => {
-    const sortedTransactions = transactions.sort((a, b) => new Date(a.expDateTime) - new Date(b.expDateTime));
+    const sortedTransactions = transactions.sort(
+      (a, b) => new Date(a.expDateTime) - new Date(b.expDateTime)
+    );
     const incomeData = [];
     const expenseData = [];
     const labels = [];
 
-    sortedTransactions.forEach((transaction) => {
+    sortedTransactions.forEach(transaction => {
       labels.push(transaction.expDateTime);
       if (transaction.transactionType === 'income') {
         incomeData.push(transaction.amount);
@@ -226,7 +225,7 @@ const LineChart = () => {
     };
   };
 
-  const handleChartTypeChange = (event) => {
+  const handleChartTypeChange = event => {
     setChartType(event.target.value);
   };
 
@@ -283,13 +282,12 @@ const LineChart = () => {
   return (
     <div>
       <div>
-       
         <Select
           value={chartType}
           onChange={handleChartTypeChange}
           displayEmpty
           variant="outlined"
-          size='small'
+          size="small"
           style={{ marginRight: '20px', height: '30px' }}
         >
           <MenuItem value="income">Income</MenuItem>

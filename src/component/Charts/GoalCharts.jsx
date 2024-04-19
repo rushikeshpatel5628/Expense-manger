@@ -10,8 +10,11 @@ export const GoalCharts = () => {
   const [error, setError] = useState('');
 
   const getAllGoals = async (req, res) => {
+    const userId = localStorage.getItem('userId');
     try {
-      const res = await axios.get('http://localhost:5000/goals/goal');
+      const res = await axios.get(
+        'http://localhost:5000/goals/goals/' + userId
+      );
       setGoals(res.data.data);
       //   console.log('Goals....', goals);
 

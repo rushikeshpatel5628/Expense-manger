@@ -33,6 +33,8 @@ import { ResetPassword } from './component/User/ResetPassword.jsx';
 import { PayeeManage } from './component/User/PayeeManage.jsx';
 import { CategoryManage } from './component/User/CategoryManage.jsx';
 import UserContextProvider from './context/UserContextProvider.jsx';
+import { LandingPage } from './component/LandingPage.jsx';
+import { Landing1 } from './component/Landing1.jsx';
 
 function App() {
   // const path1 = window.location.pathname;
@@ -82,10 +84,13 @@ function App() {
   return (
     <body>
       <Routes>
-        <Route path="/" element={<LogIn1 />} />
+        <Route path="/" element={<Landing1 />} />
         <Route path="/user/signup" element={<SignUp />} />
+        <Route path="/user/login" element={<LogIn1 />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
+        {/* <Route path="/user/landing" element={<Landing1 />} /> */}
+
         <Route
           path="/*"
           element={
