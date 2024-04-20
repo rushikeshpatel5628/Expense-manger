@@ -33,7 +33,9 @@ export default function GoalList({ reloadGoals }) {
 
   const getGoals = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/goals/goals/'+userId);
+      const res = await axios.get(
+        'http://localhost:5000/goals/goals/' + userId
+      );
       console.log(res.data.data);
       setRows(res.data.data);
     } catch (error) {
@@ -52,6 +54,8 @@ export default function GoalList({ reloadGoals }) {
   };
 
   const handleTransactionClick = id => {
+    // localStorage.setItem('GoalID', id);
+    // navigate('/goal/expenses/');
     navigate(`/goal/expenses/${id}`);
   };
 
@@ -81,18 +85,27 @@ export default function GoalList({ reloadGoals }) {
             </TableRow>
           </TableHead>
           <TableBody>
-          {rows.map(row => {
+            {rows.map(row => {
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
                   {columns.map(column => (
                     <TableCell key={column.id} align="left">
-                      {column.id === 'startdate' || column.id === 'enddate' ? formatDate(row[column.id]) : row[column.id]}
+                      {column.id === 'startdate' || column.id === 'enddate'
+                        ? formatDate(row[column.id])
+                        : row[column.id]}
                     </TableCell>
                   ))}
-                  <IconButton aria-label="transaction" onClick={() => handleTransactionClick(row._id)} color="primary">
+                  <IconButton
+                    aria-label="transaction"
+                    onClick={() => handleTransactionClick(row._id)}
+                    color="primary"
+                  >
                     <TransactionIcon />
                   </IconButton>
-                  <IconButton aria-label="delete" onClick={() => deleteGoal(row._id)}>
+                  <IconButton
+                    aria-label="delete"
+                    onClick={() => deleteGoal(row._id)}
+                  >
                     <DeleteIcon />
                   </IconButton>
                 </TableRow>

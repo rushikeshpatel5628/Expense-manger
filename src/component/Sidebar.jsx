@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import './Sidebar.css';
+import LogoutIcon from '@mui/icons-material/Logout';
+import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
+
 export const Sidebar = ({ onLinkSelect }) => {
   const [selectedLink, setSelectedLink] = useState('');
+  const navigate = useNavigate();
 
   const userLinks = [
     {
@@ -16,11 +20,11 @@ export const Sidebar = ({ onLinkSelect }) => {
       link: '/user/expenses',
       icon: 'nc-icon nc-money-coins',
     },
-    {
-      name: 'Category',
-      link: '/user/category',
-      icon: 'nc-icon nc-layers-3',
-    },
+    // {
+    //   name: 'Category',
+    //   link: '/user/category',
+    //   icon: 'nc-icon nc-layers-3',
+    // },
     {
       name: 'Add Expense',
       link: '/expense/form',
@@ -29,40 +33,49 @@ export const Sidebar = ({ onLinkSelect }) => {
     {
       name: 'Goal',
       link: '/user/goal',
+      icon: 'nc-icon nc-bullet-list-67',
+    },
+    // {
+    //   name: 'Charts',
+    //   link: 'user/charts',
+    // },
+    // {
+    //   name: 'Charts 2',
+    //   link: 'user/charts2',
+    // },
+    // {
+    //   name: 'Charts 3',
+    //   link: 'user/charts3',
+    // },
+    {
+      name: 'Groups',
+      link: 'user/groups',
+      icon: <PeopleAltOutlinedIcon />,
     },
     {
       name: 'Profile',
       link: '/user/profile',
+      icon: 'nc-icon nc-circle-09',
     },
-    {
-      name: 'Charts',
-      link: 'user/charts',
-    },
-    {
-      name: 'Charts 2',
-      link: 'user/charts2',
-    },
-    {
-      name: 'Charts 3',
-      link: 'user/charts3',
-    },
-    {
-      name: 'Groups',
-      link: 'user/groups',
-    },
-    {
-      name: 'Groups 2',
-      link: 'user/groups2',
-    },
-    {
-      name: 'Payees',
-      link: 'user/payee',
-    },
+    // {
+    //   name: 'Groups 2',
+    //   link: 'user/groups2',
+    // },
+    // {
+    //   name: 'Payees',
+    //   link: 'user/payee',
+    // },
   ];
 
   const handleLinkClick = name => {
     setSelectedLink(name);
     onLinkSelect(name);
+  };
+
+  const handleLogout = () => {
+    // navigate('/user/login');
+    navigate('/');
+    localStorage.removeItem('userId');
   };
 
   return (
@@ -97,12 +110,27 @@ export const Sidebar = ({ onLinkSelect }) => {
                   activeClassName="active-link"
                   onClick={() => handleLinkClick(user.name)}
                 >
-                  <i className={user.icon} />
+                  {typeof user.icon === 'string' ? (
+                    <i className={user.icon} />
+                  ) : (
+                    <span style={{ marginLeft: '5px', marginRight: '13px' }}>
+                      {user.icon}
+                    </span>
+                  )}
                   <p>{user.name}</p>
                 </NavLink>
               </li>
             );
           })}
+          <li
+            className="nav-item active active-pro"
+            onClick={() => handleLogout()}
+          >
+            <a className="nav-link active" style={{ cursor: 'pointer' }}>
+              <LogoutIcon />
+              <span className="ml-2">Logout</span>{' '}
+            </a>
+          </li>
         </ul>
       </div>
       <div

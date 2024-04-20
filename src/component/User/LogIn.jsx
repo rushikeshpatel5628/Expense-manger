@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -26,6 +26,10 @@ export const LogIn = () => {
       alert('Invalid Email or password');
     }
   };
+
+  useEffect(() => {
+    window.location.reload();
+  }, []);
 
   return (
     <>

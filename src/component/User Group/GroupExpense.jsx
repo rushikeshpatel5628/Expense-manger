@@ -16,6 +16,7 @@ export const GroupExpense = () => {
   const [data, setdata] = useState([]);
   const [open, setopen] = useState(false);
   const navigate = useNavigate();
+  // const groupid = localStorage.getItem('GroupID');
 
   console.log('groupid....', groupid);
 

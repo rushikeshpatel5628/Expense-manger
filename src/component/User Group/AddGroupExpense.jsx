@@ -49,7 +49,7 @@ export const AddGroupExpense = () => {
           theme: 'light',
         });
         setTimeout(() => {
-          navigate('/group/expenses/' + groupid);
+          navigate('/group/expenses/${groupid}');
         }, 2000);
       } else {
         alert('Data not posted');

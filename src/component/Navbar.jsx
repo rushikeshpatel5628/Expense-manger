@@ -1,11 +1,14 @@
 import React, { useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 
 export const Navbar = ({ selectedLink }) => {
   const { user } = useContext(UserContext);
   console.log(user);
+  const navigate = useNavigate();
   const handleLogout = () => {
+    // navigate('/user/login');
+    navigate('/');
     localStorage.removeItem('userId');
   };
   return (
@@ -125,9 +128,9 @@ export const Navbar = ({ selectedLink }) => {
                   <span>My profile</span>
                 </Link>
                 <div className="dropdown-divider" />
-                <a href="#!" className="dropdown-item">
+                <a href="" className="dropdown-item">
                   <i className="ni ni-user-run" />
-                  <span onClick={handleLogout}>Logout</span>
+                  <span onClick={() => handleLogout()}>Logout</span>
                 </a>
               </div>
             </li>

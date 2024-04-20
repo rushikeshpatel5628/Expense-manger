@@ -134,7 +134,6 @@ function HeroSection() {
 
   const RightContent = (
     <Grid
-      sx={{ flexGrow: 1 }}
       item
       container
       md={6}

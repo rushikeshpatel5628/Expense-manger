@@ -7,6 +7,7 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 export const Goals = () => {
   const [open, setopen] = useState(false);
@@ -36,7 +37,8 @@ export const Goals = () => {
     try {
       const res = await axios.post('http://localhost:5000/goals/goal', data);
       if (res.status === 201) {
-        alert('data posted');
+        // alert('data posted');
+
         handleCloseModal();
         setReloadGoals(!reloadGoals);
       }
@@ -48,7 +50,9 @@ export const Goals = () => {
   useEffect(() => {
     const getGoals = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/goals/goals/' + userId);
+        const res = await axios.get(
+          'http://localhost:5000/goals/goals/' + userId
+        );
         setReloadGoals(false); // Reset reloadGoals state
       } catch (error) {
         console.error('Error fetching goals:', error);
@@ -74,7 +78,7 @@ export const Goals = () => {
               </Button>
             </div>
             <div className="card-body">
-              <GoalList reloadGoals={reloadGoals}/>
+              <GoalList reloadGoals={reloadGoals} />
             </div>
           </div>
         </div>
@@ -95,10 +99,10 @@ export const Goals = () => {
           <h2>Add Goal</h2>
           <form onSubmit={handleSubmit(submitHandler)}>
             <TextField
-             variant='standard'
-             InputLabelProps={{
-              shrink: true,
-            }}
+              variant="standard"
+              InputLabelProps={{
+                shrink: true,
+              }}
               fullWidth
               margin="normal"
               label="Goal Name"
@@ -106,10 +110,10 @@ export const Goals = () => {
               {...register('goalName')}
             />
             <TextField
-             variant='standard'
-             InputLabelProps={{
-              shrink: true,
-            }}
+              variant="standard"
+              InputLabelProps={{
+                shrink: true,
+              }}
               fullWidth
               margin="normal"
               label="Start Date"
@@ -118,10 +122,10 @@ export const Goals = () => {
               {...register('startdate')}
             />
             <TextField
-             variant='standard'
-             InputLabelProps={{
-              shrink: true,
-            }}
+              variant="standard"
+              InputLabelProps={{
+                shrink: true,
+              }}
               fullWidth
               margin="normal"
               label="End Date"
@@ -130,10 +134,10 @@ export const Goals = () => {
               {...register('enddate')}
             />
             <TextField
-             variant='standard'
-             InputLabelProps={{
-              shrink: true,
-            }}
+              variant="standard"
+              InputLabelProps={{
+                shrink: true,
+              }}
               fullWidth
               margin="normal"
               label="Maximum Amount"

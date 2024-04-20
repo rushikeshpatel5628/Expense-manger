@@ -14,7 +14,6 @@ import { ProtectedRoutes } from './hooks/ProtectedRoutes.js';
 import { useState } from 'react';
 import SignUp from './component/User/SignUp.jsx';
 import GoalList from './component/Goal/GoalList.jsx';
-import { AddGoal } from './component/Goal/AddGoal.jsx';
 import { Goals } from './component/Goal/Goals.jsx';
 import { GoalExpenses } from './component/Goal/GoalExpenses.jsx';
 import { LogIn1 } from './component/User/LogIn1.jsx';
@@ -115,7 +114,6 @@ function App() {
                           element={<UpdateExpense />}
                         />
                         <Route path="/user/goal" element={<Goals />} />
-                        <Route path="/goal/add" element={<AddGoal />} />{' '}
                         <Route
                           path="/goal/expenses/:id"
                           element={<GoalExpenses />}

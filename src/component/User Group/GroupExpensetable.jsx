@@ -34,15 +34,15 @@ function Row({ row, onDelete, groupId }) {
     } else {
       // toast.error('You are not authorized to edit this expense.');
       toast.info('You are not authorized to edit this expense.', {
-        position: "top-center",
+        position: 'top-center',
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "light",
-        });
+        theme: 'light',
+      });
     }
   };
 
@@ -54,15 +54,15 @@ function Row({ row, onDelete, groupId }) {
       onDelete(row._id);
       // alert('Expense deleted....');
       toast.success('Expense deleted', {
-        position: "top-center",
+        position: 'top-center',
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "light",
-        });
+        theme: 'light',
+      });
     } catch (error) {
       console.error('Error deleting transaction:', error);
     }
@@ -73,7 +73,7 @@ function Row({ row, onDelete, groupId }) {
     const date = new Date(dateString);
     const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
     return date.toLocaleDateString('en-US', options);
-};
+  };
 
   return (
     <React.Fragment>
@@ -157,7 +157,7 @@ Row.propTypes = {
 export const GroupExpensetable = ({ groupid }) => {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
-  const userId = localStorage.getItem('userId');
+  // const groupID = localStorage.getItem('GroupID');
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -184,8 +184,6 @@ export const GroupExpensetable = ({ groupid }) => {
   useEffect(() => {
     console.log('rows....', rows);
   }, [rows]);
-
-  
 
   const handleDelete = deletedId => {
     setRows(rows.filter(row => row._id !== deletedId));

@@ -16,7 +16,7 @@ import DialogActions from '@mui/material/DialogActions';
 import { useForm } from 'react-hook-form';
 import { DonutChartPaymentType } from './Charts/DonutChartPaymentType';
 import { CategoryManage } from './User/CategoryManage';
-
+import RUPEES from './assets/img/currency_rupee_sign.png';
 
 export const UserDashBoard = () => {
   const [income, setIncome] = useState(0);
@@ -29,7 +29,6 @@ export const UserDashBoard = () => {
   const [selectedGoal, setSelectedGoal] = useState('');
   const [payees, setPayees] = useState([]);
   const userId = localStorage.getItem('userId');
-
 
   const getIncome = async () => {
     const res = await axios.get('http://localhost:5000/transactions/income');
@@ -186,10 +185,9 @@ export const UserDashBoard = () => {
     }
   };
 
-
   // For payee
   const [open, setOpen] = useState(false);
-  const {register, handleSubmit, reset} = useForm()
+  const { register, handleSubmit, reset } = useForm();
 
   const handleOpen = () => {
     setOpen(true);
@@ -215,11 +213,9 @@ export const UserDashBoard = () => {
     loadPayee();
   }, []);
 
-  const updatePayees = (newPayees) => {
+  const updatePayees = newPayees => {
     setPayees(newPayees);
   };
-
-  
 
   return (
     <div className="container-fluid">
@@ -264,8 +260,8 @@ export const UserDashBoard = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-md-4" >
-                <img src="expense/spending-1.png" alt="image" />
+              <div className="col-md-4">
+                <img src={RUPEES} alt="image" />
               </div>
             </div>
           </div>
@@ -326,7 +322,7 @@ export const UserDashBoard = () => {
                     </div>
                     <div class="col-md-12 card-body">
                       <p style={{ color: 'blue' }}>
-                        {goalExpenses[goalId].amount}{' '}/{' '}
+                        {goalExpenses[goalId].amount} /{' '}
                         {goalExpenses[goalId].maxamount}
                       </p>
                     </div>
@@ -388,12 +384,12 @@ export const UserDashBoard = () => {
       <div className="row mt-4 ">
         <div className="col-md-4">
           <div className="card ">
-            <PayeeManage/>
+            <PayeeManage />
           </div>
         </div>
         <div className="col-md-4">
           <div className="card ">
-            <CategoryManage/>
+            <CategoryManage />
           </div>
         </div>
         <div className="col-md-4">
@@ -402,13 +398,12 @@ export const UserDashBoard = () => {
               <h4 className="card-title">Payment Type Distribution</h4>
               <p className="card-category">24 Hours performance</p>
             </div>
-            <div className="card-body" style={{margin: '0px auto'}}>
-              <DonutChartPaymentType/>
+            <div className="card-body" style={{ margin: '0px auto' }}>
+              <DonutChartPaymentType />
             </div>
           </div>
         </div>
       </div>
-    
     </div>
   );
 };

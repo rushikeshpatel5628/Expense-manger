@@ -29,6 +29,12 @@ function Row({ row, onDelete }) {
     navigate(`/expense/update/${row._id}`);
   };
 
+  const formatDate = dateString => {
+    const date = new Date(dateString);
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+  };
+
   const handleDelete = async () => {
     try {
       // Send DELETE request to delete the transaction
@@ -78,7 +84,7 @@ function Row({ row, onDelete }) {
             <span style={{ color: 'red' }}>-{row.amount}</span>
           )}
         </TableCell>
-        <TableCell align="right">{row.expDateTime}</TableCell>
+        <TableCell align="right">{formatDate(row.expDateTime)}</TableCell>
         <TableCell align="right">{row.paymentMethod}</TableCell>
         <TableCell align="right">
           <IconButton aria-label="edit" onClick={handleEdit}>
@@ -133,7 +139,9 @@ Row.propTypes = {
 
 export const GoalExpenses = () => {
   const [rows, setRows] = useState([]);
-  const id = useParams().id
+  const [title, setTitle] = useState('');
+  // const goalID = localStorage.getItem('GoalID');
+  const id = useParams().id;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -150,7 +158,17 @@ export const GoalExpenses = () => {
         console.error('Error fetching data:', error);
       }
     };
+    const getGoalById = async () => {
+      try {
+        const response = await axios.get(
+          'http://localhost:5000/goals/goal/' + id
+        );
+        console.log('Goal Name', response.data.data.goalName);
+        setTitle(response.data.data.goalName);
+      } catch (error) {}
+    };
     fetchData();
+    getGoalById();
   }, []);
 
   const handleDelete = deletedId => {
@@ -158,37 +176,50 @@ export const GoalExpenses = () => {
   };
 
   return (
-    <TableContainer component={Paper}>
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
-      <Table aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            <TableCell />
-            <TableCell>Title</TableCell>
-            <TableCell>Payee</TableCell>
-            <TableCell align="right">Amount</TableCell>
-            <TableCell align="right">Expense Date</TableCell>
-            <TableCell align="right">Payment Method</TableCell>
-            <TableCell align="right">Action</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row, index) => (
-            <Row key={index} row={row} onDelete={handleDelete} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div className="container-fluid">
+      <div className="row w-auto">
+        <div className="col-md-12">
+          <div className="card">
+            <div className="card-header mx-2">
+              <h4 className="card-title">{title}</h4>
+            </div>
+            <div className="card-body">
+              <TableContainer component={Paper}>
+                <ToastContainer
+                  position="top-center"
+                  autoClose={5000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                  theme="colored"
+                />
+                <Table aria-label="collapsible table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell />
+                      <TableCell>Title</TableCell>
+                      <TableCell>Payee</TableCell>
+                      <TableCell align="right">Amount</TableCell>
+                      <TableCell align="right">Expense Date</TableCell>
+                      <TableCell align="right">Payment Method</TableCell>
+                      <TableCell align="right">Action</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {rows.map((row, index) => (
+                      <Row key={index} row={row} onDelete={handleDelete} />
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
