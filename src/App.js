@@ -132,7 +132,7 @@ function App() {
                           element={<GroupDetailsPage />}
                         />
                         <Route
-                          path="/group/expenses/:groupid/"
+                          path="/group/expenses/:groupid"
                           element={<GroupExpense />}
                         />
                         <Route

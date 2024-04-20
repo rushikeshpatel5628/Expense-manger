@@ -26,6 +26,7 @@ export const AddGroupExpense = () => {
   };
 
   const groupid = useParams().groupid;
+  console.log('groupid', groupid);
   const submitHandler = async data => {
     const userId = localStorage.getItem('userId');
     data.paidBy = userId;
@@ -49,7 +50,7 @@ export const AddGroupExpense = () => {
           theme: 'light',
         });
         setTimeout(() => {
-          navigate('/group/expenses/${groupid}');
+          navigate(`/group/expenses/${groupid}`);
         }, 2000);
       } else {
         alert('Data not posted');

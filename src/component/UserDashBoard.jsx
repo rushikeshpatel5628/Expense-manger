@@ -17,6 +17,7 @@ import { useForm } from 'react-hook-form';
 import { DonutChartPaymentType } from './Charts/DonutChartPaymentType';
 import { CategoryManage } from './User/CategoryManage';
 import RUPEES from './assets/img/currency_rupee_sign.png';
+import SPENDING from './assets/img/expense/spending.png';
 
 export const UserDashBoard = () => {
   const [income, setIncome] = useState(0);
@@ -261,7 +262,7 @@ export const UserDashBoard = () => {
                 </div>
               </div>
               <div className="col-md-4">
-                <img src={RUPEES} alt="image" />
+                <img src={RUPEES} alt="RUPPES" />
               </div>
             </div>
           </div>
@@ -280,7 +281,9 @@ export const UserDashBoard = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-md-5">Icon</div>
+              <div className="col-md-5">
+                <img src={SPENDING} alt="spending" className="m-2" />
+              </div>
             </div>
           </div>
         </div>

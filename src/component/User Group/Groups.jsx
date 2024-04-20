@@ -16,6 +16,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import TablePagination from '@mui/material/TablePagination';
 import { IconButton } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
@@ -28,6 +29,8 @@ export const Groups = () => {
   ];
 
   const [rows, setRows] = React.useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   // const navigate = useNavigate();
 
   const getGroups = async () => {
@@ -84,17 +87,26 @@ export const Groups = () => {
   };
 
   // Date formatting
-  const formatDate = (dateString) => {
+  const formatDate = dateString => {
     const date = new Date(dateString);
     const day = date.getDate();
     const month = date.getMonth() + 1; // Month is zero-based
     const year = date.getFullYear();
-  
+
     // Ensure leading zeros if needed
     const formattedDay = day < 10 ? `0${day}` : day;
     const formattedMonth = month < 10 ? `0${month}` : month;
-  
+
     return `${formattedDay}/${formattedMonth}/${year}`;
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = event => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
   };
 
   return (
@@ -141,40 +153,53 @@ export const Groups = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {rows.map(row => {
-                        return (
-                          <TableRow
-                            hover
-                            role="checkbox"
-                            tabIndex={-1}
-                            key={row._id}
-                          >
-                            {columns.map(column => (
-                              <TableCell key={column.id} align="left">
-                                {column.id === 'createdAt'
-                                  ? formatDate(row.createdAt)
-                                  : row[column.id]}
-                              </TableCell>
-                            ))}
-                            {/* 
-                  <IconButton aria-label="delete" onClick={() => deleteGoal(row._id)}>
-                    <DeleteIcon />
-                  </IconButton> 
-                  */}
-                            <IconButton
-                              aria-label="open"
-                              color="primary"
-                              onClick={() => groupDetails(row._id)}
+                      {rows
+                        .slice(
+                          page * rowsPerPage,
+                          page * rowsPerPage + rowsPerPage
+                        )
+                        .map(row => {
+                          return (
+                            <TableRow
+                              hover
+                              role="checkbox"
+                              tabIndex={-1}
+                              key={row._id}
                             >
-                              <OpenInNewIcon />
-                            </IconButton>
-                          </TableRow>
-                        );
-                      })}
+                              {columns
+                                .filter(column => column.id !== 'actions')
+                                .map(column => (
+                                  <TableCell key={column.id} align="left">
+                                    {column.id === 'createdAt'
+                                      ? formatDate(row.createdAt)
+                                      : row[column.id]}
+                                  </TableCell>
+                                ))}
+                              <TableCell key="actions" align="left">
+                                <IconButton
+                                  aria-label="open"
+                                  color="primary"
+                                  onClick={() => groupDetails(row._id)}
+                                >
+                                  <OpenInNewIcon />
+                                </IconButton>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
                     </TableBody>
                   </Table>
                 </TableContainer>
               </Paper>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
             </div>
           </div>
         </div>
@@ -183,7 +208,10 @@ export const Groups = () => {
         <DialogTitle>Create Group</DialogTitle>
         <DialogContent>
           {/* Add your content for creating group */}
-          <CreateGroupModal handleClose={handleClose} updateGroupList={updateGroupList} />
+          <CreateGroupModal
+            handleClose={handleClose}
+            updateGroupList={updateGroupList}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
@@ -194,7 +222,10 @@ export const Groups = () => {
         <DialogTitle>Join Group</DialogTitle>
         <DialogContent>
           {/* Add your content for joining a group */}
-          <JoinGroupModal handleClose={handleCloseJoinGroup} updateGroupList={updateGroupList}/>
+          <JoinGroupModal
+            handleClose={handleCloseJoinGroup}
+            updateGroupList={updateGroupList}
+          />
         </DialogContent>
         <DialogActions>
           {/* <Button onClick={handleCloseJoinGroup}>Cancel</Button>

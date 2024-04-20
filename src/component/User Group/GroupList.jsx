@@ -40,7 +40,7 @@ export const GroupList = () => {
     }
   };
 
-  const groupDetails = (groupId) => {
+  const groupDetails = groupId => {
     // Add your logic for joining a group here
     // For example, you can navigate to a join group page
     navigate(`/group-details/${groupId}`);
@@ -65,10 +65,6 @@ export const GroupList = () => {
                   {column.label}
                 </TableCell>
               ))}
-              <TableCell key="actions" align="left">
-                Actions
-              </TableCell>{' '}
-              {/* Added actions column header */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -77,13 +73,7 @@ export const GroupList = () => {
                 <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
                   {columns.map(column => (
                     <TableCell key={column.id} align="left">
-                      {column.id === 'members'
-                        ? row.members
-                            .map(
-                              member => `${member.firstName} ${member.lastName}`
-                            )
-                            .join(', ')
-                        : row[column.id]}
+                      row[column.id]
                     </TableCell>
                   ))}
                   {/* 
@@ -91,14 +81,18 @@ export const GroupList = () => {
                     <DeleteIcon />
                   </IconButton> 
                   */}
-                  <IconButton aria-label="open" color="primary" onClick={()=>groupDetails(row._id)}>
+                  <IconButton
+                    aria-label="open"
+                    color="primary"
+                    onClick={() => groupDetails(row._id)}
+                  >
                     <OpenInNewIcon />
                   </IconButton>
                 </TableRow>
               );
             })}
           </TableBody>
-        </Table>  
+        </Table>
       </TableContainer>
     </Paper>
   );

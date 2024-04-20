@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import Typography from '@mui/material/Typography';
+import {
+  Typography,
+  Card,
+  CardContent,
+  Grid,
+  Avatar,
+  Button,
+} from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import {
   Container,
-  Grid,
   Paper,
   List,
   ListItem,
   ListItemText,
-  Button,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -89,6 +94,27 @@ const GroupDetailsPage = () => {
 
   const handleCloseDialog = () => {
     setIsDialogOpen(false); // Close the dialog
+  };
+
+  const handleDelete = async groupid => {
+    try {
+      if (userId !== group.creator) {
+        alert('you are not allowed to delete group');
+      } else {
+        const res = await axios.delete(
+          'http://localhost:5000/groups/group/' + groupid
+        );
+        if (res.status === 200) {
+          alert('group deleted!!');
+          navigate('/user/groups');
+        } else {
+          alert('Group is not deleted!!');
+        }
+      }
+    } catch (error) {
+      alert('error');
+      console.log('error:', error);
+    }
   };
 
   const handleLeaveGroup = async () => {
@@ -223,6 +249,15 @@ const GroupDetailsPage = () => {
               onClick={handleLeaveGroup}
             >
               Leave Group
+            </Button>
+
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ marginLeft: '10px' }}
+              onClick={() => handleDelete(groupid)}
+            >
+              Delete group
             </Button>
           </Grid>
           {/* Render InviteGroupModal only when isDialogOpen is true */}
