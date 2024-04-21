@@ -8,6 +8,8 @@ import {
   Grid,
   Avatar,
   Button,
+  Box,
+  Stack,
 } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import {
@@ -16,6 +18,8 @@ import {
   List,
   ListItem,
   ListItemText,
+  ListItemAvatar,
+  Divider,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -28,6 +32,8 @@ const GroupDetailsPage = () => {
   const groupid = useParams().id; // Get group ID from route params
   const [group, setGroup] = useState({ members: [] });
   const [isDialogOpen, setIsDialogOpen] = useState(false); // State to manage dialog visibility
+  const [isLeaveDialogOpen, setIsLeaveDialogOpen] = useState(false); // State for leave dialog
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false); // State for leave dialog
   const [groupSummary, setGroupSummary] = useState(null);
   const userId = localStorage.getItem('userId');
   const navigate = useNavigate();
@@ -96,7 +102,33 @@ const GroupDetailsPage = () => {
     setIsDialogOpen(false); // Close the dialog
   };
 
-  const handleDelete = async groupid => {
+  const handleLeaveCloseDialog = () => {
+    setIsLeaveDialogOpen(false); // Close the leave dialog
+  };
+
+  const handleDeleteCloseDialog = () => {
+    setIsDeleteDialogOpen(false); // Close the delete dialog
+  };
+
+  const handleLeaveGroup = () => {
+    setIsLeaveDialogOpen(true);
+  };
+
+  const handleDeleteGroup = () => {
+    setIsDeleteDialogOpen(true);
+  };
+
+  const confirmLeaveGroup = () => {
+    leaveGroup(groupid); // Call function to leave group
+    setIsLeaveDialogOpen(false);
+  };
+
+  const confirmDeleteGroup = () => {
+    deleteGroup(groupid); // Call function to delete group
+    setIsDeleteDialogOpen(false);
+  };
+
+  const deleteGroup = async groupid => {
     try {
       if (userId !== group.creator) {
         alert('you are not allowed to delete group');
@@ -105,8 +137,20 @@ const GroupDetailsPage = () => {
           'http://localhost:5000/groups/group/' + groupid
         );
         if (res.status === 200) {
-          alert('group deleted!!');
-          navigate('/user/groups');
+          // alert('group deleted!!');
+          toast.success('Group deleted ', {
+            position: 'top-center',
+            autoClose: 1900,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          });
+          setTimeout(() => {
+            navigate('/user/groups');
+          }, 1500);
         } else {
           alert('Group is not deleted!!');
         }
@@ -117,25 +161,29 @@ const GroupDetailsPage = () => {
     }
   };
 
-  const handleLeaveGroup = async () => {
+  const leaveGroup = async () => {
     try {
-      await axios.post(`http://localhost:5000/groups/${groupid}/leave`, {
-        userId,
-      });
-      // Redirect to some page after leaving the group
-      toast.success('You left the group ', {
-        position: 'top-center',
-        autoClose: 1900,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-      });
-      setTimeout(() => {
-        navigate('/user/groups');
-      }, 3200);
+      if (userId == group.creator) {
+        alert('Not allowed to left the group!!.');
+      } else {
+        await axios.post(`http://localhost:5000/groups/${groupid}/leave`, {
+          userId,
+        });
+        // Redirect to some page after leaving the group
+        toast.success('You left the group ', {
+          position: 'top-center',
+          autoClose: 1900,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+        setTimeout(() => {
+          navigate('/user/groups');
+        }, 2000);
+      }
     } catch (error) {
       console.error('Error leaving group:', error);
     }
@@ -150,7 +198,7 @@ const GroupDetailsPage = () => {
     <Container maxWidth="md">
       <ToastContainer
         position="top-center"
-        autoClose={1900}
+        autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
@@ -160,121 +208,249 @@ const GroupDetailsPage = () => {
         pauseOnHover
         theme="light"
       />
-      <Typography variant="h2" align="center" gutterBottom>
-        Group Details
-      </Typography>
       {group ? (
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Paper>
-              <Typography variant="h3" align="center" gutterBottom>
-                {group.name}
-              </Typography>
-              <Typography variant="body1" align="center" gutterBottom>
-                Description: {group.description}
-              </Typography>
-              <Typography variant="body1" align="center" gutterBottom>
-                Creator: {group.creator}
-              </Typography>
-            </Paper>
-          </Grid>
-          <Grid item xs={12}>
-            <Paper>
-              <Typography variant="h4" align="center" gutterBottom>
-                Members:
-              </Typography>
-              <List>
-                {group.members ? (
-                  group.members.map(member => (
-                    <ListItem key={member._id}>
-                      <ListItemText
-                        primary={`${member.firstName} ${member.lastName}`}
-                      />
+        <>
+          <Box
+            sx={{
+              mb: 4,
+              boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+              borderRadius: '8px',
+            }}
+          >
+            <Typography variant="h4" align="left" gutterBottom m={2}>
+              {group.name}
+            </Typography>
+            <Typography variant="h5" align="left" gutterBottom m={2}>
+              {group.description}
+            </Typography>
+          </Box>
+          <Grid container spacing={2}>
+            <Grid item md={6} xs={6}>
+              <Box
+                bgcolor={'background.paper'}
+                p={2}
+                sx={{
+                  mb: 4,
+                  boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+                  borderRadius: '8px',
+                }}
+              >
+                <List
+                  sx={{
+                    width: '100%',
+                    maxWidth: 360,
+                    bgcolor: 'background.paper',
+                  }}
+                >
+                  {/* Heading */}
+                  <Typography
+                    variant="h5"
+                    align="left"
+                    gutterBottom
+                    sx={{ marginLeft: '10px' }}
+                  >
+                    Members
+                  </Typography>
+
+                  {/* Button */}
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleInviteClick}
+                    sx={{
+                      float: 'right',
+                      marginTop: '-40px',
+                      marginRight: '10px',
+                    }}
+                  >
+                    invite
+                  </Button>
+
+                  {/* List Items */}
+                  {group.members ? (
+                    group.members.map((member, index) => (
+                      <React.Fragment key={member._id}>
+                        <ListItem>
+                          <ListItemAvatar>
+                            <Avatar
+                              alt="Remy Sharp"
+                              src={member.profilePicture}
+                            />
+                          </ListItemAvatar>
+                          <ListItemText
+                            primary={`${member.firstName} ${member.lastName} ${
+                              member._id === group.creator ? '(creator)' : ''
+                            }`}
+                          />
+                        </ListItem>
+                        {/* Add a divider after each list item except for the last one */}
+                        {index !== group.members.length - 1 && (
+                          <Divider variant="middle" component="li" />
+                        )}
+                      </React.Fragment>
+                    ))
+                  ) : (
+                    <ListItem>
+                      <ListItemText primary="No members found" />
                     </ListItem>
-                  ))
-                ) : (
+                  )}
+                </List>
+              </Box>
+            </Grid>
+            <Grid item md={6} xs={6}>
+              <Box
+                bgcolor={'background.paper'}
+                p={2}
+                sx={{
+                  mb: 4,
+                  boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+                  borderRadius: '8px',
+                }}
+              >
+                <List
+                  sx={{
+                    width: '100%',
+                    maxWidth: 360,
+                    bgcolor: 'background.paper',
+                  }}
+                >
+                  {/* Heading */}
+                  <Typography
+                    variant="h5"
+                    align="left"
+                    gutterBottom
+                    sx={{ marginLeft: '10px' }}
+                  >
+                    Group Summary
+                  </Typography>
+                  {/* List Items */}
                   <ListItem>
-                    <ListItemText primary="No members found" />
+                    <ListItemText
+                      primary={`Total Group Expenses ${
+                        groupSummary
+                          ? groupSummary.totalGroupExpenses
+                          : 'Calculating...'
+                      }`}
+                    />
                   </ListItem>
-                )}
-              </List>
-            </Paper>
-          </Grid>
-          <Grid item xs={12}>
-            <Paper>
-              <Typography variant="h4" align="center" gutterBottom>
-                Group Summary:
-              </Typography>
-              <Typography variant="body1" align="center" gutterBottom>
-                Total Group Expenses:{' '}
-                {groupSummary
-                  ? groupSummary.totalGroupExpenses
-                  : 'Calculating...'}
-              </Typography>
-              <Typography variant="body1" align="center" gutterBottom>
-                Total My Expenses:{' '}
-                {groupSummary ? groupSummary.totalMyExpenses : 'Calculating...'}
-              </Typography>
-              <Typography variant="body1" align="center" gutterBottom>
-                Amount Owed to Me:{' '}
-                {groupSummary ? groupSummary.amountOwed : 'Calculating...'}
-              </Typography>
-              <Typography variant="body1" align="center" gutterBottom>
-                Amount I Owe:{' '}
-                {groupSummary ? groupSummary.amountOwing : 'Calculating...'}
-              </Typography>
-            </Paper>
-          </Grid>
-          <Grid item xs={12}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleInviteClick}
-            >
-              Invite
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              style={{ textDecoration: 'none', marginLeft: '10px' }}
-              onClick={() => handleExpenses(groupid)}
-            >
-              View Expenses
-            </Button>
+                  <Divider variant="middle" />
+                  <ListItem>
+                    <ListItemText
+                      primary={`Total My Expenses ${
+                        groupSummary
+                          ? groupSummary.totalMyExpenses
+                          : 'Calculating...'
+                      }`}
+                    />
+                  </ListItem>
+                  <Divider variant="middle" />
+                  <ListItem>
+                    <ListItemText
+                      primary={`Amount Owed to Me ${
+                        groupSummary
+                          ? groupSummary.amountOwed
+                          : 'Calculating...'
+                      }`}
+                    />
+                  </ListItem>
+                  <Divider variant="middle" />
 
-            <Button
-              variant="contained"
-              color="primary"
-              style={{ marginLeft: '10px' }}
-              onClick={handleLeaveGroup}
-            >
-              Leave Group
-            </Button>
+                  <ListItem>
+                    <ListItemText
+                      primary={`Amount I Owe ${
+                        groupSummary
+                          ? groupSummary.amountOwing
+                          : 'Calculating...'
+                      }`}
+                    />
+                  </ListItem>
 
-            <Button
-              variant="contained"
-              color="primary"
-              style={{ marginLeft: '10px' }}
-              onClick={() => handleDelete(groupid)}
+                  <Button
+                    variant="contained"
+                    size="small"
+                    onClick={() => handleExpenses(groupid)}
+                    sx={{ marginLeft: '10px', mb: '4px', mt: '4px' }}
+                  >
+                    View expenses
+                  </Button>
+                </List>
+              </Box>
+            </Grid>
+            <Stack
+              gap={2}
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                mt: '20px',
+              }}
             >
-              Delete group
-            </Button>
+              <Button
+                variant="contained"
+                size="medium"
+                color="error"
+                onClick={handleLeaveGroup}
+              >
+                leave group
+              </Button>
+              <Button
+                variant="contained"
+                size="medium"
+                color="error"
+                onClick={handleDeleteGroup}
+              >
+                Delete group
+              </Button>
+            </Stack>
+            {/* Render InviteGroupModal only when isDialogOpen is true */}
+            <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
+              <DialogTitle>Invite Members</DialogTitle>
+              <DialogContent>
+                <p>{groupid}</p>
+                <InviteGroupModal
+                  handleClose={handleCloseDialog}
+                  groupId={groupid}
+                />
+              </DialogContent>
+              <DialogActions>
+                {/* You can add additional actions or buttons here */}
+              </DialogActions>
+            </Dialog>
+            {/* Dialog for confirming leave group */}
+            <Dialog open={isLeaveDialogOpen} onClose={handleLeaveCloseDialog}>
+              <DialogTitle> Leave Group </DialogTitle>
+              <DialogContent>
+                <Typography>
+                  Are you sure you want to leave this group?
+                </Typography>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleLeaveCloseDialog} color="primary">
+                  Cancel
+                </Button>
+                <Button onClick={confirmLeaveGroup} color="primary">
+                  Confirm
+                </Button>
+              </DialogActions>
+            </Dialog>
+            {/* Dialog for confirming delete group */}
+            <Dialog open={isDeleteDialogOpen} onClose={handleDeleteCloseDialog}>
+              <DialogTitle> Delete Group </DialogTitle>
+              <DialogContent>
+                <Typography>
+                  Are you sure you want to delete this group?
+                </Typography>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleDeleteCloseDialog} color="primary">
+                  Cancel
+                </Button>
+                <Button onClick={confirmDeleteGroup} color="primary">
+                  Confirm
+                </Button>
+              </DialogActions>
+            </Dialog>
           </Grid>
-          {/* Render InviteGroupModal only when isDialogOpen is true */}
-          <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
-            <DialogTitle>Invite Members</DialogTitle>
-            <DialogContent>
-              <p>{groupid}</p>
-              <InviteGroupModal
-                handleClose={handleCloseDialog}
-                groupId={groupid}
-              />
-            </DialogContent>
-            <DialogActions>
-              {/* You can add additional actions or buttons here */}
-            </DialogActions>
-          </Dialog>
-        </Grid>
+        </>
       ) : (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <CircularProgress />
