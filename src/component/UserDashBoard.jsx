@@ -8,7 +8,7 @@ import { GoalCharts } from './Charts/GoalCharts';
 import MonthlyBarChart from './Charts/MonthlyBarChart';
 import { PayeeManage } from './User/PayeeManage';
 import Button from '@mui/material/Button';
-import { Modal, TextField } from '@mui/material';
+import { Chip, Modal, TextField } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -16,8 +16,12 @@ import DialogActions from '@mui/material/DialogActions';
 import { useForm } from 'react-hook-form';
 import { DonutChartPaymentType } from './Charts/DonutChartPaymentType';
 import { CategoryManage } from './User/CategoryManage';
-import RUPEES from './assets/img/currency_rupee_sign.png';
-import SPENDING from './assets/img/expense/spending.png';
+import INCOME from './assets/img/expense/wallet.png';
+import EXPENSE from './assets/img/expense/spending-money.png';
+import BALANACE3 from './assets/img/expense/target-4.png';
+import BALANACE from './assets/img/expense/money.png';
+import './Dashboard.css';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const UserDashBoard = () => {
   const [income, setIncome] = useState(0);
@@ -30,6 +34,7 @@ export const UserDashBoard = () => {
   const [selectedGoal, setSelectedGoal] = useState('');
   const [payees, setPayees] = useState([]);
   const userId = localStorage.getItem('userId');
+  const navigate = useNavigate();
 
   const getIncome = async () => {
     const res = await axios.get('http://localhost:5000/transactions/income');
@@ -249,7 +254,7 @@ export const UserDashBoard = () => {
         </div> */}
 
         <div className="col-sm-3">
-          <div className="card">
+          <div className="card card-shadow">
             <div className="row">
               <div className="col-md-8">
                 <div class="row card-header">
@@ -257,19 +262,27 @@ export const UserDashBoard = () => {
                     <h4>Income</h4>
                   </div>
                   <div class="col-md-12 card-body">
-                    <p style={{ color: 'green' }}>{income}</p>
+                    <p style={{ color: 'green', fontSize: '1.2em' }}>
+                      {income}
+                    </p>
                   </div>
                 </div>
               </div>
               <div className="col-md-4">
-                <img src={RUPEES} alt="RUPPES" />
+                <img
+                  src={INCOME}
+                  alt="RUPPES"
+                  width={64}
+                  height={64}
+                  className="mt-2"
+                />
               </div>
             </div>
           </div>
         </div>
 
         <div className="col-sm-3">
-          <div className="card">
+          <div className="card card-shadow">
             <div className="row">
               <div className="col-md-7">
                 <div class="row card-header">
@@ -277,19 +290,25 @@ export const UserDashBoard = () => {
                     <h4>Expense</h4>
                   </div>
                   <div class="col-md-12 card-body">
-                    <p style={{ color: 'red' }}>{expense}</p>
+                    <p style={{ color: 'red', fontSize: '1.2em' }}>{expense}</p>
                   </div>
                 </div>
               </div>
               <div className="col-md-5">
-                <img src={SPENDING} alt="spending" className="m-2" />
+                <img
+                  src={EXPENSE}
+                  alt="spending"
+                  className="mt-2 ml-2"
+                  width={70}
+                  height={70}
+                />
               </div>
             </div>
           </div>
         </div>
 
         <div className="col-sm-3">
-          <div className="card">
+          <div className="card card-shadow">
             <div className="row">
               <div className="col-md-8">
                 <div class="row card-header">
@@ -297,11 +316,21 @@ export const UserDashBoard = () => {
                     <h4>Balance</h4>
                   </div>
                   <div class="col-md-12 card-body">
-                    <p style={{ color: 'blue' }}>{totalBalance}</p>
+                    <p style={{ color: 'blue', fontSize: '1.2em' }}>
+                      {totalBalance}
+                    </p>
                   </div>
                 </div>
               </div>
-              <div className="col-md-4">Icon</div>
+              <div className="col-md-4">
+                <img
+                  src={BALANACE}
+                  alt="balance"
+                  width={64}
+                  height={64}
+                  className="mr-4 mt-3"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -309,37 +338,112 @@ export const UserDashBoard = () => {
 
       <div className="row">
         <div className="col mx-2">
-          <h3 style={{ padding: '0' }}>Goal Summary</h3>
+          <h3 style={{ padding: '0' }}>Goals</h3>
         </div>
       </div>
 
-      <div className="row mx-2">
-        {Object.keys(goalExpenses).map(goalId => (
-          <div className="col-md-4" key={goalId}>
-            <div className="card">
+      <div className="row">
+        {Object.keys(goalExpenses).length > 0 ? (
+          Object.keys(goalExpenses).map(goalId => (
+            <div className="col-md-4" key={goalId}>
+              <div className="card card-shadow">
+                <div className="card-body">
+                  <div className="row">
+                    <div className="col-md-9">
+                      <div className="row card-header">
+                        <div className="col-md-12 card-title mb-n2">
+                          <h4>{goalExpenses[goalId].name}</h4>
+                        </div>
+                        <div className="col-md-12 card-body mb-n3">
+                          <p style={{ color: 'blue', fontSize: '1.2em' }}>
+                            {goalExpenses[goalId].amount} /{' '}
+                            {goalExpenses[goalId].maxamount}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-3">
+                      <img
+                        src={BALANACE3}
+                        alt="balance"
+                        width={64}
+                        height={64}
+                        className="ml-0 mr-4 mt-3 custom-opacity"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="card-footer">
+                  <Button
+                    className="mr-2"
+                    variant="contained"
+                    size="small"
+                    color="primary"
+                    style={{ textTransform: 'none !important' }}
+                    onClick={() => navigate(`/goal/expenses/${goalId}`)}
+                  >
+                    Go to goal
+                  </Button>
+                  <Button
+                    className="mr-2"
+                    variant="contained"
+                    size="small"
+                    color="primary"
+                    style={{ textTransform: 'none !important' }}
+                    onClick={() => navigate('/expense/form')}
+                  >
+                    Add expense
+                  </Button>
+                  <div>
+                    <Chip
+                      label={
+                        goalExpenses[goalId].amount >
+                        goalExpenses[goalId].maxamount
+                          ? 'Exceeded'
+                          : 'Budget'
+                      }
+                      color={
+                        goalExpenses[goalId].amount >
+                        goalExpenses[goalId].maxamount
+                          ? 'error'
+                          : 'success'
+                      }
+                      className="ml-3"
+                      style={{ display: 'flex', alignItems: 'center' }}
+                      size="medium"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="col-md-4">
+            <div className="card card-shadow">
               <div className="row">
-                <div className="col-md-8">
-                  <div className="row card-header">
-                    <div class="col-md-12 card-title">
-                      <h4>{goalExpenses[goalId].name}</h4>
-                    </div>
-                    <div class="col-md-12 card-body">
-                      <p style={{ color: 'blue' }}>
-                        {goalExpenses[goalId].amount} /{' '}
-                        {goalExpenses[goalId].maxamount}
-                      </p>
-                    </div>
+                <div className="col-md-12">
+                  <div className="card-header">
+                    <h4>Add Goal</h4>
+                  </div>
+                  <div className="card-body">
+                    <p style={{ color: 'gray' }}>
+                      Start by setting a new goal.
+                      <br />
+                      <Link to="/user/goal" className="m-0">
+                        Go to goal
+                      </Link>
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        ))}
+        )}
       </div>
 
       <div className="row mt-4 ">
         <div className="col-md-5">
-          <div className="card ">
+          <div className="card card-shadow">
             <div className="card-header ">
               <h4 className="card-title">Category Expenses</h4>
               <p className="card-category">Last Campaign Performance</p>
@@ -350,7 +454,7 @@ export const UserDashBoard = () => {
           </div>
         </div>
         <div className="col-md-7">
-          <div className="card ">
+          <div className="card card-shadow">
             <div className="card-header ">
               <h4 className="card-title">Income and Expense Trends</h4>
               <p className="card-category">24 Hours performance</p>
@@ -365,13 +469,13 @@ export const UserDashBoard = () => {
 
       {/* Goal Chart */}
       <div className="row mt-3">
-        <div className="col-md-5">
+        <div className="col-md-5 card-shadow">
           {/* <h3 className="m-0">Goal Expenses</h3> */}
           <GoalCharts />
         </div>
 
         <div className="col-md-7">
-          <div className="card ">
+          <div className="card card-shadow">
             <div className="card-header ">
               <h4 className="card-title">Income and Expense Trends</h4>
               <p className="card-category">24 Hours performance</p>
@@ -386,17 +490,17 @@ export const UserDashBoard = () => {
       {/* payee management */}
       <div className="row mt-4 ">
         <div className="col-md-4">
-          <div className="card ">
+          <div className="card card-shadow">
             <PayeeManage />
           </div>
         </div>
         <div className="col-md-4">
-          <div className="card ">
+          <div className="card card-shadow">
             <CategoryManage />
           </div>
         </div>
         <div className="col-md-4">
-          <div className="card ">
+          <div className="card card-shadow">
             <div className="card-header ">
               <h4 className="card-title">Payment Type Distribution</h4>
               <p className="card-category">24 Hours performance</p>

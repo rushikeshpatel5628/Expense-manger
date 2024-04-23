@@ -1,0 +1,13 @@
+.card-shadow {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* You can adjust the values for the shadow effect */
+  transition: 0.3s; /* Optional: Adds a transition effect when the shadow changes */
+}
+
+.card-shadow:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2); /* Optional: Increase shadow on hover */
+}
+
+.custom-opacity {
+  opacity: 0.9;
+  /* filter: blur(2px); */
+}

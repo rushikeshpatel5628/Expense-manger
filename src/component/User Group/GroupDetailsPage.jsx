@@ -195,7 +195,7 @@ const GroupDetailsPage = () => {
   };
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" sx={{ width: '80em' }}>
       <ToastContainer
         position="top-center"
         autoClose={5000}
@@ -215,6 +215,7 @@ const GroupDetailsPage = () => {
               mb: 4,
               boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
               borderRadius: '8px',
+              bgcolor: '#FAF9F6',
             }}
           >
             <Typography variant="h4" align="left" gutterBottom m={2}>
@@ -233,6 +234,7 @@ const GroupDetailsPage = () => {
                   mb: 4,
                   boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
                   borderRadius: '8px',
+                  mx: 'auto',
                 }}
               >
                 <List
