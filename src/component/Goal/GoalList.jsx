@@ -55,6 +55,19 @@ export default function GoalList({ reloadGoals }) {
     return date.toLocaleDateString('en-GB', options);
   };
 
+  const formatDate2 = dateString => {
+    // Check if the dateString is not null
+    if (dateString) {
+      // Convert the dateString to a Date object
+      const date = new Date(dateString);
+      // Format the date as "yyyy-MM-dd"
+      const formattedDate = date.toISOString().split('T')[0];
+      return formattedDate;
+    }
+    // Return an empty string if the dateString is null
+    return '';
+  };
+
   const getGoals = async () => {
     try {
       const res = await axios.get(
@@ -244,7 +257,7 @@ export default function GoalList({ reloadGoals }) {
                 type="date"
                 name="startDate"
                 defaultValue={
-                  selectedGoal ? formatDate(selectedGoal.startdate) : ''
+                  selectedGoal ? formatDate2(selectedGoal.startdate) : ''
                 }
                 {...register('startdate')}
               />
@@ -258,7 +271,9 @@ export default function GoalList({ reloadGoals }) {
                 label="End Date"
                 type="date"
                 name="endDate"
-                defaultValue={selectedGoal ? selectedGoal.enddate : ''}
+                defaultValue={
+                  selectedGoal ? formatDate2(selectedGoal.enddate) : ''
+                }
                 {...register('enddate')}
               />
               {/* <DesktopDatePicker
