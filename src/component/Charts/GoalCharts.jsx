@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Select, MenuItem } from '@mui/material';
 import { Pie } from 'react-chartjs-2';
+import '../Dashboard.css';
 
 export const GoalCharts = () => {
   const [selectedGoal, setSelectedGoal] = useState('');
@@ -154,8 +155,8 @@ export const GoalCharts = () => {
     // <div className="row mt-2">
     <>
       {/* <div className="col"> */}
-      <div className="card">
-        <div className="card-header ">
+      <div className="card card-shadow">
+        <div className="card-header">
           <h4 className="card-title">Goal Category Expenses</h4>
           <p className="card-category mb-n2">Select goal</p>
         </div>

@@ -1,18 +1,14 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Charts } from './Charts/Charts';
+// import { Charts } from './Charts/Charts';
 import { PieChart } from './Charts/PieChart';
-import { AttachMoney, MoneyOff } from '@mui/icons-material';
+// import { AttachMoney, MoneyOff } from '@mui/icons-material';
 import LineChart from './Charts/LineChart';
 import { GoalCharts } from './Charts/GoalCharts';
 import MonthlyBarChart from './Charts/MonthlyBarChart';
 import { PayeeManage } from './User/PayeeManage';
 import Button from '@mui/material/Button';
-import { Chip, Modal, TextField } from '@mui/material';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
+import { Chip } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { DonutChartPaymentType } from './Charts/DonutChartPaymentType';
 import { CategoryManage } from './User/CategoryManage';
@@ -469,7 +465,7 @@ export const UserDashBoard = () => {
 
       {/* Goal Chart */}
       <div className="row mt-3">
-        <div className="col-md-5 card-shadow">
+        <div className="col-md-5">
           {/* <h3 className="m-0">Goal Expenses</h3> */}
           <GoalCharts />
         </div>
@@ -477,7 +473,7 @@ export const UserDashBoard = () => {
         <div className="col-md-7">
           <div className="card card-shadow">
             <div className="card-header ">
-              <h4 className="card-title">Income and Expense Trends</h4>
+              <h4 className="card-title">Monthly Expenses</h4>
               <p className="card-category">24 Hours performance</p>
             </div>
             <div className="card-body">

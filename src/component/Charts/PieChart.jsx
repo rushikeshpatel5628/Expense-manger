@@ -9,7 +9,9 @@ export const PieChart = () => {
   const fetchData = async () => {
     const id = localStorage.getItem('userId');
     try {
-      const response = await axios.get(`http://localhost:5000/transactions/transactions/${id}`);
+      const response = await axios.get(
+        `http://localhost:5000/transactions/transactions/${id}`
+      );
       if (response.data.flag === 1) {
         setData(response.data.data);
       } else {
@@ -27,11 +29,14 @@ export const PieChart = () => {
   useEffect(() => {
     const categoriesMap = {};
     // Filter data to include only expenses
-    const expenseData = data.filter(transaction => transaction.transactionType === 'expense');
+    const expenseData = data.filter(
+      transaction => transaction.transactionType === 'expense'
+    );
     // Calculate total expenses by category
     expenseData.forEach(transaction => {
       const categoryName = transaction.category.categoryName;
-      categoriesMap[categoryName] = (categoriesMap[categoryName] || 0) + transaction.amount;
+      categoriesMap[categoryName] =
+        (categoriesMap[categoryName] || 0) + transaction.amount;
     });
     setCategories(categoriesMap);
   }, [data]);
@@ -44,7 +49,7 @@ export const PieChart = () => {
         label: 'Total Expenses',
         backgroundColor: ['lightblue', 'orange', 'red'],
         borderColor: 'none',
-        borderWidth: 2,
+        borderWidth: 1,
         data: Object.values(categories),
       },
     ],

@@ -173,13 +173,21 @@
 
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
+import dayjs from 'dayjs';
 import axios from 'axios';
 import { Select, MenuItem } from '@mui/material';
 import 'chartjs-adapter-moment';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 
 const LineChart = () => {
   const [transactions, setTransactions] = useState([]);
-  const [chartType, setChartType] = useState('expense'); // Default chart type is income
+  const [chartType, setChartType] = useState('expense'); // Default chart type is expense
+  const [date, setDate] = React.useState([
+    dayjs('2022-04-17'),
+    dayjs('2022-04-21'),
+  ]);
 
   useEffect(() => {
     const fetchTransactions = async () => {
