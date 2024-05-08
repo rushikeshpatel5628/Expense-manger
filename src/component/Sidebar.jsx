@@ -86,7 +86,9 @@ export const Sidebar = ({ onLinkSelect }) => {
     <div
       className="sidebar sidebar-background"
       data-image="../assets/img/sidebar-6.jpg"
-      style={{ backgroundImage: 'url(../assets/img/sidebar-6.jpg)' }}
+      style={{
+        backgroundImage: 'url(../assets/img/sidebar-6.jpg)',
+      }}
       data-color="purple"
     >
       {/*

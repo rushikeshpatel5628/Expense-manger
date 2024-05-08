@@ -35,7 +35,9 @@ export const AddExpense = () => {
 
   const loadCategories = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/usercategory/category/user/'+userId);
+      const res = await axios.get(
+        'http://localhost:5000/usercategory/category/user/' + userId
+      );
       setcat(res.data.data);
       console.log(res.data.data);
     } catch (error) {
@@ -67,9 +69,11 @@ export const AddExpense = () => {
 
   const loadPayee = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/payees/payees/'+userId);
+      const res = await axios.get(
+        'http://localhost:5000/payees/payees/' + userId
+      );
       setpayee(res.data.data);
-      console.log("payees", res.data.data);
+      console.log('payees', res.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -77,7 +81,9 @@ export const AddExpense = () => {
 
   const loadGoal = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/goals/goals/'+userId);
+      const res = await axios.get(
+        'http://localhost:5000/goals/goals/' + userId
+      );
       setgoal(res.data.data);
       console.log(res.data.data);
     } catch (error) {
@@ -139,21 +145,21 @@ export const AddExpense = () => {
   return (
     <>
       <div className="container-fluid mx-auto">
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
         <div className="row mx-auto">
           <div className="col-md-8">
-            <div className="card">
+            <div className="card mx-4">
               <div className="card-header">
                 <h4 className="card-title">Add Expense</h4>
               </div>
@@ -336,7 +342,7 @@ export const AddExpense = () => {
                         </label>
                         <div class="form-check">
                           <input
-                            class="form-check-input"
+                            class="form-check-input custom-input"
                             type="radio"
                             name="gridRadios"
                             id="gridRadios1"
@@ -353,7 +359,7 @@ export const AddExpense = () => {
                         </div>
                         <div class="form-check">
                           <input
-                            class="form-check-input"
+                            class="form-check-input custom-input"
                             type="radio"
                             name="gridRadios"
                             id="gridRadios1"
@@ -366,7 +372,7 @@ export const AddExpense = () => {
                         </div>
                         <div class="form-check">
                           <input
-                            class="form-check-input"
+                            class="form-check-input custom-input"
                             type="radio"
                             name="gridRadios"
                             id="gridRadios1"
@@ -393,7 +399,7 @@ export const AddExpense = () => {
                         <div className="select w-50">
                           <div class="form-check">
                             <input
-                              class="form-check-input"
+                              class="form-check-input custom-input"
                               type="radio"
                               name="gridRadios"
                               id="gridRadios1"
@@ -406,7 +412,7 @@ export const AddExpense = () => {
                           </div>
                           <div class="form-check">
                             <input
-                              class="form-check-input"
+                              class="form-check-input custom-input"
                               type="radio"
                               name="gridRadios"
                               id="gridRadios1"
@@ -434,7 +440,7 @@ export const AddExpense = () => {
                         <div className="select w-50">
                           <div class="form-check">
                             <input
-                              class="form-check-input"
+                              class="form-check-input custom-input"
                               type="radio"
                               name="gridRadios"
                               id="gridRadios1"
@@ -447,7 +453,7 @@ export const AddExpense = () => {
                           </div>
                           <div class="form-check">
                             <input
-                              class="form-check-input"
+                              class="form-check-input custom-input"
                               type="radio"
                               name="gridRadios"
                               id="gridRadios1"

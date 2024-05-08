@@ -1,8 +1,27 @@
 input::placeholder {
-    color: #e6e6e6
+  color: #e6e6e6;
 }
 
 .label {
-    color: #656262;
+  color: #656262;
 }
 
+.card-title {
+  color: #3f3f3f;
+}
+
+.card label {
+  color: #3f3f3f;
+  text-transform: none;
+  font-weight: 500;
+}
+
+.custom-input {
+  margin-top: 0.5rem !important;
+  margin-left: -1.25rem !important;
+}
+
+.form-check .form-check-label {
+  padding-left: 2px !important;
+  font-weight: 500;
+}

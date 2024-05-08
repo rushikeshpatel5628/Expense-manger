@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
+import { Grid, Paper, Container, Typography } from '@mui/material';
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   'label + &': {
@@ -49,21 +50,36 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 
 export const Temp = () => {
   return (
-    <Box
-      component="form"
-      noValidate
-      sx={{
-        display: 'grid',
-        gridTemplateColumns: { sm: '1fr 1fr' },
-        gap: 2,
-      }}
-    >
-      <FormControl variant="standard">
-        <InputLabel shrink htmlFor="bootstrap-input" sx={{ fontSize: '20px' }}>
-          Bootstrap
-        </InputLabel>
-        <BootstrapInput defaultValue="react-bootstrap" id="bootstrap-input" />
-      </FormControl>
-    </Box>
+    <Grid container sx={{ flexDirection: 'column', width: '800px' }}>
+      <Box component="form" noValidate sx={{ marginLeft: '20px' }}>
+        <Paper elevation={2}>
+          <Box>
+            <Typography
+              variant="h4"
+              sx={{
+                paddingTop: '15px',
+              }}
+            >
+              Add Expense
+            </Typography>
+          </Box>
+          <Box>
+            <FormControl variant="standard">
+              <InputLabel
+                shrink
+                htmlFor="bootstrap-input"
+                sx={{ fontSize: '20px' }}
+              >
+                Bootstrap
+              </InputLabel>
+              <BootstrapInput
+                defaultValue="react-bootstrap"
+                id="bootstrap-input"
+              />
+            </FormControl>
+          </Box>
+        </Paper>
+      </Box>
+    </Grid>
   );
 };
