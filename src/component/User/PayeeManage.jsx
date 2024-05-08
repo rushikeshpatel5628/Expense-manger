@@ -1,6 +1,5 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { DataGrid } from '@mui/x-data-grid';
 import { IconButton } from '@mui/material';
 import { Delete, Update } from '@mui/icons-material';
 import Paper from '@mui/material/Paper';
@@ -19,7 +18,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { UpdatePayeeModal } from './UpdatePayeeModal';
 import AddIcon from '@mui/icons-material/Add';
-import '../User/PayeeManageCSS.css'
+import '../User/PayeeManageCSS.css';
 
 export const PayeeManage = () => {
   //   const [payee, setpayee] = useState([]);
@@ -30,7 +29,7 @@ export const PayeeManage = () => {
   const [updateOpen, setUpdateOpen] = useState(false);
   const [selectedPayee, setSelectedPayee] = useState(null);
 
-  const {register, handleSubmit, reset} = useForm()
+  const { register, handleSubmit, reset } = useForm();
 
   const handleOpen = () => {
     setOpen(true);
@@ -40,7 +39,7 @@ export const PayeeManage = () => {
     setOpen(false);
   };
 
-  const handleUpdateOpen = (payee) => {
+  const handleUpdateOpen = payee => {
     setSelectedPayee(payee);
     setUpdateOpen(true);
   };
@@ -62,31 +61,33 @@ export const PayeeManage = () => {
     }
   };
 
-  const submitHandler = async (data) => {
-    console.log("data....", data);
+  const submitHandler = async data => {
+    console.log('data....', data);
     data.user = userId;
     try {
-      const res = await axios.post("http://localhost:5000/payees/payee", data);
-      if(res.status === 201){
-        alert("Payee added");
+      const res = await axios.post('http://localhost:5000/payees/payee', data);
+      if (res.status === 201) {
+        alert('Payee added');
         handleClose();
         reset();
         loadPayee();
       }
     } catch (error) {
-      console.log("error....", error)
+      console.log('error....', error);
     }
-  }
+  };
 
-  const deletePayee = async (payeeId) => {
+  const deletePayee = async payeeId => {
     try {
-      const res = await axios.delete(`http://localhost:5000/payees/payee/${payeeId}`);
-      if(res.status === 200){
-        alert("Payee deleted");
+      const res = await axios.delete(
+        `http://localhost:5000/payees/payee/${payeeId}`
+      );
+      if (res.status === 200) {
+        alert('Payee deleted');
         loadPayee(); // Update the payee list after deleting
       }
     } catch (error) {
-      console.log("error....", error)
+      console.log('error....', error);
     }
   };
 
@@ -108,14 +109,22 @@ export const PayeeManage = () => {
     <div>
       <div className="card-header d-flex justify-content-between align-items-center">
         <h4 className="card-title">Manage Payees</h4>
-        <Button type="submit" variant="contained" onClick={handleOpen}  startIcon={<AddIcon />}>
+        <Button
+          type="submit"
+          variant="contained"
+          onClick={handleOpen}
+          startIcon={<AddIcon />}
+        >
           Payee
         </Button>
       </div>
       <div className="card-body ">
         <div style={{ height: 300, width: '100%' }}>
           <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-            <TableContainer style={{ maxHeight: 300, overflowY: 'auto' }}  className="custom-scrollbar">
+            <TableContainer
+              style={{ maxHeight: 300, overflowY: 'auto' }}
+              className="custom-scrollbar"
+            >
               <Table stickyHeader aria-label="sticky table">
                 <TableHead>
                   <TableRow>
@@ -130,19 +139,31 @@ export const PayeeManage = () => {
                 </TableHead>
                 <TableBody>
                   {rowsWithNumbers.map(row => (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row._id} size='small'>
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={row._id}
+                      size="small"
+                    >
                       {columns.map(column => (
-                        <TableCell key={column.id} align="left"  size='small'>
+                        <TableCell key={column.id} align="left" size="small">
                           {row[column.id]}
                         </TableCell>
                       ))}
                       <TableCell align="left">
-                        <IconButton aria-label="update" onClick={() => handleUpdateOpen(row)}>
+                        <IconButton
+                          aria-label="update"
+                          onClick={() => handleUpdateOpen(row)}
+                        >
                           <Update />
                         </IconButton>
                       </TableCell>
                       <TableCell align="left">
-                        <IconButton aria-label="delete" onClick={() => deletePayee(row._id)}>
+                        <IconButton
+                          aria-label="delete"
+                          onClick={() => deletePayee(row._id)}
+                        >
                           <Delete />
                         </IconButton>
                       </TableCell>
@@ -155,48 +176,51 @@ export const PayeeManage = () => {
         </div>
       </div>
       <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Add Payee</DialogTitle>
+        <DialogTitle>Add Payee</DialogTitle>
         <DialogContent>
           {/* Text field for entering payee name */}
           <form onSubmit={handleSubmit(submitHandler)}>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="payeeName"
-            label="Payee Name"
-            type="text"
-            fullWidth
-            {...register('payeeName')}
-          />
-          <Button type='submit' color="primary" variant='contained' sx={{my:2}}>
-            Submit
-          </Button>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="payeeName"
+              label="Payee Name"
+              type="text"
+              fullWidth
+              {...register('payeeName')}
+            />
+            <Button
+              type="submit"
+              color="primary"
+              variant="contained"
+              sx={{ my: 2 }}
+            >
+              Submit
+            </Button>
           </form>
         </DialogContent>
         <DialogActions>
-        <Button onClick={handleClose} color="primary">
+          <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
         </DialogActions>
       </Dialog>
 
-
       <Dialog open={updateOpen} onClose={handleUpdateClose}>
-      <DialogTitle>Update Payee</DialogTitle>
+        <DialogTitle>Update Payee</DialogTitle>
         <DialogContent>
-        <UpdatePayeeModal
+          <UpdatePayeeModal
             selectedPayee={selectedPayee}
             handleUpdateClose={handleUpdateClose}
             loadPayee={loadPayee}
           />
         </DialogContent>
         <DialogActions>
-        <Button onClick={handleUpdateClose} color="primary">
+          <Button onClick={handleUpdateClose} color="primary">
             Cancel
           </Button>
         </DialogActions>
       </Dialog>
-
     </div>
   );
 };

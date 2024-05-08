@@ -34,6 +34,7 @@ import { CategoryManage } from './component/User/CategoryManage.jsx';
 import UserContextProvider from './context/UserContextProvider.jsx';
 import { LandingPage } from './component/LandingPage.jsx';
 import { Landing1 } from './component/Landing1.jsx';
+import { Temp } from './component/Landing pages/Temp.jsx';
 
 function App() {
   // const path1 = window.location.pathname;
@@ -123,6 +124,7 @@ function App() {
                         <Route path="/user/charts3" element={<Chart3 />} />
                         <Route path="/user/profile" element={<UserProfile />} />
                         <Route path="/user/groups" element={<Groups />} />
+                        <Route path="/user/transaction" element={<Temp />} />
                         <Route
                           path="/user/groups2"
                           element={<GroupListPage />}

@@ -65,6 +65,10 @@ export const Sidebar = ({ onLinkSelect }) => {
     //   name: 'Payees',
     //   link: 'user/payee',
     // },
+    {
+      name: 'add transaction',
+      link: 'user/transaction',
+    },
   ];
 
   const handleLinkClick = name => {

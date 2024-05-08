@@ -442,7 +442,7 @@ export const UserDashBoard = () => {
           <div className="card card-shadow">
             <div className="card-header ">
               <h4 className="card-title">Category Expenses</h4>
-              <p className="card-category">Last Campaign Performance</p>
+              <p className="card-category"></p>
             </div>
             <div className="card-body ">
               <PieChart />
@@ -453,7 +453,7 @@ export const UserDashBoard = () => {
           <div className="card card-shadow">
             <div className="card-header ">
               <h4 className="card-title">Income and Expense Trends</h4>
-              <p className="card-category">24 Hours performance</p>
+              <p className="card-category"></p>
             </div>
             <div className="card-body ">
               {/* <Charts /> */}

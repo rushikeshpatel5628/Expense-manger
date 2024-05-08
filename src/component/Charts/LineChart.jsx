@@ -171,15 +171,13 @@
 
 // export default LineChart;
 
+/*
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import { Select, MenuItem } from '@mui/material';
 import 'chartjs-adapter-moment';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 
 const LineChart = () => {
   const [transactions, setTransactions] = useState([]);
@@ -301,6 +299,206 @@ const LineChart = () => {
           <MenuItem value="income">Income</MenuItem>
           <MenuItem value="expense">Expense</MenuItem>
         </Select>
+      </div>
+      <div style={{ width: 'auto', height: '300px', margin: '0px auto' }}>
+        <Line data={chartData} options={options} />
+      </div>
+    </div>
+  );
+};
+
+export default LineChart;
+*/
+
+import React, { useEffect, useState } from 'react';
+import { Line } from 'react-chartjs-2';
+import dayjs from 'dayjs';
+import axios from 'axios';
+import { Select, MenuItem } from '@mui/material';
+import 'chartjs-adapter-moment';
+import './LineChart.css';
+
+const LineChart = () => {
+  const [transactions, setTransactions] = useState([]);
+  const [chartType, setChartType] = useState('expense');
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      const userId = localStorage.getItem('userId');
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/transactions/transactions/${userId}`
+        );
+        setTransactions(response.data.data);
+      } catch (error) {
+        console.error('Error fetching transactions:', error);
+      }
+    };
+
+    fetchTransactions();
+  }, []);
+
+  const prepareChartData = () => {
+    let filteredTransactions = transactions;
+    if (startDate && endDate) {
+      filteredTransactions = transactions.filter(transaction => {
+        const transactionDate = dayjs(transaction.expDateTime);
+        return transactionDate.isBetween(startDate, endDate, 'day', '[]');
+      });
+    }
+
+    const sortedTransactions = filteredTransactions.sort(
+      (a, b) => new Date(a.expDateTime) - new Date(b.expDateTime)
+    );
+
+    const incomeData = [];
+    const expenseData = [];
+    const labels = [];
+
+    sortedTransactions.forEach(transaction => {
+      labels.push(transaction.expDateTime);
+      if (transaction.transactionType === 'income') {
+        incomeData.push(transaction.amount);
+        expenseData.push(null);
+      } else {
+        incomeData.push(null);
+        expenseData.push(transaction.amount);
+      }
+    });
+
+    return {
+      labels,
+      incomeData,
+      expenseData,
+    };
+  };
+
+  const handleChartTypeChange = event => {
+    setChartType(event.target.value);
+  };
+
+  const chartData = {
+    labels: prepareChartData().labels,
+    datasets: [
+      {
+        label: 'Income',
+        data: chartType === 'income' ? prepareChartData().incomeData : [],
+        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: 'rgba(0, 128, 0, 0.1)',
+        tension: 0.4,
+      },
+      {
+        label: 'Expenses',
+        data: chartType === 'expense' ? prepareChartData().expenseData : [],
+        borderColor: 'rgba(255, 99, 132, 1)',
+        backgroundColor: 'rgba(255, 0, 0, 0.1)',
+      },
+    ],
+  };
+
+  const options = {
+    scales: {
+      x: {
+        type: 'time',
+        time: {
+          unit: 'day',
+          tooltipFormat: 'DD MMM, YYYY',
+          displayFormats: {
+            day: 'DD MMM, YYYY',
+          },
+        },
+        title: {
+          display: true,
+          text: 'Date',
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Amount',
+        },
+      },
+    },
+    plugins: {
+      tooltip: {
+        mode: 'index',
+        intersect: false,
+      },
+    },
+  };
+
+  const handleStartDateChange = event => {
+    setStartDate(dayjs(event.target.value));
+  };
+
+  const handleEndDateChange = event => {
+    setEndDate(dayjs(event.target.value));
+  };
+
+  return (
+    <div>
+      <div
+        className="main"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          marginBottom: '10px',
+          width: '500px',
+        }}
+      >
+        <div>
+          <Select
+            value={chartType}
+            onChange={handleChartTypeChange}
+            displayEmpty
+            variant="outlined"
+            size="small"
+            style={{ marginRight: '20px', height: '30px' }}
+          >
+            <MenuItem value="income">Income</MenuItem>
+            <MenuItem value="expense">Expense</MenuItem>
+          </Select>
+        </div>
+        <div
+          className="date-range"
+          style={{
+            display: 'flex',
+            marginLeft: '10px',
+            width: '300px',
+          }}
+        >
+          <input
+            type="date"
+            className="date-input"
+            value={startDate ? startDate.format('YYYY-MM-DD') : ''}
+            onChange={handleStartDateChange}
+            style={{
+              width: '130px',
+              padding: '2px',
+              borderRadius: '4px',
+              border: '1px solid #ccc',
+              marginRight: '10px',
+              color: '#9a9a9a',
+            }}
+          />
+          <span style={{ alignSelf: 'center', marginRight: '10px' }}>to</span>
+          <input
+            type="date"
+            placeholder="DD/MM/YYYY"
+            value={endDate ? endDate.format('YYYY-MM-DD') : ''}
+            onChange={handleEndDateChange}
+            style={{
+              width: '130px',
+              padding: '2px',
+              borderRadius: '4px',
+              border: '1px solid #ccc',
+              color: '#9a9a9a',
+            }}
+          />
+        </div>
       </div>
       <div style={{ width: 'auto', height: '300px', margin: '0px auto' }}>
         <Line data={chartData} options={options} />

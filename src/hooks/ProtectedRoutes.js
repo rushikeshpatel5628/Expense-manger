@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { LogIn1 } from '../component/User/LogIn1';
-import { LandingPage } from '../component/LandingPage';
+// import { LandingPage } from '../component/LandingPage';
 
 // const useAuth = () => {
 //   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -30,7 +31,7 @@ const useAuth = () => {
 
 export const ProtectedRoutes = () => {
   const auth = useAuth();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // useEffect(() => {
   //   if (auth === null) {
