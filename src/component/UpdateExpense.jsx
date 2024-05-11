@@ -153,7 +153,7 @@ export const UpdateExpense = () => {
                         </label>
                         <input
                           type="text"
-                          className=" form-control w-25"
+                          className="form-control w-25"
                           {...register('title')}
                         />
                       </div>

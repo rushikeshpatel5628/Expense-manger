@@ -269,6 +269,14 @@ export const AddExpense = () => {
                           type="date"
                           className="ml-3"
                           {...register('expDateTime')}
+                          style={{
+                            width: '130px',
+                            padding: '2px',
+                            borderRadius: '4px',
+                            border: '1px solid #ccc',
+                            marginRight: '10px',
+                            color: '#9a9a9a',
+                          }}
                         />
                       </div>
                     </div>

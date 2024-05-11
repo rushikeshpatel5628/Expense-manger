@@ -262,7 +262,7 @@ const GroupDetailsPage = () => {
                     sx={{
                       float: 'right',
                       marginTop: '-40px',
-                      marginRight: '10px',
+                      marginRight: '0px',
                     }}
                   >
                     invite
@@ -299,83 +299,101 @@ const GroupDetailsPage = () => {
                 </List>
               </Box>
             </Grid>
+            {/* Group summary */}
             <Grid item md={6} xs={6}>
               <Box
-                bgcolor={'background.paper'}
-                p={2}
                 sx={{
+                  // display: 'flex',
                   mb: 4,
                   boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
                   borderRadius: '8px',
                 }}
+                bgcolor={'background.paper'}
+                p={2}
               >
-                <List
-                  sx={{
-                    width: '100%',
-                    maxWidth: 360,
-                    bgcolor: 'background.paper',
-                  }}
-                >
-                  {/* Heading */}
+                <Box>
                   <Typography
                     variant="h5"
                     align="left"
                     gutterBottom
-                    sx={{ marginLeft: '10px' }}
+                    sx={{ marginLeft: '0px' }}
                   >
                     Group Summary
                   </Typography>
-                  {/* List Items */}
-                  <ListItem>
-                    <ListItemText
-                      primary={`Total Group Expenses ${
-                        groupSummary
-                          ? groupSummary.totalGroupExpenses
-                          : 'Calculating...'
-                      }`}
-                    />
-                  </ListItem>
-                  <Divider variant="middle" />
-                  <ListItem>
-                    <ListItemText
-                      primary={`Total My Expenses ${
-                        groupSummary
-                          ? groupSummary.totalMyExpenses
-                          : 'Calculating...'
-                      }`}
-                    />
-                  </ListItem>
-                  <Divider variant="middle" />
-                  <ListItem>
-                    <ListItemText
-                      primary={`Amount Owed to Me ${
-                        groupSummary
-                          ? groupSummary.amountOwed
-                          : 'Calculating...'
-                      }`}
-                    />
-                  </ListItem>
-                  <Divider variant="middle" />
-
-                  <ListItem>
-                    <ListItemText
-                      primary={`Amount I Owe ${
-                        groupSummary
-                          ? groupSummary.amountOwing
-                          : 'Calculating...'
-                      }`}
-                    />
-                  </ListItem>
-
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    fontSize: '1rem',
+                    padding: '8px 16px',
+                  }}
+                >
+                  <p>Total Group Expenses</p>
+                  <p style={{ marginRight: '10px' }}>
+                    {groupSummary
+                      ? groupSummary.totalMyExpenses
+                      : 'Calculating...'}
+                  </p>
+                </Box>
+                <Divider variant="middle" />
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    fontSize: '1rem',
+                    padding: '8px 16px',
+                  }}
+                >
+                  <p>Total My Expenses</p>
+                  <p style={{ marginRight: '10px' }}>
+                    {groupSummary
+                      ? groupSummary.totalMyExpenses
+                      : 'Calculating...'}
+                  </p>
+                </Box>
+                <Divider variant="middle" />
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    fontSize: '1rem',
+                    padding: '8px 16px',
+                  }}
+                >
+                  <p>Amount Owed to Me</p>
+                  <p style={{ marginRight: '10px' }}>
+                    {groupSummary ? groupSummary.amountOwed : 'Calculating...'}
+                  </p>
+                </Box>
+                <Divider variant="middle" />
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    fontSize: '1rem',
+                    padding: '8px 16px',
+                  }}
+                >
+                  <p>Amount I Owe</p>
+                  <p style={{ marginRight: '10px' }}>
+                    {groupSummary ? groupSummary.amountOwing : 'Calculating...'}
+                  </p>
+                </Box>
+                <Box>
                   <Button
                     variant="contained"
                     size="small"
                     onClick={() => handleExpenses(groupid)}
-                    sx={{ marginLeft: '10px', mb: '4px', mt: '4px' }}
+                    sx={{ marginLeft: '10px', mb: '4px', mt: '8px' }}
                   >
                     View expenses
                   </Button>
-                </List>
+                </Box>
               </Box>
             </Grid>
             <Stack
@@ -383,7 +401,8 @@ const GroupDetailsPage = () => {
               sx={{
                 display: 'flex',
                 flexDirection: 'row',
-                mt: '20px',
+                mt: '15px',
+                ml: '5px',
               }}
             >
               <Button

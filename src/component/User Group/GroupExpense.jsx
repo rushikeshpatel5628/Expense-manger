@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { GroupExpensetable } from './GroupExpensetable';
 import { useEffect } from 'react';
 import { AddGroupExpense } from './AddGroupExpense';
@@ -131,6 +131,16 @@ export const GroupExpense = () => {
                 <div className="card-body">
                   {/* <GroupExpensetable groupid={groupid} /> */}
                   {groupid && <GroupExpensetable groupid={groupid} />}
+                  <div
+                    style={{
+                      marginTop: '15px',
+                      textDecorationLine: 'underline',
+                      textDecorationColor: '#007BFF',
+                      fontSize: '14px',
+                    }}
+                  >
+                    <Link to={`/group-details/${groupid}`}>back to group</Link>
+                  </div>
                 </div>
               </div>
             </div>

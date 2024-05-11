@@ -387,7 +387,6 @@ const LineChart = () => {
         data: chartType === 'income' ? prepareChartData().incomeData : [],
         borderColor: 'rgba(54, 162, 235, 1)',
         backgroundColor: 'rgba(0, 128, 0, 0.1)',
-        tension: 0.4,
       },
       {
         label: 'Expenses',
@@ -399,6 +398,7 @@ const LineChart = () => {
   };
 
   const options = {
+    tension: 0.2,
     scales: {
       x: {
         type: 'time',
