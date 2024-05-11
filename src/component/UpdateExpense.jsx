@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 // import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import './AddExpenseForm.css';
 
 export const UpdateExpense = () => {
   const [cat, setcat] = useState([]);
@@ -23,7 +24,8 @@ export const UpdateExpense = () => {
   } = useForm({
     defaultValues: async () => {
       const res = await axios.get(
-        'http://localhost:5000/transactions/transaction/' + id );
+        'http://localhost:5000/transactions/transaction/' + id
+      );
       return {
         title: res.data.data.title,
         amount: res.data.data.amount,
@@ -37,7 +39,6 @@ export const UpdateExpense = () => {
         transactionType: res.data.data.transactionType,
         // goal: res.data.data.goal._id
       };
-
     },
   });
 
@@ -53,7 +54,9 @@ export const UpdateExpense = () => {
 
   const loadCategories = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/usercategory/category/user/'+userId);
+      const res = await axios.get(
+        'http://localhost:5000/usercategory/category/user/' + userId
+      );
       setcat(res.data.data);
       console.log(res.data.data);
     } catch (error) {
@@ -63,7 +66,9 @@ export const UpdateExpense = () => {
 
   const loadGoal = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/goals/goals/'+userId);
+      const res = await axios.get(
+        'http://localhost:5000/goals/goals/' + userId
+      );
       setgoal(res.data.data);
       console.log(res.data.data);
     } catch (error) {
@@ -85,7 +90,9 @@ export const UpdateExpense = () => {
 
   const loadPayee = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/payees/payees/'+userId);
+      const res = await axios.get(
+        'http://localhost:5000/payees/payees/' + userId
+      );
       setpayee(res.data.data);
       console.log(res.data.data);
     } catch (error) {
@@ -97,7 +104,7 @@ export const UpdateExpense = () => {
     loadCategories();
     // loadSubCategories();
     loadPayee();
-    loadGoal()
+    loadGoal();
   }, []);
 
   const submitHandler = async data => {
@@ -125,12 +132,12 @@ export const UpdateExpense = () => {
 
   return (
     <>
-       <div className="container-fluid mx-auto">
+      <div className="container-fluid mx-auto">
         <div className="row mx-auto">
           <div className="col-md-8">
             <div className="card">
               <div className="card-header">
-                <h4 className="card-title">Add Expense</h4>
+                <h4 className="card-title">Update Expense</h4>
               </div>
               <div className="card-body">
                 <form onSubmit={handleSubmit(submitHandler)}>
@@ -146,7 +153,7 @@ export const UpdateExpense = () => {
                         </label>
                         <input
                           type="text"
-                          className="ml-3 form-control w-25"
+                          className=" form-control w-25"
                           {...register('title')}
                         />
                       </div>
@@ -168,7 +175,9 @@ export const UpdateExpense = () => {
                             className="form-control"
                             {...register('goal')}
                           >
-                            <option value="" selected>Goal</option>
+                            <option value="" selected>
+                              Goal
+                            </option>
                             {goal.map(item => {
                               return (
                                 <option value={item._id}>
@@ -407,7 +416,6 @@ export const UpdateExpense = () => {
                           Transaction Type{' '}
                         </label>
                         <div className="select w-50">
-                          
                           <div class="form-check">
                             <input
                               class="form-check-input"

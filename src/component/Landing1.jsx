@@ -42,7 +42,7 @@ function Header() {
             </IconButton>
           )}
 
-          <Typography variant="h5">ExpenseManager</Typography>
+          <Typography variant="h5">Expense Manager</Typography>
         </Stack>
       </Grid>
       {isDesktop && (

@@ -244,16 +244,19 @@ export const LogIn1 = () => {
               {...register('password')}
               InputProps={{
                 endAdornment: (
-                  <Button onClick={togglePasswordVisibility}>
+                  <Button
+                    onClick={togglePasswordVisibility}
+                    style={{ margin: '-13px' }}
+                  >
                     {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
                   </Button>
                 ),
               }}
             />
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
-            />
+            /> */}
             <Button
               type="submit"
               fullWidth

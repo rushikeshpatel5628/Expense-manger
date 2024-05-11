@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { Container, Typography, TextField, Button } from '@mui/material';
+import { Container, Typography, TextField, Button, Box } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -39,6 +39,8 @@ const SubmitButton = styled(Button)({
 
 export const ForgotPassword = () => {
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const { register, handleSubmit } = useForm();
@@ -46,16 +48,22 @@ export const ForgotPassword = () => {
   const submitHandler = async data => {
     console.log('data....', data);
     try {
-        const res = await axios.post("http://localhost:5000/users/user/isuserexist", data)
-        if (res.data.flag == 1) {
-            console.log("Email exist", res.data.data.email);
-            //setData in location
-            navigate("/resetpassword", {
-              state: { email: res.data.data.email },
-            });
-          }
+      setLoading(true);
+      const res = await axios.post(
+        'http://localhost:5000/users/user/isuserexist',
+        data
+      );
+      if (res.data.flag == 1) {
+        console.log('Email exist', res.data.data.email);
+        //setData in location
+        navigate('/resetpassword', {
+          state: { email: res.data.data.email },
+        });
+      }
     } catch (error) {
-        console.log("error....", error)
+      console.log('error....', error);
+    } finally {
+      setLoading(false); // Reset loading state to false after submission
     }
   };
 
@@ -69,7 +77,9 @@ export const ForgotPassword = () => {
       }}
     >
       <FormContainer>
-        <Title variant="h5">Forgot Password</Title>
+        <Title variant="h5" sx={{ marginBottom: '10px' }}>
+          Forgot Password
+        </Title>
         <form onSubmit={handleSubmit(submitHandler)}>
           <InputField
             label="Enter your email"
@@ -77,8 +87,13 @@ export const ForgotPassword = () => {
             {...register('email')}
             required
           />
-          <SubmitButton variant="contained" type="submit">
-            Submit
+          <Box>
+            <p style={{ fontSize: '12px', color: '#333333' }}>
+              The OTP has been sent to the email address provided.
+            </p>
+          </Box>
+          <SubmitButton variant="contained" type="submit" disabled={loading}>
+            {loading ? 'Submitting...' : 'Submit'}
           </SubmitButton>
         </form>
       </FormContainer>
