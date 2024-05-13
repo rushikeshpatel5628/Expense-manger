@@ -39,7 +39,11 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const navigate = useNavigate();
 
   const submitHandler = async data => {
@@ -58,6 +62,33 @@ export default function SignUp() {
     } catch (error) {
       alert('error in creating user');
     }
+  };
+
+  const validationSchema = {
+    firstName: {
+      required: {
+        value: true,
+        message: 'First name is required',
+      },
+    },
+    lastName: {
+      required: {
+        value: true,
+        message: 'Last name is required',
+      },
+    },
+    email: {
+      required: {
+        value: true,
+        message: 'Email is required',
+      },
+    },
+    password: {
+      required: {
+        value: true,
+        message: 'Password is required',
+      },
+    },
   };
 
   return (
@@ -94,8 +125,11 @@ export default function SignUp() {
                   id="firstName"
                   label="First Name"
                   autoFocus
-                  {...register('firstName')}
+                  {...register('firstName', validationSchema.firstName)}
                 />
+                <span style={{ color: 'red', fontSize: '12px' }}>
+                  {errors.firstName && errors.firstName.message}
+                </span>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -105,8 +139,11 @@ export default function SignUp() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
-                  {...register('lastName')}
+                  {...register('lastName', validationSchema.lastName)}
                 />
+                <span style={{ color: 'red', fontSize: '12px' }}>
+                  {errors.lastName && errors.lastName.message}
+                </span>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -116,8 +153,11 @@ export default function SignUp() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
-                  {...register('email')}
+                  {...register('email', validationSchema.email)}
                 />
+                <span style={{ color: 'red', fontSize: '12px' }}>
+                  {errors.email && errors.email.message}
+                </span>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -128,8 +168,11 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
-                  {...register('password')}
+                  {...register('password', validationSchema.password)}
                 />
+                <span style={{ color: 'red', fontSize: '12px' }}>
+                  {errors.password && errors.password.message}
+                </span>
               </Grid>
             </Grid>
             <Button

@@ -145,7 +145,11 @@ import { toast, ToastContainer } from 'react-toastify';
 const defaultTheme = createTheme();
 
 export const LogIn1 = () => {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -183,6 +187,21 @@ export const LogIn1 = () => {
       console.log('error', error);
       alert('Invalid Email or password');
     }
+  };
+
+  const validationSchema = {
+    email: {
+      required: {
+        value: true,
+        message: 'email is required',
+      },
+    },
+    password: {
+      required: {
+        value: true,
+        message: 'password is required',
+      },
+    },
   };
 
   return (
@@ -229,9 +248,12 @@ export const LogIn1 = () => {
               label="Email Address"
               name="email"
               autoComplete="email"
-              {...register('email')}
+              {...register('email', validationSchema.email)}
               autoFocus
             />
+            <span style={{ color: 'red', fontSize: '12px' }}>
+              {errors.email && errors.email.message}
+            </span>
             <TextField
               margin="normal"
               required
@@ -241,7 +263,7 @@ export const LogIn1 = () => {
               type={showPassword ? 'text' : 'password'}
               id="password"
               autoComplete="current-password"
-              {...register('password')}
+              {...register('password', validationSchema.password)}
               InputProps={{
                 endAdornment: (
                   <Button
@@ -253,6 +275,9 @@ export const LogIn1 = () => {
                 ),
               }}
             />
+            <span style={{ color: 'red', fontSize: '12px' }}>
+              {errors.password && errors.password.message}
+            </span>
             {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"

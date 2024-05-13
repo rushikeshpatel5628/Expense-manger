@@ -142,6 +142,58 @@ export const AddExpense = () => {
     }
   };
 
+  const validationSchema = {
+    title: {
+      required: {
+        value: true,
+        message: 'title is required',
+      },
+    },
+    amount: {
+      required: {
+        value: true,
+        message: 'amount is required',
+      },
+    },
+    expDateTime: {
+      required: {
+        value: true,
+        message: 'date is required',
+      },
+    },
+    payee: {
+      required: {
+        value: true,
+        message: 'select payee',
+      },
+    },
+    category: {
+      required: {
+        value: true,
+        message: 'category is required',
+      },
+    },
+    paymentMethod: {
+      required: {
+        value: true,
+        message: 'payment method is required',
+      },
+    },
+
+    description: {
+      required: {
+        value: true,
+        message: 'description is required',
+      },
+    },
+    transactionType: {
+      required: {
+        value: true,
+        message: 'transaction type is required',
+      },
+    },
+  };
+
   return (
     <>
       <div className="container-fluid mx-auto">
@@ -178,8 +230,12 @@ export const AddExpense = () => {
                         <input
                           type="text"
                           className="form-control w-25"
-                          {...register('title')}
+                          {...register('title', validationSchema.title)}
                         />
+                        <span style={{ fontSize: '12px', color: 'red' }}>
+                          {' '}
+                          {errors.title && errors.title.message}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -222,11 +278,15 @@ export const AddExpense = () => {
                         >
                           Payee{' '}
                         </label>
+                        <span style={{ fontSize: '12px', color: 'red' }}>
+                          {' '}
+                          {errors.payee && errors.payee.message}
+                        </span>
                         <div className="select w-50">
                           <select
                             name=""
                             className="form-control"
-                            {...register('payee')}
+                            {...register('payee', validationSchema.payee)}
                           >
                             <option selected style={{ color: '#656262' }}>
                               Payee
@@ -250,8 +310,12 @@ export const AddExpense = () => {
                           type="Number"
                           className="form-control"
                           placeholder="Amount"
-                          {...register('amount')}
+                          {...register('amount', validationSchema.amount)}
                         />
+                        <span style={{ fontSize: '12px', color: 'red' }}>
+                          {' '}
+                          {errors.amount && errors.amount.message}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -268,7 +332,10 @@ export const AddExpense = () => {
                         <input
                           type="date"
                           className="ml-3"
-                          {...register('expDateTime')}
+                          {...register(
+                            'expDateTime',
+                            validationSchema.expDateTime
+                          )}
                           style={{
                             width: '130px',
                             padding: '2px',
@@ -278,6 +345,10 @@ export const AddExpense = () => {
                             color: '#9a9a9a',
                           }}
                         />
+                        <span style={{ fontSize: '12px', color: 'red' }}>
+                          {' '}
+                          {errors.expDateTime && errors.expDateTime.message}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -293,9 +364,9 @@ export const AddExpense = () => {
                         </label>
                         <div className="select w-50">
                           <select
-                            name=""
+                            name="category"
                             className="form-control"
-                            {...register('category')}
+                            {...register('category', { required: true })}
                           >
                             <option selected>Category</option>
                             {cat.map(cat => {
@@ -306,6 +377,13 @@ export const AddExpense = () => {
                               );
                             })}
                           </select>
+                          {/* <span style={{ fontSize: '12px', color: 'red' }}>
+                            {' '}
+                            {errors.category && errors.category.message}
+                          </span> */}
+                          {errors.category && (
+                            <span color="red">select category</span>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -347,6 +425,10 @@ export const AddExpense = () => {
                           style={{ fontSize: '15px' }}
                         >
                           Payment Method{' '}
+                          <span style={{ fontSize: '12px', color: 'red' }}>
+                            {errors.paymentMethod &&
+                              errors.paymentMethod.message}
+                          </span>
                         </label>
                         <div class="form-check">
                           <input
@@ -355,7 +437,10 @@ export const AddExpense = () => {
                             name="gridRadios"
                             id="gridRadios1"
                             value="credit card"
-                            {...register('paymentMethod')}
+                            {...register(
+                              'paymentMethod',
+                              validationSchema.paymentMethod
+                            )}
                           />
                           <label
                             class="form-check-label"
@@ -372,7 +457,10 @@ export const AddExpense = () => {
                             name="gridRadios"
                             id="gridRadios1"
                             value="upi"
-                            {...register('paymentMethod')}
+                            {...register(
+                              'paymentMethod',
+                              validationSchema.paymentMethod
+                            )}
                           />
                           <label class="form-check-label" for="gridRadios1">
                             UPI
@@ -385,7 +473,10 @@ export const AddExpense = () => {
                             name="gridRadios"
                             id="gridRadios1"
                             value="cash"
-                            {...register('paymentMethod')}
+                            {...register(
+                              'paymentMethod',
+                              validationSchema.paymentMethod
+                            )}
                           />
                           <label class="form-check-label" for="gridRadios1">
                             Cash
@@ -444,6 +535,10 @@ export const AddExpense = () => {
                           style={{ fontSize: '15px' }}
                         >
                           Transaction Type{' '}
+                          <span style={{ fontSize: '12px', color: 'red' }}>
+                            {errors.transactionType &&
+                              errors.transactionType.message}
+                          </span>
                         </label>
                         <div className="select w-50">
                           <div class="form-check">
@@ -453,7 +548,10 @@ export const AddExpense = () => {
                               name="gridRadios"
                               id="gridRadios1"
                               value="income"
-                              {...register('transactionType')}
+                              {...register(
+                                'transactionType',
+                                validationSchema.transactionType
+                              )}
                             />
                             <label class="form-check-label" for="gridRadios1">
                               Income
@@ -466,7 +564,10 @@ export const AddExpense = () => {
                               name="gridRadios"
                               id="gridRadios1"
                               value="expense"
-                              {...register('transactionType')}
+                              {...register(
+                                'transactionType',
+                                validationSchema.transactionType
+                              )}
                             />
                             <label class="form-check-label" for="gridRadios1">
                               Expense
@@ -492,8 +593,14 @@ export const AddExpense = () => {
                           cols="30"
                           rows="2"
                           className="form-control"
-                          {...register('description')}
+                          {...register(
+                            'description',
+                            validationSchema.description
+                          )}
                         ></textarea>
+                        <span style={{ fontSize: '12px', color: 'red' }}>
+                          {errors.description && errors.description.message}
+                        </span>
                       </div>
                     </div>
                   </div>
