@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 // import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './AddExpenseForm.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 export const UpdateExpense = () => {
   const [cat, setcat] = useState([]);
@@ -116,8 +117,21 @@ export const UpdateExpense = () => {
         data
       );
       if (res.status === 201) {
-        alert('Data posted');
-        navigate('/user/expenses');
+        // alert('Data posted');
+        toast.info('Expense updated', {
+          position: 'top-center',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored',
+          // transition: Slide,
+        });
+        setTimeout(() => {
+          navigate('/user/expenses');
+        }, 2000);
       } else {
         alert('Data not updated');
       }
@@ -133,6 +147,18 @@ export const UpdateExpense = () => {
   return (
     <>
       <div className="container-fluid mx-auto">
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
         <div className="row mx-auto">
           <div className="col-md-8">
             <div className="card">

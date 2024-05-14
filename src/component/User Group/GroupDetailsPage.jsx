@@ -426,7 +426,10 @@ const GroupDetailsPage = () => {
             <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
               <DialogTitle>Invite Members</DialogTitle>
               <DialogContent>
-                <p>{groupid}</p>
+                {/* <p>{groupid}</p> */}
+                <p style={{ marginBottom: '0' }}>
+                  Group id will be sent to the below email
+                </p>
                 <InviteGroupModal
                   handleClose={handleCloseDialog}
                   groupId={groupid}

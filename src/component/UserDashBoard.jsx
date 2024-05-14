@@ -396,7 +396,7 @@ export const UserDashBoard = () => {
                         goalExpenses[goalId].amount >
                         goalExpenses[goalId].maxamount
                           ? 'Exceeded'
-                          : 'Budget'
+                          : 'In budget'
                       }
                       color={
                         goalExpenses[goalId].amount >

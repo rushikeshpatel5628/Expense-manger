@@ -425,7 +425,13 @@ export const AddExpense = () => {
                           style={{ fontSize: '15px' }}
                         >
                           Payment Method{' '}
-                          <span style={{ fontSize: '12px', color: 'red' }}>
+                          <span
+                            style={{
+                              fontSize: '12px',
+                              color: 'red',
+                              fontWeight: '400',
+                            }}
+                          >
                             {errors.paymentMethod &&
                               errors.paymentMethod.message}
                           </span>
@@ -535,7 +541,13 @@ export const AddExpense = () => {
                           style={{ fontSize: '15px' }}
                         >
                           Transaction Type{' '}
-                          <span style={{ fontSize: '12px', color: 'red' }}>
+                          <span
+                            style={{
+                              fontSize: '12px',
+                              color: 'red',
+                              fontWeight: '400',
+                            }}
+                          >
                             {errors.transactionType &&
                               errors.transactionType.message}
                           </span>
