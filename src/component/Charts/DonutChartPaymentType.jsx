@@ -2,7 +2,6 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
-
 export const DonutChartPaymentType = () => {
   const [data, setdata] = useState([]);
   const fetchTransactions = async () => {
@@ -32,36 +31,37 @@ export const DonutChartPaymentType = () => {
 
   const chartData = {
     labels: Object.keys(paymentTypes),
-    datasets: [{
-      data: Object.values(paymentTypes),
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.6)',
-        'rgba(54, 162, 235, 0.6)',
-        'rgba(255, 206, 86, 0.6)',
-        'rgba(75, 192, 192, 0.6)',
-        'rgba(153, 102, 255, 0.6)',
-        'rgba(255, 159, 64, 0.6)'
-      ],
-      borderWidth: 1
-    }]
+    datasets: [
+      {
+        data: Object.values(paymentTypes),
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.6)',
+          'rgba(54, 162, 235, 0.6)',
+          'rgba(255, 206, 86, 0.6)',
+          'rgba(75, 192, 192, 0.6)',
+          'rgba(153, 102, 255, 0.6)',
+          'rgba(255, 159, 64, 0.6)',
+        ],
+        borderWidth: 1,
+      },
+    ],
   };
 
   const chartOptions = {
     title: {
       display: true,
       text: 'Payment Types',
-      fontSize: 20
+      fontSize: 20,
     },
     legend: {
       display: true,
-      position: 'bottom'
-    }
+      position: 'bottom',
+    },
   };
-  
 
   return (
-    <div style={{width: '100%', height: '300px', margin: '0px auto'}}>
+    <div style={{ width: '100%', height: '307px', margin: '0px auto' }}>
       <Doughnut data={chartData} options={chartOptions} />
     </div>
-  );;
+  );
 };

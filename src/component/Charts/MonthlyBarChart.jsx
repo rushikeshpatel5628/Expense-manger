@@ -66,12 +66,12 @@ const MonthlyBarChart = () => {
         // Extract month-year and income/expense data for plotting
         // const months = Object.keys(incomeByMonth).sort();
         const months = Object.keys(incomeByMonth)
-        .sort((a, b) => {
-          const monthA = new Date(a.split('-')[1] + ' 1, 2000');
-          const monthB = new Date(b.split('-')[1] + ' 1, 2000');
-          return monthA - monthB;
-        })
-        .map(month => month.split('-')[1]);
+          .sort((a, b) => {
+            const monthA = new Date(a.split('-')[1] + ' 1, 2000');
+            const monthB = new Date(b.split('-')[1] + ' 1, 2000');
+            return monthA - monthB;
+          })
+          .map(month => month.split('-')[1]);
         const incomeData = Object.values(incomeByMonth);
         const expenseData = Object.values(expenseByMonth);
 
@@ -105,7 +105,7 @@ const MonthlyBarChart = () => {
   return (
     <div>
       {/* <h2>Monthly Expenses Comparison</h2> */}
-      <div style={{ width: '100%', height: '300px' }}>
+      <div style={{ width: '100%', height: '332px' }}>
         <Bar
           data={chartData}
           options={{

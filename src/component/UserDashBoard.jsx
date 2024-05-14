@@ -473,8 +473,8 @@ export const UserDashBoard = () => {
         <div className="col-md-7">
           <div className="card card-shadow">
             <div className="card-header ">
-              <h4 className="card-title">Monthly Expenses</h4>
-              <p className="card-category">24 Hours performance</p>
+              <h4 className="card-title">Monthly summary</h4>
+              <p className="card-category"></p>
             </div>
             <div className="card-body">
               <MonthlyBarChart />
@@ -499,7 +499,7 @@ export const UserDashBoard = () => {
           <div className="card card-shadow">
             <div className="card-header ">
               <h4 className="card-title">Payment Type Distribution</h4>
-              <p className="card-category">24 Hours performance</p>
+              <p className="card-category"></p>
             </div>
             <div className="card-body" style={{ margin: '0px auto' }}>
               <DonutChartPaymentType />
