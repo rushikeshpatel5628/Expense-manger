@@ -5,18 +5,24 @@ import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
 
+const InviteGroupModal = ({ handleClose, groupId }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-const InviteGroupModal = ({ handleClose, groupId}) => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
-
-  const onSubmit = async (data) => {
+  const onSubmit = async data => {
     console.log('Data....', data);
-    console.log("group id....", groupId);
+    console.log('group id....', groupId);
     try {
       // Send a POST request to invite members to the group
-      const res = await axios.post(`http://localhost:5000/groups/groups/${groupId}/invite`, data);
+      const res = await axios.post(
+        `https://expense-manager-backend-1.onrender.com/groups/groups/${groupId}/invite`,
+        data
+      );
       if (res.status === 200) {
-        alert("Invitation sent successfully");
+        alert('Invitation sent successfully');
         // toast.success('Mail invitation sent', {
         //   position: 'top-center',
         //   autoClose: 5000,
@@ -38,7 +44,7 @@ const InviteGroupModal = ({ handleClose, groupId}) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-       <ToastContainer
+      <ToastContainer
         position="top-center"
         autoClose={5000}
         hideProgressBar={false}
@@ -57,9 +63,11 @@ const InviteGroupModal = ({ handleClose, groupId}) => {
         margin="normal"
         {...register('email', { required: true })} // Include validation rules
         error={!!errors.email} // Show error if there are errors for 'email'
-        helperText={errors.email ? "Email is required" : ""}
+        helperText={errors.email ? 'Email is required' : ''}
       />
-      <Button type="submit" variant="contained">Send Invitation</Button>
+      <Button type="submit" variant="contained">
+        Send Invitation
+      </Button>
     </form>
   );
 };

@@ -7,20 +7,22 @@ const GroupListPage = () => {
 
   useEffect(() => {
     fetchGroups();
-}, []);
+  }, []);
 
-const fetchGroups = async () => {
+  const fetchGroups = async () => {
     try {
-        const response = await axios.get('http://localhost:5000/groups/groups');
-        setGroups(response.data.data);
+      const response = await axios.get(
+        'https://expense-manager-backend-1.onrender.com/groups/groups'
+      );
+      setGroups(response.data.data);
     } catch (error) {
-        console.error('Error fetching groups:', error);
+      console.error('Error fetching groups:', error);
     }
-};
+  };
 
-console.log(groups)
+  console.log(groups);
   return (
-    <div >
+    <div>
       <h1>My Groups</h1>
       {groups.length === 0 ? (
         <p>No groups found.</p>

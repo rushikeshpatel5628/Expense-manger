@@ -25,7 +25,8 @@ export const UpdateExpense = () => {
   } = useForm({
     defaultValues: async () => {
       const res = await axios.get(
-        'http://localhost:5000/transactions/transaction/' + id
+        'https://expense-manager-backend-1.onrender.com/transactions/transaction/' +
+          id
       );
       return {
         title: res.data.data.title,
@@ -45,7 +46,7 @@ export const UpdateExpense = () => {
 
   // const loadCategories = async () => {
   //   try {
-  //     const res = await axios.get('http://localhost:5000/categories/category');
+  //     const res = await axios.get('https://expense-manager-backend-1.onrender.com/categories/category');
   //     setcat(res.data.data);
   //     console.log(res.data.data);
   //   } catch (error) {
@@ -56,7 +57,8 @@ export const UpdateExpense = () => {
   const loadCategories = async () => {
     try {
       const res = await axios.get(
-        'http://localhost:5000/usercategory/category/user/' + userId
+        'https://expense-manager-backend-1.onrender.com/usercategory/category/user/' +
+          userId
       );
       setcat(res.data.data);
       console.log(res.data.data);
@@ -68,7 +70,7 @@ export const UpdateExpense = () => {
   const loadGoal = async () => {
     try {
       const res = await axios.get(
-        'http://localhost:5000/goals/goals/' + userId
+        'https://expense-manager-backend-1.onrender.com/goals/goals/' + userId
       );
       setgoal(res.data.data);
       console.log(res.data.data);
@@ -80,7 +82,7 @@ export const UpdateExpense = () => {
   // const loadSubCategories = async () => {
   //   try {
   //     const res = await axios.get(
-  //       'http://localhost:5000/categories/subcategory'
+  //       'https://expense-manager-backend-1.onrender.com/categories/subcategory'
   //     );
   //     setsubcat(res.data.data);
   //     console.log(res.data.data);
@@ -92,7 +94,7 @@ export const UpdateExpense = () => {
   const loadPayee = async () => {
     try {
       const res = await axios.get(
-        'http://localhost:5000/payees/payees/' + userId
+        'https://expense-manager-backend-1.onrender.com/payees/payees/' + userId
       );
       setpayee(res.data.data);
       console.log(res.data.data);
@@ -113,7 +115,8 @@ export const UpdateExpense = () => {
 
     try {
       const res = await axios.put(
-        'http://localhost:5000/transactions/transaction/' + id,
+        'https://expense-manager-backend-1.onrender.com/transactions/transaction/' +
+          id,
         data
       );
       if (res.status === 201) {

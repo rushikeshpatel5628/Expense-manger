@@ -9,7 +9,7 @@ export const DonutChartPaymentType = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:5000/transactions/transactions/${userId}`
+        `https://expense-manager-backend-1.onrender.com/transactions/transactions/${userId}`
       );
       console.log('data....', response.data.data);
       setdata(response.data.data);

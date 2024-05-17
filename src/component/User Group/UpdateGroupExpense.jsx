@@ -18,7 +18,8 @@ export const UpdateGroupExpense = () => {
   } = useForm({
     defaultValues: async () => {
       const res = await axios.get(
-        'http://localhost:5000/groupexp/groupexp/' + expenseId
+        'https://expense-manager-backend-1.onrender.com/groupexp/groupexp/' +
+          expenseId
       );
       return {
         title: res.data.data.title,
@@ -34,7 +35,9 @@ export const UpdateGroupExpense = () => {
   //load categories
   const loadCategories = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/categories/category');
+      const res = await axios.get(
+        'https://expense-manager-backend-1.onrender.com/categories/category'
+      );
       setcategory(res.data.data);
       console.log('categories....', res.data.data);
     } catch (error) {
@@ -49,7 +52,8 @@ export const UpdateGroupExpense = () => {
     console.log('data....', data);
     try {
       const res = await axios.put(
-        'http://localhost:5000/groupexp/update/' + expenseId,
+        'https://expense-manager-backend-1.onrender.com/groupexp/update/' +
+          expenseId,
         data
       );
       if (res.status === 201) {

@@ -33,18 +33,24 @@ export const UserDashBoard = () => {
   const navigate = useNavigate();
 
   const getIncome = async () => {
-    const res = await axios.get('http://localhost:5000/transactions/income');
+    const res = await axios.get(
+      'https://expense-manager-backend-1.onrender.com/transactions/income'
+    );
     // setincome(res.data.data);
   };
 
   const getExpense = async () => {
-    const res = await axios.get('http://localhost:5000/transactions/expense');
+    const res = await axios.get(
+      'https://expense-manager-backend-1.onrender.com/transactions/expense'
+    );
     // setExpense(res.data.data);
   };
 
   const getAllGoals = async (req, res) => {
     try {
-      const res = await axios.get('http://localhost:5000/goals/goal');
+      const res = await axios.get(
+        'https://expense-manager-backend-1.onrender.com/goals/goal'
+      );
       setGoals(res.data.data);
 
       // Extracting maxamount from each goal and storing them in an array
@@ -99,7 +105,7 @@ export const UserDashBoard = () => {
   //   const id = localStorage.getItem('userId');
   //   try {
   //     const res = await axios.get(
-  //       'http://localhost:5000/transactions/transactions/' + id
+  //       'https://expense-manager-backend-1.onrender.com/transactions/transactions/' + id
   //     );
   //     console.log(res.data.data);
   //     setdata(res.data.data);
@@ -139,7 +145,8 @@ export const UserDashBoard = () => {
     const id = localStorage.getItem('userId');
     try {
       const res = await axios.get(
-        'http://localhost:5000/transactions/transactions/' + id
+        'https://expense-manager-backend-1.onrender.com/transactions/transactions/' +
+          id
       );
       console.log(res.data.data);
       setdata(res.data.data);
@@ -202,7 +209,7 @@ export const UserDashBoard = () => {
   const loadPayee = async () => {
     try {
       const res = await axios.get(
-        'http://localhost:5000/payees/payees/' + userId
+        'https://expense-manager-backend-1.onrender.com/payees/payees/' + userId
       );
       setPayees(res.data.data);
       console.log('payees....', res.data.data);

@@ -20,8 +20,7 @@ import DialogActions from '@mui/material/DialogActions';
 import { UpdatePayeeModal } from './UpdatePayeeModal';
 import { UpdateCategoryModal } from './UpdateCategoryModal';
 import AddIcon from '@mui/icons-material/Add';
-import '../User/PayeeManageCSS.css'
-
+import '../User/PayeeManageCSS.css';
 
 export const CategoryManage = () => {
   //   const [payee, setpayee] = useState([]);
@@ -32,7 +31,7 @@ export const CategoryManage = () => {
   const [updateOpen, setUpdateOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
-  const {register, handleSubmit, reset} = useForm()
+  const { register, handleSubmit, reset } = useForm();
 
   const handleOpen = () => {
     setOpen(true);
@@ -42,7 +41,7 @@ export const CategoryManage = () => {
     setOpen(false);
   };
 
-  const handleUpdateOpen = (category) => {
+  const handleUpdateOpen = category => {
     setSelectedCategory(category);
     setUpdateOpen(true);
   };
@@ -55,7 +54,8 @@ export const CategoryManage = () => {
   const loadCategory = async () => {
     try {
       const res = await axios.get(
-        'http://localhost:5000/usercategory/category/user/' + userId
+        'https://expense-manager-backend-1.onrender.com/usercategory/category/user/' +
+          userId
       );
       setRows(res.data.data);
       console.log('categories', res.data.data);
@@ -64,45 +64,50 @@ export const CategoryManage = () => {
     }
   };
 
-  const submitHandler = async (data) => {
-    console.log("data....", data);
+  const submitHandler = async data => {
+    console.log('data....', data);
     data.user = userId;
     try {
-      const res = await axios.post("http://localhost:5000/usercategory/category", data);
-      if(res.status === 201){
-        alert("Category added");
+      const res = await axios.post(
+        'https://expense-manager-backend-1.onrender.com/usercategory/category',
+        data
+      );
+      if (res.status === 201) {
+        alert('Category added');
         handleClose();
         reset();
         loadCategory();
       }
     } catch (error) {
-      console.log("error....", error)
+      console.log('error....', error);
     }
-  }
+  };
 
-  const deleteCategory = async (categoryId) => {
+  const deleteCategory = async categoryId => {
     try {
       // Send DELETE request to the API endpoint
-    //   const res = await axios.delete(`http://localhost:5000/shared-category/categories/${categoryId}`, {
-    //     data: { userId: userId } // Send userId in the request body
-    //   });
-        const res = await axios.delete("http://localhost:5000/usercategory/category/"+ categoryId)
+      //   const res = await axios.delete(`https://expense-manager-backend-1.onrender.com/shared-category/categories/${categoryId}`, {
+      //     data: { userId: userId } // Send userId in the request body
+      //   });
+      const res = await axios.delete(
+        'https://expense-manager-backend-1.onrender.com/usercategory/category/' +
+          categoryId
+      );
       if (res.status === 200) {
-        alert("Category deleted");
+        alert('Category deleted');
         // Remove the deleted category from the frontend
         setRows(rows.filter(row => row._id !== categoryId));
       } else if (res.status === 404) {
-        alert("Predefined category not found");
+        alert('Predefined category not found');
       } else {
         // Handle other status codes
-        console.log("Unexpected status code:", res.status);
+        console.log('Unexpected status code:', res.status);
       }
     } catch (error) {
-      console.log("error....", error);
+      console.log('error....', error);
       // Handle error responses, such as displaying an error message to the user
     }
   };
-  
 
   useEffect(() => {
     loadCategory();
@@ -122,14 +127,23 @@ export const CategoryManage = () => {
     <div>
       <div className="card-header d-flex justify-content-between align-items-center">
         <h4 className="card-title">Manage Categories</h4>
-        <Button type="submit" variant="contained" onClick={handleOpen}  startIcon={<AddIcon />} sx={{width:'110px'}}>
+        <Button
+          type="submit"
+          variant="contained"
+          onClick={handleOpen}
+          startIcon={<AddIcon />}
+          sx={{ width: '110px' }}
+        >
           Category
         </Button>
       </div>
       <div className="card-body ">
         <div style={{ height: 300, width: '100%' }}>
           <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-            <TableContainer style={{ maxHeight: 300, overflowY: 'auto'  }} className="custom-scrollbar">
+            <TableContainer
+              style={{ maxHeight: 300, overflowY: 'auto' }}
+              className="custom-scrollbar"
+            >
               <Table stickyHeader aria-label="sticky table">
                 <TableHead>
                   <TableRow>
@@ -144,19 +158,31 @@ export const CategoryManage = () => {
                 </TableHead>
                 <TableBody>
                   {rowsWithNumbers.map(row => (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row._id} size='small'>
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={row._id}
+                      size="small"
+                    >
                       {columns.map(column => (
-                        <TableCell key={column.id} align="left"  size='small'>
+                        <TableCell key={column.id} align="left" size="small">
                           {row[column.id]}
                         </TableCell>
                       ))}
                       <TableCell align="left">
-                        <IconButton aria-label="update" onClick={() => handleUpdateOpen(row)}>
+                        <IconButton
+                          aria-label="update"
+                          onClick={() => handleUpdateOpen(row)}
+                        >
                           <Update />
                         </IconButton>
                       </TableCell>
                       <TableCell align="left">
-                        <IconButton aria-label="delete" onClick={() => deleteCategory(row._id)}>
+                        <IconButton
+                          aria-label="delete"
+                          onClick={() => deleteCategory(row._id)}
+                        >
                           <Delete />
                         </IconButton>
                       </TableCell>
@@ -169,49 +195,51 @@ export const CategoryManage = () => {
         </div>
       </div>
       <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Add Category</DialogTitle>
+        <DialogTitle>Add Category</DialogTitle>
         <DialogContent>
           {/* Text field for entering payee name */}
           <form onSubmit={handleSubmit(submitHandler)}>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="payeeName"
-            label="Category name"
-            type="text"
-            fullWidth
-            {...register('categoryName')}
-          />
-          <Button type='submit' color="primary" variant='contained' sx={{my:2}}>
-            Submit
-          </Button>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="payeeName"
+              label="Category name"
+              type="text"
+              fullWidth
+              {...register('categoryName')}
+            />
+            <Button
+              type="submit"
+              color="primary"
+              variant="contained"
+              sx={{ my: 2 }}
+            >
+              Submit
+            </Button>
           </form>
         </DialogContent>
         <DialogActions>
-        <Button onClick={handleClose} color="primary">
+          <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
         </DialogActions>
       </Dialog>
 
-
       <Dialog open={updateOpen} onClose={handleUpdateClose}>
-      <DialogTitle>Update Category</DialogTitle>
+        <DialogTitle>Update Category</DialogTitle>
         <DialogContent>
-        <UpdateCategoryModal
+          <UpdateCategoryModal
             selectedCategory={selectedCategory}
             handleUpdateClose={handleUpdateClose}
             loadCategory={loadCategory}
-            
           />
         </DialogContent>
         <DialogActions>
-        <Button onClick={handleUpdateClose} color="primary">
+          <Button onClick={handleUpdateClose} color="primary">
             Cancel
           </Button>
         </DialogActions>
       </Dialog>
-
     </div>
   );
 };

@@ -29,7 +29,7 @@
 
 //       try{
 
-//             const res = await axios.post("http://localhost:5000/users/user/login", data)
+//             const res = await axios.post("https://expense-manager-backend-1.onrender.com/users/user/login", data)
 //             console.log("data", res.data.data)
 //             if(res.status === 200){
 //               alert("login successfull")
@@ -162,7 +162,7 @@ export const LogIn1 = () => {
 
     try {
       const res = await axios.post(
-        'http://localhost:5000/users/user/login',
+        'https://expense-manager-backend-1.onrender.com/users/user/login',
         data
       );
       console.log('data', res.data.data);

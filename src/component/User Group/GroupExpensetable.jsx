@@ -49,7 +49,9 @@ function Row({ row, onDelete, groupId }) {
   const handleDelete = async () => {
     try {
       // Send DELETE request to delete the transaction
-      await axios.delete(`http://localhost:5000/groupexp/groupexp/${row._id}`);
+      await axios.delete(
+        `https://expense-manager-backend-1.onrender.com/groupexp/groupexp/${row._id}`
+      );
       // Call the onDelete callback to remove the row from the table
       onDelete(row._id);
       // alert('Expense deleted....');
@@ -162,7 +164,8 @@ export const GroupExpensetable = ({ groupid }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:5000/groupexp/group/' + groupid
+          'https://expense-manager-backend-1.onrender.com/groupexp/group/' +
+            groupid
         );
         if (response.data.flag === 1) {
           // Format date before setting rows

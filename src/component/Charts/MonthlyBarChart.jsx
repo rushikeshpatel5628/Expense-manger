@@ -27,7 +27,7 @@ const MonthlyBarChart = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/transactions/transactions/${userId}`
+          `https://expense-manager-backend-1.onrender.com/transactions/transactions/${userId}`
         );
         const data = response.data.data;
         console.log('data....', data);

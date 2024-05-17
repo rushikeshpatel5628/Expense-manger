@@ -54,7 +54,10 @@ export default function SignUp() {
     data.role = role;
 
     try {
-      const res = await axios.post('http://localhost:5000/users/user', data);
+      const res = await axios.post(
+        'https://expense-manager-backend-1.onrender.com/users/user',
+        data
+      );
       if (res.status === 200) {
         alert('Profile created');
       }

@@ -38,7 +38,7 @@ function Row({ row, onDelete }) {
     try {
       // Send DELETE request to delete the transaction
       await axios.delete(
-        `http://localhost:5000/transactions/transaction/${row._id}`
+        `https://expense-manager-backend-1.onrender.com/transactions/transaction/${row._id}`
       );
       // Call the onDelete callback to remove the row from the table
       onDelete(row._id);
@@ -151,7 +151,8 @@ export default function ExpensesTable({ query }) {
   const loadAllCategories = async () => {
     try {
       const res = await axios.get(
-        'http://localhost:5000/usercategory/category/user/' + userId
+        'https://expense-manager-backend-1.onrender.com/usercategory/category/user/' +
+          userId
       );
       setcategories(res.data.data);
     } catch (error) {}
@@ -161,7 +162,8 @@ export default function ExpensesTable({ query }) {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:5000/transactions/transactions/' + userId
+          'https://expense-manager-backend-1.onrender.com/transactions/transactions/' +
+            userId
         );
         if (response.data.flag === 1) {
           // Format date before setting rows

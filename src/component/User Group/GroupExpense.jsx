@@ -24,7 +24,8 @@ export const GroupExpense = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:5000/groupexp/group/' + groupid
+          'https://expense-manager-backend-1.onrender.com/groupexp/group/' +
+            groupid
         );
         if (response.data.flag === 1) {
           setdata(response.data.data);

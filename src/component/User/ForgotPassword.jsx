@@ -50,7 +50,7 @@ export const ForgotPassword = () => {
     try {
       setLoading(true);
       const res = await axios.post(
-        'http://localhost:5000/users/user/isuserexist',
+        'https://expense-manager-backend-1.onrender.com/users/user/isuserexist',
         data
       );
       if (res.data.flag == 1) {

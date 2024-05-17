@@ -31,7 +31,7 @@ export const GroupList = () => {
     console.log('user id....', userId);
     try {
       const res = await axios.get(
-        'http://localhost:5000/groups/groups/' + userId
+        'https://expense-manager-backend-1.onrender.com/groups/groups/' + userId
       );
       console.log(res.data.data);
       setRows(res.data.data);

@@ -71,7 +71,7 @@ export default function GoalList({ reloadGoals }) {
   const getGoals = async () => {
     try {
       const res = await axios.get(
-        'http://localhost:5000/goals/goals/' + userId
+        'https://expense-manager-backend-1.onrender.com/goals/goals/' + userId
       );
       console.log('data....', res.data.data);
       setRows(res.data.data);
@@ -82,7 +82,9 @@ export default function GoalList({ reloadGoals }) {
 
   const deleteGoal = async id => {
     try {
-      await axios.delete(`http://localhost:5000/goals/goal/${id}`);
+      await axios.delete(
+        `https://expense-manager-backend-1.onrender.com/goals/goal/${id}`
+      );
       // If deletion is successful, update the state to reflect the changes
       setRows(prevRows => prevRows.filter(row => row._id !== id));
     } catch (error) {
@@ -121,7 +123,7 @@ export default function GoalList({ reloadGoals }) {
       if (selectedGoal) {
         // Update existing goal
         res = await axios.put(
-          `http://localhost:5000/goals/goal/${selectedGoal._id}`,
+          `https://expense-manager-backend-1.onrender.com/goals/goal/${selectedGoal._id}`,
           data
         );
       }
@@ -137,7 +139,7 @@ export default function GoalList({ reloadGoals }) {
   //   const getGoals = async () => {
   //     try {
   //       const res = await axios.get(
-  //         'http://localhost:5000/goals/goals/' + userId
+  //         'https://expense-manager-backend-1.onrender.com/goals/goals/' + userId
   //       );
   //     } catch (error) {
   //       console.error('Error fetching goals:', error);

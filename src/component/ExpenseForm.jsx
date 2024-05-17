@@ -24,7 +24,7 @@
 
 //     // try {
 //     //   const res = await axios.post(
-//     //     "http://localhost:5000/transactions/transaction",
+//     //     "https://expense-manager-backend-1.onrender.com/transactions/transaction",
 //     //     data
 //     //   );
 //     //   console.log(res.data);
@@ -262,7 +262,7 @@ export const ExpenseForm = () => {
 
   const loadData = async () => {
     const response = await axios.get(
-      'http://localhost:5000/transactions/transaction'
+      'https://expense-manager-backend-1.onrender.com/transactions/transaction'
     );
     console.log(response.data);
   };
@@ -271,7 +271,7 @@ export const ExpenseForm = () => {
     // const fetchData = async () => {
     //   try {
     //     const response = await axios.get(
-    //       'http://localhost:5000/transactions/transaction'
+    //       'https://expense-manager-backend-1.onrender.com/transactions/transaction'
     //     );
     //     if (response.data.flag === 1) {
     //       setdata(response.data.data);
@@ -288,13 +288,16 @@ export const ExpenseForm = () => {
 
   useEffect(() => {
     // Extract unique categories and subcategories
-    const uniqueCategories = Array.from(new Set(data.map(transaction => transaction.category.categoryName)));
-    const uniqueSubcategories = Array.from(new Set(data.map(transaction => transaction.subcategory.SubCategoryName)));
+    const uniqueCategories = Array.from(
+      new Set(data.map(transaction => transaction.category.categoryName))
+    );
+    const uniqueSubcategories = Array.from(
+      new Set(data.map(transaction => transaction.subcategory.SubCategoryName))
+    );
 
     setCategories(uniqueCategories);
     setSubcategories(uniqueSubcategories);
   }, [data]);
-
 
   return (
     <div className="container">
@@ -315,20 +318,24 @@ export const ExpenseForm = () => {
           <label htmlFor="category">Category</label>
           <div>
             <select name="" {...register('category')} id="">
-            {categories.map(category => (
-              <option key={category} value={category}>{category}</option>
-            ))}
+              {categories.map(category => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
             </select>
           </div>
         </div>
         <div>
           <label htmlFor="subcategory">Sub Category</label>
           <div>
-          <select {...register('subcategory')}>
-            {subcategories.map(subcategory => (
-              <option key={subcategory} value={subcategory}>{subcategory}</option>
-            ))}
-          </select>
+            <select {...register('subcategory')}>
+              {subcategories.map(subcategory => (
+                <option key={subcategory} value={subcategory}>
+                  {subcategory}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
         <div>

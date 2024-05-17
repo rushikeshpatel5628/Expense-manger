@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 
-const CreateGroupModal = ({ handleClose, updateGroupList  }) => {
+const CreateGroupModal = ({ handleClose, updateGroupList }) => {
   const {
     register,
     handleSubmit,
@@ -18,13 +18,15 @@ const CreateGroupModal = ({ handleClose, updateGroupList  }) => {
       data.creator = userId;
       console.log('data...', data);
 
-      const res = await axios.post("http://localhost:5000/groups/group", data);
+      const res = await axios.post(
+        'https://expense-manager-backend-1.onrender.com/groups/group',
+        data
+      );
       if (res.status === 201) {
         alert('Group created');
         updateGroupList();
         handleClose();
       }
-
     } catch (error) {
       console.error('Error joining group:', error);
       // Handle error, e.g., show error message to user

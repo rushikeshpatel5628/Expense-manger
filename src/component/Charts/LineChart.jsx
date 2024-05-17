@@ -12,7 +12,7 @@
 
 //       try {
 //         const response = await axios.get(
-//           `http://localhost:5000/transactions/transactions/${userId}`
+//           `https://expense-manager-backend-1.onrender.com/transactions/transactions/${userId}`
 //         );
 //         console.log('data....', response.data.data);
 //         setTransactions(response.data.data);
@@ -193,7 +193,7 @@ const LineChart = () => {
 
       try {
         const response = await axios.get(
-          `http://localhost:5000/transactions/transactions/${userId}`
+          `https://expense-manager-backend-1.onrender.com/transactions/transactions/${userId}`
         );
         console.log('data....', response.data.data);
         setTransactions(response.data.data);
@@ -329,7 +329,7 @@ const LineChart = () => {
       const userId = localStorage.getItem('userId');
       try {
         const response = await axios.get(
-          `http://localhost:5000/transactions/transactions/${userId}`
+          `https://expense-manager-backend-1.onrender.com/transactions/transactions/${userId}`
         );
         setTransactions(response.data.data);
       } catch (error) {

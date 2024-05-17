@@ -35,7 +35,10 @@ export const Goals = () => {
     console.log('data', data);
 
     try {
-      const res = await axios.post('http://localhost:5000/goals/goal', data);
+      const res = await axios.post(
+        'https://expense-manager-backend-1.onrender.com/goals/goal',
+        data
+      );
       if (res.status === 201) {
         // alert('data posted');
 
@@ -51,7 +54,7 @@ export const Goals = () => {
     const getGoals = async () => {
       try {
         const res = await axios.get(
-          'http://localhost:5000/goals/goals/' + userId
+          'https://expense-manager-backend-1.onrender.com/goals/goals/' + userId
         );
         setReloadGoals(false); // Reset reloadGoals state
       } catch (error) {

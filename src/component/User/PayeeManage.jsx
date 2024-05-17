@@ -52,7 +52,7 @@ export const PayeeManage = () => {
   const loadPayee = async () => {
     try {
       const res = await axios.get(
-        'http://localhost:5000/payees/payees/' + userId
+        'https://expense-manager-backend-1.onrender.com/payees/payees/' + userId
       );
       setRows(res.data.data);
       console.log('payees', res.data.data);
@@ -65,7 +65,10 @@ export const PayeeManage = () => {
     console.log('data....', data);
     data.user = userId;
     try {
-      const res = await axios.post('http://localhost:5000/payees/payee', data);
+      const res = await axios.post(
+        'https://expense-manager-backend-1.onrender.com/payees/payee',
+        data
+      );
       if (res.status === 201) {
         alert('Payee added');
         handleClose();
@@ -80,7 +83,7 @@ export const PayeeManage = () => {
   const deletePayee = async payeeId => {
     try {
       const res = await axios.delete(
-        `http://localhost:5000/payees/payee/${payeeId}`
+        `https://expense-manager-backend-1.onrender.com/payees/payee/${payeeId}`
       );
       if (res.status === 200) {
         alert('Payee deleted');

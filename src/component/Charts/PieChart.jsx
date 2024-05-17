@@ -10,7 +10,7 @@ export const PieChart = () => {
     const id = localStorage.getItem('userId');
     try {
       const response = await axios.get(
-        `http://localhost:5000/transactions/transactions/${id}`
+        `https://expense-manager-backend-1.onrender.com/transactions/transactions/${id}`
       );
       if (response.data.flag === 1) {
         setData(response.data.data);

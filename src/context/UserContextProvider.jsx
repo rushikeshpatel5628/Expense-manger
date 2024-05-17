@@ -10,7 +10,7 @@ const UserContextProvider = ({ children }) => {
       try {
         const userId = localStorage.getItem('userId');
         const response = await axios.get(
-          `http://localhost:5000/users/user/${userId}`
+          `https://expense-manager-backend-1.onrender.com/users/user/${userId}`
         );
         const userData = response.data.data;
         setUser(userData);

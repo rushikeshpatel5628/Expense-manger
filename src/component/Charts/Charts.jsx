@@ -3,7 +3,6 @@ import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS } from 'chart.js/auto';
 import axios from 'axios';
 
-
 export const Charts = () => {
   const [data, setdata] = useState([]);
   const [categories, setCategories] = useState({});
@@ -12,7 +11,8 @@ export const Charts = () => {
     const id = localStorage.getItem('userId');
     try {
       const response = await axios.get(
-        'http://localhost:5000/transactions/transactions/' + id
+        'https://expense-manager-backend-1.onrender.com/transactions/transactions/' +
+          id
       );
       // console.log(response.data.data)
       if (response.data.flag === 1) {
@@ -83,9 +83,7 @@ export const Charts = () => {
           },
         }}
       />
-      <div>
-        {/* <LineChart /> */}
-      </div>
+      <div>{/* <LineChart /> */}</div>
     </div>
   );
 };

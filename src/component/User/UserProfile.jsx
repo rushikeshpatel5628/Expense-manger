@@ -30,7 +30,9 @@ export const UserProfile = () => {
 
   const fetchUserData = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/users/user/${userId}`);
+      const res = await axios.get(
+        `https://expense-manager-backend-1.onrender.com/users/user/${userId}`
+      );
       console.log(res.data.data);
       const userData = res.data.data;
       setValue('firstName', userData.firstName);
@@ -66,16 +68,22 @@ export const UserProfile = () => {
         formData.append('profilePicture', user.profilePicture);
       }
 
-      await axios.put('http://localhost:5000/users/user/' + userId, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      await axios.put(
+        'https://expense-manager-backend-1.onrender.com/users/user/' + userId,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
       console.log('form data', formData);
 
       fetchUserData();
       // Optionally, you can refresh the data after update
-      const res = await axios.get('http://localhost:5000/users/user/' + userId);
+      const res = await axios.get(
+        'https://expense-manager-backend-1.onrender.com/users/user/' + userId
+      );
       const updatedUserData = res.data.data;
       setValue('firstName', updatedUserData.firstName);
       setValue('lastName', updatedUserData.lastName);

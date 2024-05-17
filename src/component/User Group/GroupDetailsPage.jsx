@@ -43,7 +43,7 @@ const GroupDetailsPage = () => {
     const fetchGroupDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/groups/group/${groupid}`
+          `https://expense-manager-backend-1.onrender.com/groups/group/${groupid}`
         );
         console.log('id....', groupid);
         console.log('Group....', response.data.data);
@@ -134,7 +134,8 @@ const GroupDetailsPage = () => {
         alert('you are not allowed to delete group');
       } else {
         const res = await axios.delete(
-          'http://localhost:5000/groups/group/' + groupid
+          'https://expense-manager-backend-1.onrender.com/groups/group/' +
+            groupid
         );
         if (res.status === 200) {
           // alert('group deleted!!');
@@ -166,9 +167,12 @@ const GroupDetailsPage = () => {
       if (userId == group.creator) {
         alert('Not allowed to left the group!!.');
       } else {
-        await axios.post(`http://localhost:5000/groups/${groupid}/leave`, {
-          userId,
-        });
+        await axios.post(
+          `https://expense-manager-backend-1.onrender.com/groups/${groupid}/leave`,
+          {
+            userId,
+          }
+        );
         // Redirect to some page after leaving the group
         toast.success('You left the group ', {
           position: 'top-center',
@@ -333,7 +337,7 @@ const GroupDetailsPage = () => {
                   <p>Total Group Expenses</p>
                   <p style={{ marginRight: '10px' }}>
                     {groupSummary
-                      ? groupSummary.totalMyExpenses
+                      ? groupSummary.totalGroupExpenses
                       : 'Calculating...'}
                   </p>
                 </Box>

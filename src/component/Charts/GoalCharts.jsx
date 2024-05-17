@@ -14,7 +14,7 @@ export const GoalCharts = () => {
     const userId = localStorage.getItem('userId');
     try {
       const res = await axios.get(
-        'http://localhost:5000/goals/goals/' + userId
+        'https://expense-manager-backend-1.onrender.com/goals/goals/' + userId
       );
       setGoals(res.data.data);
       //   console.log('Goals....', goals);
@@ -32,7 +32,7 @@ export const GoalCharts = () => {
   const getTransactionsByGoal = async goalId => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/transactions/goalexpense/${goalId}`
+        `https://expense-manager-backend-1.onrender.com/transactions/goalexpense/${goalId}`
       );
       setGoalTransactions(response.data.data);
       console.log('goal transaction: ', response.data.data);

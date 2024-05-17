@@ -29,7 +29,7 @@ export const ResetPassword = () => {
         time: new Date().getTime(),
       };
       const res = await axios.post(
-        'http://localhost:5000/users/user/resetpassword',
+        'https://expense-manager-backend-1.onrender.com/users/user/resetpassword',
         dataToSend
       );
 

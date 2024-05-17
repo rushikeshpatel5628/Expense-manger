@@ -39,7 +39,7 @@ function Row({ row, onDelete }) {
     try {
       // Send DELETE request to delete the transaction
       await axios.delete(
-        `http://localhost:5000/transactions/transaction/${row._id}`
+        `https://expense-manager-backend-1.onrender.com/transactions/transaction/${row._id}`
       );
       // Call the onDelete callback to remove the row from the table
       onDelete(row._id);
@@ -147,7 +147,8 @@ export const GoalExpenses = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:5000/transactions/goalexpense/' + id
+          'https://expense-manager-backend-1.onrender.com/transactions/goalexpense/' +
+            id
         );
         if (response.data.flag === 1) {
           setRows(response.data.data);
@@ -161,7 +162,7 @@ export const GoalExpenses = () => {
     const getGoalById = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:5000/goals/goal/' + id
+          'https://expense-manager-backend-1.onrender.com/goals/goal/' + id
         );
         console.log('Goal Name', response.data.data.goalName);
         setTitle(response.data.data.goalName);

@@ -12,17 +12,15 @@ const JoinGroupModal = ({ handleClose, updateGroupList }) => {
     reset,
   } = useForm();
 
-
-  const submitHandler = async(data) => {
+  const submitHandler = async data => {
     try {
       const userId = localStorage.getItem('userId');
       const groupId = data.groupId;
       console.log('data...', data);
 
-
       // Fetch group details to check if the user is already a member
       const groupRes = await axios.get(
-        `http://localhost:5000/groups/group/${groupId}`
+        `https://expense-manager-backend-1.onrender.com/groups/group/${groupId}`
       );
       const groupMembers = groupRes.data.data.members;
       console.log('groupMembers:', groupMembers);
@@ -34,26 +32,24 @@ const JoinGroupModal = ({ handleClose, updateGroupList }) => {
       );
 
       if (isUserAlreadyMember) {
-          alert('You are already a member of this group.');
-          handleClose();
-      } else{
-
+        alert('You are already a member of this group.');
+        handleClose();
+      } else {
         // Send a POST request to join the group
         const joinRes = await axios.post(
-          `http://localhost:5000/groups/join/${userId}`, data
+          `https://expense-manager-backend-1.onrender.com/groups/join/${userId}`,
+          data
         );
         if (joinRes.status === 200) {
           alert('Added to the group successfully.');
           updateGroupList();
           handleClose(); // Close the modal after joining
         }
-      
       }
-
     } catch (error) {
       console.error('Error joining group:', error);
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit(submitHandler)}>

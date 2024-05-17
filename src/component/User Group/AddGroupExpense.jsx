@@ -17,7 +17,9 @@ export const AddGroupExpense = () => {
   //load categories
   const loadCategories = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/categories/category');
+      const res = await axios.get(
+        'https://expense-manager-backend-1.onrender.com/categories/category'
+      );
       setcategory(res.data.data);
       console.log('categories....', res.data.data);
     } catch (error) {
@@ -34,7 +36,7 @@ export const AddGroupExpense = () => {
     console.log('data....', data);
     try {
       const res = await axios.post(
-        'http://localhost:5000/groupexp/addexpense',
+        'https://expense-manager-backend-1.onrender.com/groupexp/addexpense',
         data
       );
       if (res.status === 201) {

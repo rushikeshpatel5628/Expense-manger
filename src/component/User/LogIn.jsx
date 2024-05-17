@@ -12,7 +12,7 @@ export const LogIn = () => {
 
     try {
       const res = await axios.post(
-        'http://localhost:5000/users/user/login',
+        'https://expense-manager-backend-1.onrender.com/users/user/login',
         data
       );
       console.log('data', res.data.data);
